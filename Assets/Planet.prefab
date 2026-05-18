@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 791472109194489230}
   - component: {fileID: 7023756211876612152}
   - component: {fileID: 8758098763094327310}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Planet
-  m_TagString: Untagged
+  m_TagString: GravityBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

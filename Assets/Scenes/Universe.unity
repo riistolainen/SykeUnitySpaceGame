@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1210991267}
   - component: {fileID: 1210991266}
   m_Layer: 0
-  m_Name: SceneManager
+  m_Name: sceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9174008ce813b8741b1cb13879cc720c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  planet2: {fileID: 0}
 --- !u!4 &1210991267
 Transform:
   m_ObjectHideFlags: 0
@@ -288,6 +289,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet1
       objectReference: {fileID: 0}
+    - target: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
+      propertyPath: m_TagString
+      value: GravityBody
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -301,6 +306,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1459863029717724631, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1459863029717724631, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
+      propertyPath: m_TagString
+      value: GravityBody
+      objectReference: {fileID: 0}
+    - target: {fileID: 1459863029717724631, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4871177218893396061, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -355,6 +372,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831377459529041768, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831377459529041768, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
