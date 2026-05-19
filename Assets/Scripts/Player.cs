@@ -1,22 +1,14 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class SpaceShipScript : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
-    private SceneManager mySM;
-    private GameObject myGO;
+    public GameObject gMref;
     private List<GameObject> myList;
-    private Component myComp;
-    private MonoScript sceneManagerScript;
-
-    private GameObject spaceship_obj;
-    private GameObject player_obj;
-    private Rigidbody player_RB;
-
+    public GameObject spaceship_obj;
+    
     private bool thrustActive = false;
     private InputAction thrust;
     private float power = 1; //power of thruster
@@ -28,18 +20,15 @@ public class SpaceShipScript : MonoBehaviour
     void Start()
     {
         //add to list of gravitybodies
-        /*
-        sceneManagerScript = gameObject.GetComponent("sceneManager").gameObject.;
-        compRef = gameObject.GetComponent("sceneManager.cs");
-        compRef.list_gos.Add(gameObject);
-        sceneManager sMref = GameObject.Find("sceneManager").GetComponent<List>
-            .list_gos.Add(gameObject); //TODO: need to delete once object removed?
-        */
+        gMref = GameObject.Find("GameManager");
+        myList = gMref.GetComponent<GameManagerScript>().list_gos;
+
         thrust = InputSystem.actions.FindAction("MainThruster");
-        player_obj = GameObject.Find("Player");
         spaceship_obj = GameObject.Find("Spaceship");
-        spaceship_RB = GetComponent<Rigidbody>();
+        spaceship_RB = spaceship_obj.GetComponent<Rigidbody>(); //TODO: NULL reference?
         mass = spaceship_RB.mass;
+        
+        myList.Add(spaceship_obj); //TODO: need to delete once object removed?
     }
 
     // Update is called once per frame

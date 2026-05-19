@@ -1,64 +1,56 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Pool;
 
-public class planet_Script : MonoBehaviour
+public class PlanetScript : MonoBehaviour
 {
-    private GameObject sMref;
-    private List<GameObject> listRef;
+    private GameObject gMref;
+    private List<GameObject> myList;
+    private Component compRef;
+    private GameManagerScript myGMScript;
+    private Rigidbody rb;
 
-    private bool rotation;
-    private float rotation_spd;
-    private float rotation_angle;
-    
-    private bool gravity;
+    public bool rotation;
+    public float rotation_spd;
+    public float rotation_angle;
+
+    public bool gravity;
     public float mass;
-    public Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        sMref = GameObject.Find("SceneManager");
-        listRef = sMref.GetComponent<List<GameObject>>();
-        listRef.Add(gameObject); //TODO: need to delete once object removed?
+        gMref = GameObject.Find("GameManager");
+        myGMScript = gMref.GetComponent<GameManagerScript>();
+        myList = myGMScript.list_gos;
+        myList.Add(gameObject); //TODO: need to delete once object removed?
 
         rotation = true;
         rotation_spd = 5f;
         rotation_angle = 2.3f;
         transform.Rotate(rotation_angle, 0, 0); //tilt celestial object
-        
+
         gravity = true;
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody>();
         mass = rb.mass;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void FixedUpdate()
     {
-        if (gravity)
-        {
-            //TODO: rotate through all gravity objects
-            for (int index = 0; index < listRef.Count; index++)
-            {
-                Rigidbody otherRB = listRef[index].GetComponent<Rigidbody>();
-                float dist = Vector3.Distance(gameObject.transform.position, listRef[index].transform.position);
-                Vector3 direction = listRef[index].transform.position - this.gameObject.transform.position;
-                float G = 6.674f * 10E-11f;
-                float effG = G * ((mass * otherRB.mass) / dist * dist);
-                rb.AddForce(effG * direction); //why not?
-            }
+        if (rotation){  //Planet rotation
+            transform.Rotate(0, rotation_spd * Time.deltaTime, 0);
         }
 
-        //Planet rotation
-        transform.Rotate(0, rotation_spd * Time.deltaTime, 0);        
-
+        if (gravity && myList.Count > 0){   //TODO: rotate through all gravity objects and pull them in
+            for (int index = 0; index < myList.Count; index++)
+            {
+                Rigidbody otherRB = myList[index].GetComponent<Rigidbody>();
+                float dist = Vector3.Distance(gameObject.transform.position, myList[index].transform.position);
+                if (dist > 0) { 
+                    Vector3 direction = myList[index].transform.position - gameObject.transform.position;
+                    float effG = myGMScript.G * ((mass * otherRB.mass) / (100f + (dist * dist)) );
+                    rb.AddForce(Vector3.Scale(direction.normalized, new Vector3(effG, effG, effG))); //why not?
+                }
+            }
+        }
     }
 }

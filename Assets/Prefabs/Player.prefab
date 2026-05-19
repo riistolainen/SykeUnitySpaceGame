@@ -279,7 +279,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -430,8 +430,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4990950928176062592}
-  - component: {fileID: 15341590556607549}
   - component: {fileID: 7619524691457336743}
+  - component: {fileID: 1969395612540803559}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -457,18 +457,6 @@ Transform:
   - {fileID: 381378631268404945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &15341590556607549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7831377459529041768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 169c4a8637b4ee54388f1aa93e75dc13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!54 &7619524691457336743
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -491,8 +479,23 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1969395612540803559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831377459529041768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 169c4a8637b4ee54388f1aa93e75dc13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
+  gMref: {fileID: 3883656595681604170, guid: 69c77388e2896bf4ba80d37409742e21, type: 3}
+  spaceship_obj: {fileID: 1459863029717724631}
+  mass: 1
