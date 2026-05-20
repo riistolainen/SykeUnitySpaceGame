@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     
     private bool thrustActive = false;
     private InputAction thrust;
-    private float power = 1; //power of thruster
+    public float power = 100; //power of thruster
 
     private Rigidbody spaceship_RB;
     public float mass;
@@ -25,7 +26,7 @@ public class PlayerScript : MonoBehaviour
 
         thrust = InputSystem.actions.FindAction("MainThruster");
         spaceship_obj = GameObject.Find("Spaceship");
-        spaceship_RB = spaceship_obj.GetComponent<Rigidbody>(); //TODO: NULL reference?
+        spaceship_RB = spaceship_obj.GetComponent<Rigidbody>();
         mass = spaceship_RB.mass;
         
         myList.Add(spaceship_obj); //TODO: need to delete once object removed?
@@ -43,9 +44,10 @@ public class PlayerScript : MonoBehaviour
     {
         if (thrustActive)
         {
-            spaceship_RB.AddForce(transform.forward * power);
+            spaceship_RB.AddForce(transform.forward * power);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
-
+            Debug.Log("#Thrust#    " + gameObject.name + "/" + spaceship_obj.name + "   -> " + " Direction:  " + transform.forward + ", Power: " + power);
+            //Debug.Log("#Gravity#    " + gameObject.name + " -> " + myList[index].name + " Direction:  " + direction + ", effG:   " + effG);
             /* v.2 
             spaceShip_RB.linearVelocity = spaceShip_RB.linearVelocity + transform.forward * power;
             print(spaceShip_RB.linearVelocity);

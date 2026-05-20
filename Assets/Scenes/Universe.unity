@@ -129,15 +129,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1624627447784206773, guid: 69c77388e2896bf4ba80d37409742e21, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 100.40961
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1624627447784206773, guid: 69c77388e2896bf4ba80d37409742e21, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28673
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1624627447784206773, guid: 69c77388e2896bf4ba80d37409742e21, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.40962
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1624627447784206773, guid: 69c77388e2896bf4ba80d37409742e21, type: 3}
       propertyPath: m_LocalRotation.w
@@ -248,6 +248,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Moon1.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8758098763094327310, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
+      propertyPath: mass
+      value: 7.34
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -303,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7023756211876612152, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: m_Mass
-      value: 597.219
+      value: 1e+9
       objectReference: {fileID: 0}
     - target: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: m_Name
@@ -408,38 +412,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9084806039459141529, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
       propertyPath: m_Mass
-      value: 0.0000001
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7619524691457336743, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1459863029717724631, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8823917506095140700}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
---- !u!1 &8823917506095140699 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1459863029717724631, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
-  m_PrefabInstance: {fileID: 8823917506095140698}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8823917506095140700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8823917506095140699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9174008ce813b8741b1cb13879cc720c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  Planet: {fileID: 0}
-  Player: {fileID: 0}
-  list_gos: []
-  G: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
