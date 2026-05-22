@@ -16,14 +16,24 @@ public class GameManagerScript: MonoBehaviour
         // TODO: instantiate level in sceneManager instead of manually placing objects?
         // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
 
-        //list_gos = new List<GameObject>(GameObject.FindGameObjectsWithTag("GravityBody")) //prepopulate with scene
+        //list_gos.AddRange(GameObject.FindGameObjectsWithTag("GravityBody")); //prepopulate with scene
 
-        list_gos = new List<GameObject>(); //public list of gravity objects, new objects are added when created during gameplay -- more performative than always searching all objects
-        Debug.Log("Initial gravity objects: " +list_gos.ToString());
+        Debug.Log("Initial gravity objects: " +list_gos.Count);
+    }
+
+    public bool AddMe(GameObject goesToList)
+    {
+        if (!list_gos.Contains(goesToList))
+        {
+            list_gos.Add(goesToList);
+            return true;
+        }
+        return false;
     }
 
     private void FixedUpdate()
     {
+        /*  START:  ### GRAVITY ### */
         if (list_gos.Count > 1) //only when two or more gravity objects
         {   //Apply gravity from each to each
             for (int index = 0; index < list_gos.Count; index++)
@@ -41,10 +51,11 @@ public class GameManagerScript: MonoBehaviour
                         float effG = Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
                         otherRB.AddForce(Vector3.Scale(dir, new Vector3(effG, effG, effG)));
 
-                        Debug.Log("#Gravity#    " + list_gos[index].name + " -> " + list_gos[jindex].name + " Direction:  " + dir + ", effG:   " + effG);
+                        Debug.Log("#Gravity#    " + list_gos[index].name + " -> " + list_gos[jindex].name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
                     }
                 }
             }
         }
+        /*  EOF:    ### GRAVITY ### */
     }
 }

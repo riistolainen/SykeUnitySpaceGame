@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlanetScript : MonoBehaviour
 {
     private GameObject gMref;
-    private List<GameObject> myList;
     private GameManagerScript myGMScript;
     private Rigidbody rb;
 
@@ -19,15 +18,39 @@ public class PlanetScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gravity = true; //default all planets into gravity calculations
+
+        rb = gameObject.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogWarning("Planet rigidbody not found.");
+        }
+        else
+        {
+            mass = rb.mass;
+        }
+
         if (gravity)    //only add to stellar gravity if enabled
         {
             gMref = GameObject.Find("GameManager");
-            myGMScript = gMref.GetComponent<GameManagerScript>();
-            myList = myGMScript.list_gos;
-            myList.Add(gameObject); //TODO: need to delete once object removed?}
-            rb = gameObject.GetComponent<Rigidbody>();
-            mass = rb.mass;
+            if (gMref == null)
+            {
+                Debug.LogWarning("GameManager object not found.");
+            }
+            else
+            {
+                myGMScript = gMref.GetComponent<GameManagerScript>();
+                if (myGMScript == null)
+                {
+                    Debug.LogWarning("GameManagerScript not found.");
+                }
+                else
+                {
+                    if (!myGMScript.AddMe(gameObject))
+                    {
+                        Debug.LogError("ERROR: Could not Add GravityObject.");
+                    }
+                }
+            }
         }
     }
 

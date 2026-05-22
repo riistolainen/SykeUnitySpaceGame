@@ -4,32 +4,50 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+//TODO: Move SpaceShip scripts to SpaceShip object?
+
 public class PlayerScript : MonoBehaviour
 {
     public GameObject gMref;
-    private List<GameObject> myList;
-    public GameObject spaceship_obj;
+    private GameManagerScript myGMScript;
     
     private bool thrustActive = false;
     private InputAction thrust;
     public float power = 100; //power of thruster
 
+    private GameObject spaceship_obj;
+    private SpaceShipScript spaceShipScript;
     private Rigidbody spaceship_RB;
     public float mass;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        thrust = InputSystem.actions.FindAction("MainThruster");
+
         //add to list of gravitybodies
         gMref = GameObject.Find("GameManager");
-        myList = gMref.GetComponent<GameManagerScript>().list_gos;
-
-        thrust = InputSystem.actions.FindAction("MainThruster");
-        spaceship_obj = GameObject.Find("Spaceship");
-        spaceship_RB = spaceship_obj.GetComponent<Rigidbody>();
-        mass = spaceship_RB.mass;
+        myGMScript = gMref.GetComponent<GameManagerScript>();
         
-        myList.Add(spaceship_obj); //TODO: need to delete once object removed?
+        spaceship_obj = gameObject.transform.Find("SpaceShip").gameObject;  //child-parent relation through gameObjects Transform component in Unity
+        if (spaceship_obj == null)
+        {
+            Debug.LogWarning("spaceship_obj NULL");
+        }
+        else
+        {
+            spaceship_RB = spaceship_obj.GetComponent<Rigidbody>();
+            mass = spaceship_RB.mass;
+            spaceShipScript = spaceship_obj.GetComponent<SpaceShipScript>();
+
+            if (spaceShipScript.gravity)
+            {
+                if (!myGMScript.AddMe(spaceship_obj))
+                {
+                    Debug.LogWarning("Could not add SpaceShip to Gravity list.");
+                }
+            }
+        }
     }
 
     // Update is called once per frame
