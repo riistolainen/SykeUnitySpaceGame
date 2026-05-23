@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978fb0beb8c19014d8bb3a9dd0d672b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  mySceneList: []
 --- !u!4 &930556462
 Transform:
   m_ObjectHideFlags: 0
