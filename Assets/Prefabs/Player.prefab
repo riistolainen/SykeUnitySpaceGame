@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gravity: 1
+  thrusterPower: 50
 --- !u!1 &7831377459529041768
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +345,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169c4a8637b4ee54388f1aa93e75dc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
-  gMref: {fileID: 0}
-  power: 100
-  mass: 1

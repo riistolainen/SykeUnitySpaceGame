@@ -6,6 +6,7 @@ public class GravityScript : MonoBehaviour
     public bool gravity = true;
     public float mass;
     public LineRenderer visualGravityVector;
+    public Vector3 gravityVectorSum;
 
     private GameObject gMref;
     private GameManagerScript myGMScript;
@@ -13,14 +14,28 @@ public class GravityScript : MonoBehaviour
 
     public void DrawForceVector(Vector3 toDraw) //TODO: Cmmon heritage to all gravitybodies?
     {
+        toDraw *= -1;
         visualGravityVector.SetPosition(1, toDraw);
+    }
+
+    public void GravityVectorSum(Vector3 newForce)
+    {
+        gravityVectorSum += newForce;
+    }
+    public void ApplyGravity()
+    {
+        GetComponent<Rigidbody>().AddForce(gravityVectorSum);
+        DrawForceVector(gravityVectorSum);
+        gravityVectorSum = Vector3.zero;    //reset for next cycle
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gravityVectorSum = Vector3.zero;
+
         visualGravityVector = gameObject.GetOrAddComponent<LineRenderer>();
-        visualGravityVector.useWorldSpace = true;
+        visualGravityVector.useWorldSpace = false;
         visualGravityVector.SetPosition(0, transform.position); //start to object
 
         rb = gameObject.GetComponent<Rigidbody>();
@@ -51,12 +66,11 @@ public class GravityScript : MonoBehaviour
                 {
                     if (!myGMScript.AddMe(gameObject))
                     {
-                        Debug.LogError("ERROR: Could not Add GravityObject: " +gameObject.name);
+                        Debug.LogError("ERROR: Could not Add GravityObject: " + gameObject.name);
                     }
                 }
             }
         }
-
     }
 
     // Update is called once per frame

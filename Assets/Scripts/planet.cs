@@ -16,7 +16,8 @@ public class PlanetScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rotation){  //Planet rotation
+        if (rotation)
+        {  //Planet rotation
             transform.Rotate(0, rotation_spd * Time.deltaTime, 0);
         }
     }

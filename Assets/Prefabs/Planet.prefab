@@ -156,5 +156,3 @@ MonoBehaviour:
   rotation: 0
   rotation_spd: 5
   rotation_angle: 2.3
-  gravity: 1
-  mass: 597.219

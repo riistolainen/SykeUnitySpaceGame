@@ -1,16 +1,18 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class GameManagerScript: MonoBehaviour
+public class GameManagerScript : MonoBehaviour
 {
     public GameObject Planet;
     public GameObject Player;
     public List<GameObject> list_gos; //list of gravity objects that are used for stellar physics calc
 
-    public float G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
+    public float G = 10; //6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
+    public float[,] gravityForces;
 
     public List<LineRenderer> linesList;
     public LineRenderer addingLine;
@@ -24,7 +26,7 @@ public class GameManagerScript: MonoBehaviour
         // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
 
         //list_gos.AddRange(GameObject.FindGameObjectsWithTag("GravityBody")); //prepopulate with scene
-        Debug.Log("Initial gravity objects: " +list_gos.Count);
+        Debug.Log("Initial gravity objects: " + list_gos.Count);
     }
 
     public bool AddMe(GameObject goesToList)    //track gravity objects
@@ -32,15 +34,15 @@ public class GameManagerScript: MonoBehaviour
         if (!list_gos.Contains(goesToList))
         {
             list_gos.Add(goesToList);
-            Debug.Log("ListedGO: " +goesToList.name);
+            Debug.Log("ListedGO: " + goesToList.name);
             return true;
         }
         return false;
     }
 
-    public void DrawLine(Vector3 from, Vector3 to) 
+    public void DrawLine(Vector3 from, Vector3 to)
     { //TODO: add return values for debugging?
-        addingLine.useWorldSpace = true;
+        addingLine.useWorldSpace = false;
         addingLine.SetPosition(0, from);
         addingLine.SetPosition(1, to);
         linesList.Add(addingLine);
@@ -53,34 +55,37 @@ public class GameManagerScript: MonoBehaviour
         {   //Apply gravity from each to each
             for (int index = 0; index < list_gos.Count; index++)    //TODO: refactor the calculations - not correct currently on summing up the forces
             {
-                Vector3 forceVector;   //reset force calculation for each gravity object
-                forceVector = new Vector3(0f, 0f, 0f);
+                //reset force calculation for index-GO
+                Vector3 forceVector = new(0f, 0f, 0f);
 
-                Rigidbody otherRB = list_gos[index].GetComponent<Rigidbody>();
-                
+                GameObject toGO = list_gos[index];
+
                 for (int jindex = 0; jindex < list_gos.Count; jindex++)
                 {
-                    if (index != jindex) //not self - TODO: does not work
+                    if (index != jindex) //not self - TODO: does not work?
                     {
-                        Rigidbody oneRB = list_gos[jindex].GetComponent<Rigidbody>();
-                        float dist = Vector3.Distance(list_gos[index].transform.position, list_gos[jindex].transform.position);
-                        
-                        Vector3 dir = list_gos[index].transform.position - list_gos[jindex].transform.position;
-                        float effG = Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
-                        forceVector += Vector3.Scale(dir, new Vector3(effG, effG, effG));
+                        GameObject fromGO = list_gos[jindex];
 
-                        Debug.Log("#Gravity#    " + list_gos[index].name + " -> " + list_gos[jindex].name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
+                        float dist = Vector3.Distance(toGO.transform.position, fromGO.transform.position);
+
+                        Vector3 dir = toGO.transform.position - fromGO.transform.position; //(to, from)
+                        float effG = Time.fixedDeltaTime * G*(100/(dist+1)); //(500 away gravity reaches 0) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
+                        fromGO.GetComponent<GravityScript>().GravityVectorSum(Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)));    //sum forcevectors before applying
+
+                        Debug.Log("#Gravity#    " + toGO.name + " -> " + fromGO.name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
                     }
                 }
                 //one index done over jindex
-                otherRB.AddForce(forceVector);  //add sum of all gravity force to GO
-                list_gos[index].GetComponent<GravityScript>().DrawForceVector(forceVector);    //ask GO to draw(/update) the applied force vector visually
-
             }
+            for (int i = 0; i < list_gos.Count; i++)
+            {
+                list_gos[i].GetComponent<GravityScript>().ApplyGravity();  //add sum of all gravity force to GO
+            }
+            //TODO: Clean list_gos? ie. each object to remove itself from list on OnDestroy()?
         }
         /*  EOF:    ### GRAVITY ### */
 
-        
+
         /*  START:  ### LINES FADE   ### */
         /*
         for (int i = 0; linesList.Count < i; i++)
@@ -96,6 +101,6 @@ public class GameManagerScript: MonoBehaviour
             }
         }*/
         /*  EOF:  ### LINES FADE   ### */
-    
+
     }
 }
