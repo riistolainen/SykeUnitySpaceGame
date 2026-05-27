@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +15,8 @@ public class GravityScript : MonoBehaviour
 
     public void DrawForceVector(Vector3 toDraw) //TODO: Cmmon heritage to all gravitybodies?
     {
-        toDraw *= -1;
+        toDraw *= -1;   //TODO: seems to draw vector always to same direction regardless of trying to reverse it
+        visualGravityVector.SetPosition(0, transform.position); //update start position to object
         visualGravityVector.SetPosition(1, toDraw);
     }
 
@@ -22,11 +24,15 @@ public class GravityScript : MonoBehaviour
     {
         gravityVectorSum += newForce;
     }
+
     public void ApplyGravity()
     {
-        GetComponent<Rigidbody>().AddForce(gravityVectorSum);
-        DrawForceVector(gravityVectorSum);
-        gravityVectorSum = Vector3.zero;    //reset for next cycle
+        if (gravityVectorSum != Vector3.zero)
+        {
+            Debug.Log(gravityVectorSum.ToString());
+        }
+        GetComponent<Rigidbody>().AddForce(gravityVectorSum);   //add gravity force
+        gravityVectorSum = Vector3.zero;    //reset force for next cycle
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,7 +42,7 @@ public class GravityScript : MonoBehaviour
 
         visualGravityVector = gameObject.GetOrAddComponent<LineRenderer>();
         visualGravityVector.useWorldSpace = false;
-        visualGravityVector.SetPosition(0, transform.position); //start to object
+        visualGravityVector.SetPosition(0, transform.localPosition); //start to object
 
         rb = gameObject.GetComponent<Rigidbody>();
         if (rb == null)
@@ -75,7 +81,8 @@ public class GravityScript : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        visualGravityVector.SetPosition(0, transform.position); //update start pos
+    {   //TODO: option to enable/disable drawing of vectors
+        DrawForceVector(gravityVectorSum);  //draw visualization
+        ApplyGravity(); //each GO apply their own calculated gravityforce themselves; gamemanager calculates the forces
     }
 }

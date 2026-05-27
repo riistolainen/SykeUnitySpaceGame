@@ -1,9 +1,9 @@
+//TODO: use tryGetComponent over GetComponent and manual null check in _all_ scripts?
+
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -40,6 +40,8 @@ public class GameManagerScript : MonoBehaviour
         return false;
     }
 
+
+    /*UNUSED
     public void DrawLine(Vector3 from, Vector3 to)
     { //TODO: add return values for debugging?
         addingLine.useWorldSpace = false;
@@ -47,6 +49,7 @@ public class GameManagerScript : MonoBehaviour
         addingLine.SetPosition(1, to);
         linesList.Add(addingLine);
     }
+    */
 
     private void FixedUpdate()
     {
@@ -73,13 +76,10 @@ public class GameManagerScript : MonoBehaviour
                         fromGO.GetComponent<GravityScript>().GravityVectorSum(Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)));    //sum forcevectors before applying
 
                         Debug.Log("#Gravity#    " + toGO.name + " -> " + fromGO.name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
+                        Debug.Log("NewForce: " +Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)) +" NormDir: " + dir.normalized + " AmountMult: " + new Vector3(effG, effG, effG));
                     }
                 }
                 //one index done over jindex
-            }
-            for (int i = 0; i < list_gos.Count; i++)
-            {
-                list_gos[i].GetComponent<GravityScript>().ApplyGravity();  //add sum of all gravity force to GO
             }
             //TODO: Clean list_gos? ie. each object to remove itself from list on OnDestroy()?
         }

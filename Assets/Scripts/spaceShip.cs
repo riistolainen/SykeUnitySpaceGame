@@ -22,7 +22,7 @@ public class SpaceShipScript : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Update()   //TODO: deltatime multiplier to thrust. Count time thrust is pressed from enable to disable on button raised after it isPressed
     {
         if (thrust.IsPressed()) //TODO: move to spaceship
         {
