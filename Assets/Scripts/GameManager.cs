@@ -11,16 +11,22 @@ public class GameManagerScript : MonoBehaviour
     public GameObject Player;
     public List<GameObject> list_gos; //list of gravity objects that are used for stellar physics calc
 
-    public float G = 10; //6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
-    public float[,] gravityForces;
+    //effectiveGravity = G/(1+(distance/degradingFactor))
+    public float G;
+    public float degradingFactor;
+    //public float[,] gravityForces;
 
-    public List<LineRenderer> linesList;
-    public LineRenderer addingLine;
+    //public List<LineRenderer> linesList;
+    //public LineRenderer addingLine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        addingLine = gameObject.GetOrAddComponent<LineRenderer>();
+        //effectiveGravity = G/(1+(distance/degradingFactor))
+        G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
+        degradingFactor = 1000;
+
+        //addingLine = gameObject.GetOrAddComponent<LineRenderer>();
 
         // TODO: instantiate level in sceneManager instead of manually placing objects?
         // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
@@ -59,7 +65,7 @@ public class GameManagerScript : MonoBehaviour
             for (int index = 0; index < list_gos.Count; index++)    //TODO: refactor the calculations - not correct currently on summing up the forces
             {
                 //reset force calculation for index-GO
-                Vector3 forceVector = new(0f, 0f, 0f);
+                //Vector3 forceVector;
 
                 GameObject toGO = list_gos[index];
 
@@ -72,7 +78,7 @@ public class GameManagerScript : MonoBehaviour
                         float dist = Vector3.Distance(toGO.transform.position, fromGO.transform.position);
 
                         Vector3 dir = toGO.transform.position - fromGO.transform.position; //(to, from)
-                        float effG = Time.fixedDeltaTime * G*(100/(dist+1)); //(500 away gravity reaches 0) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
+                        float effG = Time.fixedDeltaTime*(G+toGO.GetComponent<Rigidbody>().mass*fromGO.GetComponent<Rigidbody>().mass)/(1+(dist/degradingFactor)); //(500 away gravity is 1/2 G) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
                         fromGO.GetComponent<GravityScript>().GravityVectorSum(Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)));    //sum forcevectors before applying
 
                         Debug.Log("#Gravity#    " + toGO.name + " -> " + fromGO.name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);

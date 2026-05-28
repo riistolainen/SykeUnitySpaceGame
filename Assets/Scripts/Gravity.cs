@@ -16,23 +16,35 @@ public class GravityScript : MonoBehaviour
     public void DrawForceVector(Vector3 toDraw) //TODO: Cmmon heritage to all gravitybodies?
     {
         toDraw *= -1;   //TODO: seems to draw vector always to same direction regardless of trying to reverse it
-        visualGravityVector.SetPosition(0, transform.position); //update start position to object
+        visualGravityVector.SetPosition(0, transform.localPosition); //update start position to object
         visualGravityVector.SetPosition(1, toDraw);
     }
 
     public void GravityVectorSum(Vector3 newForce)
     {
-        gravityVectorSum += newForce;
+        if (newForce != Vector3.zero)
+        {
+            gravityVectorSum += newForce;
+            Debug.Log(gameObject.name + " # New force: " +newForce.ToString() +" Sum: " +gravityVectorSum);
+        }
+        else 
+        {
+            Debug.LogWarning(gameObject.name +" # GravityVectorSum: Zero newForce!");
+        }
     }
 
     public void ApplyGravity()
     {
         if (gravityVectorSum != Vector3.zero)
         {
-            Debug.Log(gravityVectorSum.ToString());
+            Debug.Log(gravityVectorSum.ToString()); //TODO: not working? expand
+            GetComponent<Rigidbody>().AddForce(gravityVectorSum, ForceMode.Impulse);   //add gravity force
+            gravityVectorSum = Vector3.zero;    //reset force for next cycle
         }
-        GetComponent<Rigidbody>().AddForce(gravityVectorSum);   //add gravity force
-        gravityVectorSum = Vector3.zero;    //reset force for next cycle
+        else
+        {
+            Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -9,7 +9,7 @@ public class SpaceShipScript : MonoBehaviour
     private bool thrustActive = false;
     private InputAction thrust;
     public float thrusterPower = 50; //power of thruster
-
+    public Vector3 initSpeed = new(0f,0f,0f);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +19,11 @@ public class SpaceShipScript : MonoBehaviour
         if (gravity)
         {
             gameObject.AddComponent<GravityScript>();
+        }
+
+        if (initSpeed != Vector3.zero)
+        {
+            gameObject.GetComponent<Rigidbody>().linearVelocity = initSpeed;
         }
     }
 
