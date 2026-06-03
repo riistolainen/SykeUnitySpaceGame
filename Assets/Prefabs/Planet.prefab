@@ -156,3 +156,4 @@ MonoBehaviour:
   rotation: 0
   rotation_spd: 5
   rotation_angle: 2.3
+  initSpeed: {x: 0, y: 0, z: 0}
