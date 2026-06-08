@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067138947308929645, guid: 4688b0228824bf849b76e7d62319a6aa, type: 3}
       propertyPath: m_Name
-      value: CinemachineCameraFreeFly
+      value: CinemachineCameraFreefly
       objectReference: {fileID: 0}
     - target: {fileID: 9067138947308929645, guid: 4688b0228824bf849b76e7d62319a6aa, type: 3}
       propertyPath: m_TagString
@@ -740,6 +740,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1376722828}
+  - component: {fileID: 1376722829}
   m_Layer: 0
   m_Name: Cameras
   m_TagString: Untagged
@@ -768,6 +769,21 @@ Transform:
   - {fileID: 732402261}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1376722829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376722827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228eface9c318134e9756e421ed85e5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CamerasScriptable
+  CameraFollow: {fileID: 0}
+  CameraOverhead: {fileID: 0}
+  CameraFreefly: {fileID: 0}
 --- !u!1001 &1388889842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -844,7 +860,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3888619923661995036, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_Name
-      value: CameraFreeFly
+      value: CameraFreefly
       objectReference: {fileID: 0}
     - target: {fileID: 3888619923661995036, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_TagString
