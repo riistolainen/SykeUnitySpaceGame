@@ -1,8 +1,10 @@
 //ATTACHED TO UIDOCUMENT -obj
 
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 public class AdminUIScript : MonoBehaviour
@@ -15,27 +17,52 @@ public class AdminUIScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //GET REF TO CAMERAS.obj
         GameObject camRef = GameObject.Find("Cameras");
-        if(camRef == null) { Debug.LogError("FAILED INIT: camRef NULL"); }
+        if (camRef == null) { Debug.LogError("FAILED INIT: camRef NULL"); }
         camerasScriptable = camRef.GetComponent<CamerasScriptable>();
-        if (camerasScriptable == null){ Debug.LogError("FAILED INIT: camerasScriptable NULL"); }
+        if (camerasScriptable == null) { Debug.LogError("FAILED INIT: camerasScriptable NULL"); }
 
+        //GET REF TO UI-element
         UIDocument uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
-        //        VisualTreeAsset vTA = uiDocument.visualTreeAsset;
         RadioButtonGroup rbg = root.Q<RadioButtonGroup>("CameraSwitcher");
-        Debug.Log("LOOKING: " +rbg +", " +rbg.name +", " +rbg.childCount +", " +rbg.GetBindingInfos() +", " +rbg.choices);
+        Debug.Log("LOOKING: " + rbg + ", " + rbg.name + ", " + rbg.childCount + ", " + rbg.GetBindingInfos() + ", " + rbg.choices);
+
+        /*
         rbg.ElementAt(0).dataSource = camerasScriptable.CameraFollow;
         rbg.ElementAt(1).dataSource = camerasScriptable.CameraOverhead;
         rbg.ElementAt(2).dataSource = camerasScriptable.CameraFreefly;
+        */
 
+        var binding0 = new DataBinding
+        {
+            dataSource = rbg,
+            dataSourcePath = PropertyPath.FromName(rbg.ElementAt(0).name),
+        };
+        var binding1 = new DataBinding
+        {
+            dataSource = rbg,
+            dataSourcePath = PropertyPath.FromName(rbg.ElementAt(1).name),
+        };
+        var binding2 = new DataBinding
+        {
+            dataSource = rbg,
+            dataSourcePath = PropertyPath.FromName(rbg.ElementAt(2).name),
+        };
+
+        rbg[0].SetBinding("camFo", binding0);
+        rbg[1].SetBinding("camOv", binding1);
+        rbg[2].SetBinding("camFr", binding2);
+
+        /*
         //Callback registry
-        /*For some reason can't register at RBGroup-level event - instead adding individual RB-level*/
+        //For some reason can't register at RBGroup-level event - instead adding individual RB-level
         //rbg.RegisterValueChangedCallback<ChangeEvent<int>>(RBGToggle);
-
         rbg.ElementAt(0).RegisterCallback<ChangeEvent<Toggle>>(Followevt);
         rbg.ElementAt(1).RegisterCallback<ChangeEvent<Toggle>>(Overheadevt);
         rbg.ElementAt(2).RegisterCallback<ChangeEvent<Toggle>>(Freeflyevt);
+        
     }
 
 
@@ -68,11 +95,6 @@ public class AdminUIScript : MonoBehaviour
     {
         Debug.Log($"Toggle changed. Old value: {evt.previousValue}, new value: {evt.newValue}");
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        */
     }
 }
