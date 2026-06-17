@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GravityScript : MonoBehaviour
 {
+    public bool debug = false;  //local script debug: enable/disable
     public bool gravity = true;
     public float mass;
     public LineRenderer visualGravityVector;
@@ -25,11 +26,11 @@ public class GravityScript : MonoBehaviour
         if (newForce != Vector3.zero)
         {
             gravityVectorSum += newForce;
-            Debug.Log(gameObject.name + " # New force: " +newForce.ToString() +" Sum: " +gravityVectorSum);
+            if (debug) { Debug.Log(gameObject.name + " # New force: " + newForce.ToString() + " Sum: " + gravityVectorSum); }
         }
         else 
         {
-            Debug.LogWarning(gameObject.name +" # GravityVectorSum: Zero newForce!");
+            if (debug) { Debug.LogWarning(gameObject.name + " # GravityVectorSum: Zero newForce!"); }
         }
     }
 
@@ -37,13 +38,13 @@ public class GravityScript : MonoBehaviour
     {
         if (gravityVectorSum != Vector3.zero)
         {
-            Debug.Log(gravityVectorSum.ToString()); //TODO: not working? expand
+            if (debug) { Debug.Log(gravityVectorSum.ToString()); } //TODO: not working? expand
             GetComponent<Rigidbody>().AddForce(gravityVectorSum, ForceMode.Impulse);   //add gravity force
             gravityVectorSum = Vector3.zero;    //reset force for next cycle
         }
         else
         {
-            Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!");
+            if (debug) { Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!"); }
         }
     }
 
@@ -59,7 +60,7 @@ public class GravityScript : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         if (rb == null)
         {
-            Debug.LogWarning("Planet rigidbody not found.");
+            if (debug) { Debug.LogWarning("Planet rigidbody not found."); }
         }
         else
         {
@@ -71,14 +72,14 @@ public class GravityScript : MonoBehaviour
             gMref = GameObject.Find("GameManager");
             if (gMref == null)
             {
-                Debug.LogWarning("GameManager object not found.");
+                if (debug) { Debug.LogWarning("GameManager object not found."); }
             }
             else
             {
                 myGMScript = gMref.GetComponent<GameManagerScript>();
                 if (myGMScript == null)
                 {
-                    Debug.LogWarning("GameManagerScript not found.");
+                    if (debug) { Debug.LogWarning("GameManagerScript not found."); }
                 }
                 else
                 {
