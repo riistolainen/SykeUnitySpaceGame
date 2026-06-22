@@ -1,20 +1,21 @@
 //ATTACHED TO UIDOCUMENT -obj
 
+using System.Linq;
 using System.Threading.Tasks.Sources;
 using Unity.Properties;
 using Unity.VisualScripting;
-using UnityEditor.Toolbars;
-using UnityEditor.UIElements;
+//using UnityEditor.Toolbars;
+//using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
+
+[RequireComponent(typeof(UIDocument))]  //Not critical, but recommended to check the object has the UIDocument as a component
 
 public class AdminUIScript : MonoBehaviour
 {
 
     CamerasScriptable camerasScriptable;    //ref to our scriptableobject
-
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,15 +31,21 @@ public class AdminUIScript : MonoBehaviour
         var root = uiDocument.rootVisualElement;
         RadioButtonGroup rbg = root.Q<RadioButtonGroup>("CameraSwitcher"); //'#' required or not in selector specification?
     //TODO: rbg does not get the active reference - returns with 0 children while 3 are present in game
-        Debug.Log("LOOKING: " + rbg + ", " + rbg.name + ", " + rbg.childCount + ", " + rbg.GetBindingInfos() + ", " + rbg.choices);
-        Debug.Log("LOOKING: " + rbg[0] + ", " + rbg[0].name + ", " + rbg[0].childCount + ", " + rbg[0].GetBindingInfos() + ", ");
+        Debug.Log("LOOKING-base: " + rbg + ", " + rbg.name + ", " + rbg.childCount + ", " + rbg.GetBindingInfos() + ", " + rbg.choices + ", " + rbg.value +", " + rbg.Children().Count());
+        rbg.RegisterValueChangedCallback(RBGToggleEvent);
 
+        //only is the string
+        //Debug.Log("LOOKING-[0]: " + rbg.choices.ElementAt(0) + ", " + rbg.choices.ElementAt(0).name + ", " + rbg.choices.ElementAt(0).childCount() + ", " + rbg.choices.ElementAt(0).GetBindingInfos() + ", ");
+        //outofrange
+        //Debug.Log("LOOKING-[0]: " + rbg[0] + ", " + rbg[0].name + ", " + rbg[0].childCount + ", " + rbg[0].GetBindingInfos() + ", ");
 
+        /*
         //Add binding between UI and scriptableObject
         rbg.ElementAt(0).dataSource = camerasScriptable.CameraFollow;
         rbg.ElementAt(1).dataSource = camerasScriptable.CameraOverhead;
         rbg.ElementAt(2).dataSource = camerasScriptable.CameraFreefly;
-
+        */
+        /*
         var binding0 = new DataBinding
         {
             dataSource = rbg,
@@ -54,13 +61,14 @@ public class AdminUIScript : MonoBehaviour
             dataSource = rbg,
             dataSourcePath = PropertyPath.FromName(rbg.ElementAt(2).name),
         };
-
+        
         rbg[0].SetBinding("camFo", binding0);
         rbg[1].SetBinding("camOv", binding1);
         rbg[2].SetBinding("camFr", binding2);
+        */
 
-        rbg.RegisterValueChangedCallback(RBGToggleEvent);
     }
+
 
 
     /*
@@ -77,6 +85,28 @@ public class AdminUIScript : MonoBehaviour
     void RBGToggleEvent(ChangeEvent<int> evt)
     {
         Debug.Log("RBGToggleEvent: " + evt.target +" " +evt.previousValue + " " + evt.newValue + " " + evt.ToString());
+        if (evt.newValue == 0)
+        {
+            camerasScriptable.CameraFollow.Priority = 0;
+            camerasScriptable.CameraOverhead.Priority = 1;
+            camerasScriptable.CameraFreefly.Priority = 1;
+        }
+        else if (evt.newValue == 1)
+        {
+            camerasScriptable.CameraFollow.Priority = 1;
+            camerasScriptable.CameraOverhead.Priority = 0;
+            camerasScriptable.CameraFreefly.Priority = 1;
+        }
+        else if (evt.newValue == 2)
+        {
+            camerasScriptable.CameraFollow.Priority = 1;
+            camerasScriptable.CameraOverhead.Priority = 1;
+            camerasScriptable.CameraFreefly.Priority = 0;
+        }
+        else
+        {
+            Debug.LogWarning("RBGToggleEvent: WARNING! " +evt.newValue +" OOR!");
+        }
     }
 
     /*
