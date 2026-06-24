@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameManagerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         //effectiveGravity = G/(1+(distance/degradingFactor))
         G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
         degradingFactor = 1000;
@@ -59,6 +61,7 @@ public class GameManagerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         /*  START:  ### GRAVITY ### */
         if (list_gos.Count > 1) //only when two or more gravity objects
         {   //Apply gravity from each to each

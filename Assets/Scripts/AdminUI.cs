@@ -1,13 +1,13 @@
 //ATTACHED TO UIDOCUMENT -obj
 
 using System.Linq;
-using System.Threading.Tasks.Sources;
-using Unity.Properties;
-using Unity.VisualScripting;
+using UnityEditor.Rendering;
+
 //using UnityEditor.Toolbars;
 //using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]  //Not critical, but recommended to check the object has the UIDocument as a component
@@ -30,8 +30,8 @@ public class AdminUIScript : MonoBehaviour
         UIDocument uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
         RadioButtonGroup rbg = root.Q<RadioButtonGroup>("CameraSwitcher"); //'#' required or not in selector specification?
-    //TODO: rbg does not get the active reference - returns with 0 children while 3 are present in game
-        Debug.Log("LOOKING-base: " + rbg + ", " + rbg.name + ", " + rbg.childCount + ", " + rbg.GetBindingInfos() + ", " + rbg.choices + ", " + rbg.value +", " + rbg.Children().Count());
+                                                                           //TODO: rbg does not get the active reference - returns with 0 children while 3 are present in game
+        Debug.Log("LOOKING-base: " + rbg + ", " + rbg.name + ", " + rbg.childCount + ", " + rbg.GetBindingInfos() + ", " + rbg.choices + ", " + rbg.value + ", " + rbg.Children().Count());
         rbg.RegisterValueChangedCallback(RBGToggleEvent);
 
         //only is the string
@@ -81,27 +81,35 @@ public class AdminUIScript : MonoBehaviour
     rbg.ElementAt(2).RegisterCallback<ChangeEvent<Toggle>>(Freeflyevt);
 }
 */
+    private void FixedUpdate()
+    {
+        
+    }
+
+
     //TODO: React to UI change through methods and update which camera is active?
     void RBGToggleEvent(ChangeEvent<int> evt)
     {
         Debug.Log("RBGToggleEvent: " + evt.target +" " +evt.previousValue + " " + evt.newValue + " " + evt.ToString());
         if (evt.newValue == 0)
         {
-            camerasScriptable.CameraFollow.Priority = 0;
-            camerasScriptable.CameraOverhead.Priority = 1;
-            camerasScriptable.CameraFreefly.Priority = 1;
+            camerasScriptable.CameraFollow.Priority = 1;
+            camerasScriptable.CameraOverhead.Priority = 0;
+            camerasScriptable.CameraFreefly.Priority = 0;
         }
         else if (evt.newValue == 1)
         {
-            camerasScriptable.CameraFollow.Priority = 1;
-            camerasScriptable.CameraOverhead.Priority = 0;
-            camerasScriptable.CameraFreefly.Priority = 1;
+            camerasScriptable.CameraFollow.Priority = 0;
+            camerasScriptable.CameraOverhead.Priority = 1;
+            camerasScriptable.CameraFreefly.Priority = 0;
         }
         else if (evt.newValue == 2)
         {
-            camerasScriptable.CameraFollow.Priority = 1;
-            camerasScriptable.CameraOverhead.Priority = 1;
-            camerasScriptable.CameraFreefly.Priority = 0;
+            camerasScriptable.CameraFollow.Priority = 0;
+            camerasScriptable.CameraOverhead.Priority = 0;
+            camerasScriptable.CameraFreefly.Priority = 1;
+
+            /*copy previous cameras stats to continue camera navigation from last position?*/
         }
         else
         {
