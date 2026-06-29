@@ -90,31 +90,10 @@ public class AdminUIScript : MonoBehaviour
     //TODO: React to UI change through methods and update which camera is active?
     void RBGToggleEvent(ChangeEvent<int> evt)
     {
-        Debug.Log("RBGToggleEvent: " + evt.target +" " +evt.previousValue + " " + evt.newValue + " " + evt.ToString());
-        if (evt.newValue == 0)
-        {
-            camerasScriptable.CameraFollow.Priority = 1;
-            camerasScriptable.CameraOverhead.Priority = 0;
-            camerasScriptable.CameraFreefly.Priority = 0;
-        }
-        else if (evt.newValue == 1)
-        {
-            camerasScriptable.CameraFollow.Priority = 0;
-            camerasScriptable.CameraOverhead.Priority = 1;
-            camerasScriptable.CameraFreefly.Priority = 0;
-        }
-        else if (evt.newValue == 2)
-        {
-            camerasScriptable.CameraFollow.Priority = 0;
-            camerasScriptable.CameraOverhead.Priority = 0;
-            camerasScriptable.CameraFreefly.Priority = 1;
+        Debug.Log("RBGToggleEvent: " + evt.target + " " + evt.previousValue + " " + evt.newValue + " " + evt.ToString() +" Listlngt: " + camerasScriptable.AllCameras.Count +" name: " + camerasScriptable.AllCameras[evt.newValue].name);
 
-            /*copy previous cameras stats to continue camera navigation from last position?*/
-        }
-        else
-        {
-            Debug.LogWarning("RBGToggleEvent: WARNING! " +evt.newValue +" OOR!");
-        }
+        camerasScriptable.AllCameras[evt.newValue].Priority = 1;
+        camerasScriptable.AllCameras[evt.previousValue].Priority = 0;
     }
 
     /*
