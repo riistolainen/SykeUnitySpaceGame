@@ -1,13 +1,10 @@
 //ATTACHED TO UIDOCUMENT -obj
 
 using System.Linq;
-using UnityEditor.Rendering;
 
 //using UnityEditor.Toolbars;
 //using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]  //Not critical, but recommended to check the object has the UIDocument as a component

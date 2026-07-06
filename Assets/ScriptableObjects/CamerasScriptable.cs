@@ -1,11 +1,9 @@
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.Properties;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
 
 
 public class CamerasScriptable : MonoBehaviour
@@ -19,6 +17,9 @@ public class CamerasScriptable : MonoBehaviour
     public InputAction cameraZoom;
     public InputAction cameraLock;
     private bool cameraToggle = false;
+    private bool cameraZoomed = false;
+
+    private float zoom;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +29,9 @@ public class CamerasScriptable : MonoBehaviour
         //Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
         cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
+
+        zoom = 0;
+
         //TODO: freefly-camera - on click to follow the object :: cinemachinecamera.trackingtarget + cinemachinepositioncontroller
 
         //GET REF TO CAMERAS.obj
@@ -44,20 +48,30 @@ public class CamerasScriptable : MonoBehaviour
         if (!CameraCockpit) { Debug.LogError(this.name + "/" + CameraCockpit.name + ": NULL"); }
     }
 
+
     private void Update()
     {
-        /*float zoom = cameraZoom.ReadValue<float>();
-        Debug.Log("zooming: " + zoom);
+        if (cameraZoom.triggered) 
+        {
+        zoom =+ cameraZoom.ReadValue<float>();
+        Debug.Log("zooming: " + Mouse.current.scroll.ReadValue().y + ", " + zoom);
+        }
+
+        if (cameraZoom.WasPressedThisFrame())
+        {
+            cameraZoomed = true;
+            Debug.Log("cameraZoomed:true");
+        }
 
         if (cameraLock.WasPressedThisFrame())
         {
             cameraToggle = true;
-        }*/
+        }
     }
 
-    // Update is called once per frame
     private void FixedUpdate()
     {
+        //Cursor locking --->>
         if (cameraToggle && UnityEngine.Cursor.lockState != CursorLockMode.Locked) //if wish to lock and not locked already
         {
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -70,20 +84,20 @@ public class CamerasScriptable : MonoBehaviour
             cameraToggle = false;
             Debug.Log("Cursor: Confined");
         }
+        //<<--- END:Cursor locking
 
 
-        /* Zooming setup
-         if (zoom.ReadValue<float>() > 0.1f)   //TODO: Move to spaceship
-         {
-             camerasScriptable.CameraFollow.
-             camerasScriptable.CameraOverhead.
-             camerasScriptable.CameraFreefly.
-                                .CameraCockpit
-         }
-         else if (zoom.ReadValue<float>() < 0.1f)
-         { 
+        //CameraZooming --->>
+        if (cameraZoomed)
+        {
+            cameraZoomed = false;
 
-         }*/
-
+            CinemachineCamera activeCamera =GetComponentInChildren<CinemachineBrain>().ActiveVirtualCamera as CinemachineCamera;
+            if (activeCamera)
+            {//TODO fix for each different camera. Currently global coordinates movement to z - not away from current forward
+                activeCamera.transform.position = new Vector3(activeCamera.transform.localPosition.x, activeCamera.transform.localPosition.y, activeCamera.transform.localPosition.z+ zoom);
+            }
+            
+        }
     }
 }
