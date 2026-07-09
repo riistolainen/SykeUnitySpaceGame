@@ -78,11 +78,6 @@ public class AdminUIScript : MonoBehaviour
     rbg.ElementAt(2).RegisterCallback<ChangeEvent<Toggle>>(Freeflyevt);
 }
 */
-    private void FixedUpdate()
-    {
-        
-    }
-
 
     //TODO: React to UI change through methods and update which camera is active?
     void RBGToggleEvent(ChangeEvent<int> evt)
