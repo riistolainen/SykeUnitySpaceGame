@@ -20,14 +20,51 @@ public class CamerasScriptable : MonoBehaviour
     private bool cameraZoomed = false;
     private float distanceScalingFactor = 1f;
 
+    DefaultSettings defaults;
+
     [SerializeField] private float zoom = 0;
     [SerializeField] private CinemachineCamera activeCamera;
     [SerializeField] private float zoomSpeed = 10f;
     [SerializeField] private float minZoom = 1f;
     [SerializeField] private float maxZoom = 100f;
 
+    private CinemachineThirdPersonFollow thirdPerson;
+    private CinemachineOrbitalFollow orbital;
+    private CinemachineFollow standardFollow;
+
+    public struct DefaultSettings
+    {
+
+        public float DefaultDistanceCameraFollow { get; set; }
+        public float DefaultDistanceCameraOverhead { get; set; }
+        public float DefaultDistanceCameraFreefly { get; set; }
+        public float DefaultDistanceCameraCockpit { get; set; }
+
+
+        public DefaultSettings(
+            float defaultDistanceCameraFollow,
+            float defaultDistanceCameraOverhead,
+            float defaultDistanceCameraFreefly,
+            float defaultDistanceCameraCockpit)
+        {
+            this.DefaultDistanceCameraFollow = defaultDistanceCameraFollow;
+            this.DefaultDistanceCameraOverhead = defaultDistanceCameraOverhead;
+            this.DefaultDistanceCameraFreefly = defaultDistanceCameraFreefly;
+            this.DefaultDistanceCameraCockpit = defaultDistanceCameraCockpit;
+        }
+    }
+
     //TODO: Freeflycamera ability - click/select tracking targets
     //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
+
+    private void OnEnable()
+    {
+        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivated);
+    }
+    private void OnDisable()
+    {
+        CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraActivated);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,10 +72,6 @@ public class CamerasScriptable : MonoBehaviour
         //START: Initialize cameras list
         CameraFollow = gameObject.transform.Find("CinemachineCameraFollow").GetComponent<CinemachineCamera>();
         if (!CameraFollow) { Debug.LogError(this.name + "/" + CameraFollow.name + ": NULL"); }
-        else //store some default values
-        {
-            //TODO: store defaults
-        }
         CameraOverhead = gameObject.transform.Find("CinemachineCameraOverhead").GetComponent<CinemachineCamera>();
         if (!CameraOverhead) { Debug.LogError(this.name + "/" + CameraOverhead.name + ": NULL"); }
         CameraFreefly = gameObject.transform.Find("CinemachineCameraFreefly").GetComponent<CinemachineCamera>();
@@ -48,6 +81,14 @@ public class CamerasScriptable : MonoBehaviour
         AllCameras.AddRange(new List<CinemachineCamera>{ CameraFollow, CameraOverhead, CameraFreefly, CameraCockpit} ); //TODO: dynamically add cameras? Currently needs manual script editing if new camera is added in scene editor.
         //END: Initialize cameras list
 
+        //START: Store defaults
+        DefaultSettings defaults = new DefaultSettings();
+        for (int i = 0; i < AllCameras.Count; i++) {
+            if (AllCameras[i].TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { defaults.DefaultDistanceCameraFollow = thirdPerson.CameraDistance; return; }
+            if (AllCameras[i].TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { defaults.DefaultDistanceCameraFollow = orbital.Radius; return; }
+            if (AllCameras[i].TryGetComponent<CinemachineFollow>(out standardFollow)) { defaults.DefaultDistanceCameraFollow = standardFollow.FollowOffset; return; } //TODO: dynamic struct or what?
+        }
+        //END: Store defaults
 
         //START: Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
@@ -61,6 +102,22 @@ public class CamerasScriptable : MonoBehaviour
         GameObject camRef = GameObject.Find("Cameras");
         if (camRef == null) { Debug.LogError("FAILED INIT: camRef NULL"); }
         */
+    }
+
+    void OnCameraActivated(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
+    {
+        ClearCameraCache(); //TODO: need to also clear activeCamera for edge cases? If there is no incoming camera?
+
+        activeCamera = evt.IncomingCamera as CinemachineCamera;
+        if (activeCamera.TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { return; }
+        if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { return; }
+        if (activeCamera.TryGetComponent<CinemachineFollow>(out standardFollow)) { return; }
+    }
+    void ClearCameraCache()
+    {
+        thirdPerson = null;
+        orbital = null;
+        standardFollow = null;
     }
 
 
@@ -107,24 +164,23 @@ public class CamerasScriptable : MonoBehaviour
         {
             cameraZoomed = false;
 
-            //TODO: own version works - this does not? Scale zooming to be strong further apart
-            activeCamera = GetComponentInChildren<CinemachineBrain>().ActiveVirtualCamera as CinemachineCamera;
             Debug.Log("zooming " + activeCamera.name + ": " + zoom);
             // --- METHOD 1: Distance-based Positioning Components ---
             // Check for Third Person Follow
-            if (activeCamera.TryGetComponent<CinemachineThirdPersonFollow>(out var thirdPerson))
+            if (thirdPerson)
             {
+                distanceScalingFactor = thirdPerson.CameraDistance / defaults.CameraDistance;
                 thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, Mathf.Clamp(thirdPerson.CameraDistance - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
             // Check for Modern Orbital Follow (New FreeLook Rig mechanism)
-            else if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out var orbital))
+            else if (orbital)
             {
                 orbital.Radius = Mathf.Lerp(orbital.Radius, Mathf.Clamp(orbital.Radius - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
             // Check for Cinemachine Follow (Standard Transposer style position control)
-            else if (activeCamera.TryGetComponent<CinemachineFollow>(out var standardFollow))
+            else if (standardFollow)
             {
                 Vector3 offset = standardFollow.FollowOffset;
                 // Zoom by scaling the Z offset (or adjust magnitude evenly)
@@ -147,39 +203,6 @@ public class CamerasScriptable : MonoBehaviour
                 }
                 activeCamera.Lens = lens; // Reassign struct back to property
             }
-
-            /* less universal first try
-            positionComposer = activeCamera.GetComponent<CinemachinePositionComposer>();
-            thirdPersonFollow = activeCamera.GetComponent<CinemachineThirdPersonFollow>();
-
-            // Set initial distance based on which component is active
-            if (positionComposer != null) targetDistance = positionComposer.CameraDistance;
-            if (thirdPersonFollow != null) targetDistance = thirdPersonFollow.CameraDistance;
-
-            targetDistance -= zoom * zoomSpeed;
-            targetDistance = Mathf.Clamp(targetDistance, minZoom, maxZoom);
-
-            // Lerp to the target distance for smooth zooming
-            if (positionComposer != null)
-            {
-                positionComposer.CameraDistance = Mathf.Lerp(positionComposer.CameraDistance, targetDistance, Time.deltaTime * 5f);
-            }
-            if (thirdPersonFollow != null)
-            {
-                thirdPersonFollow.CameraDistance = Mathf.Lerp(thirdPersonFollow.CameraDistance, targetDistance, Time.deltaTime * 5f);
-            }
-            */
-            /*
-            CinemachineCamera activeCamera = GetComponentInChildren<CinemachineBrain>().ActiveVirtualCamera as CinemachineCamera;
-            if (activeCamera)
-            {//TODO fix for each different camera. Currently global coordinates movement to z - not away from current forward
-
-                activeCamera.transform.position = activeCamera.transform.forward * (zoom * (-10));//new Vector3(activeCamera.transform.localPosition.x, activeCamera.transform.localPosition.y, activeCamera.transform.localPosition.z+ zoom);
-                
-                
-                //activeCamera.Lens.FieldOfView += (zoom*10); //Yuck - bad zoom even though a _lot_ of people recommend this
-            }*/
-
         }
     }
 }
