@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.Properties;
@@ -8,7 +10,7 @@ using UnityEngine.Windows;
 
 public class CamerasScriptable : MonoBehaviour
 {
-    [CreateProperty] public List<CinemachineCamera> AllCameras;
+    [CreateProperty] public CinemachineCamera[] AllCameras;
     [CreateProperty] public CinemachineCamera CameraFollow;
     [CreateProperty] public CinemachineCamera CameraOverhead;
     [CreateProperty] public CinemachineCamera CameraFreefly;
@@ -32,29 +34,36 @@ public class CamerasScriptable : MonoBehaviour
     private CinemachineOrbitalFollow orbital;
     private CinemachineFollow standardFollow;
 
+    public class DefaultDistanceCameraSettings
+    {
+        public float[] DefaultDistanceAllCamerasFloat;
+        public Vector2[] DefaultDistanceAllCamerasVector2;  //needs separate arrays for different type of values
+    }
+
     public struct DefaultSettings
     {
-
-        public float DefaultDistanceCameraFollow { get; set; }
-        public float DefaultDistanceCameraOverhead { get; set; }
-        public float DefaultDistanceCameraFreefly { get; set; }
-        public float DefaultDistanceCameraCockpit { get; set; }
-
-
-        public DefaultSettings(
-            float defaultDistanceCameraFollow,
-            float defaultDistanceCameraOverhead,
-            float defaultDistanceCameraFreefly,
-            float defaultDistanceCameraCockpit)
+        public DefaultDistanceCameraSettings DefaultDistanceAllCameras { get; set; }    //TODO: Pull Vector2 apart before sending over to other objects - does not play well with IConvertible
+        
+        public DefaultSettings(params IConvertible[] parameters) : this()
         {
-            this.DefaultDistanceCameraFollow = defaultDistanceCameraFollow;
-            this.DefaultDistanceCameraOverhead = defaultDistanceCameraOverhead;
-            this.DefaultDistanceCameraFreefly = defaultDistanceCameraFreefly;
-            this.DefaultDistanceCameraCockpit = defaultDistanceCameraCockpit;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].GetTypeCode() == TypeCode.Single)
+                {
+                    this.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = Convert.ToSingle(parameters[i]);
+                    return;
+                }
+                if(parameters[i].GetTypeCode() == TypeCode.Object)  //Vector2 most likely
+                {
+                    this.DefaultDistanceAllCameras.DefaultDistanceAllCamerasVector2[i] = (Vector2)parameters[i];
+
+                }
+                }
+            }
         }
     }
 
-    //TODO: Freeflycamera ability - click/select tracking targets
+    //TODO: FEATURE >> Freeflycamera ability - click/select tracking targets
     //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
 
     private void OnEnable()
@@ -70,7 +79,8 @@ public class CamerasScriptable : MonoBehaviour
     void Start()
     {
         //START: Initialize cameras list
-        CameraFollow = gameObject.transform.Find("CinemachineCameraFollow").GetComponent<CinemachineCamera>();
+        AllCameras = FindObjectsByType<CinemachineCamera>(); //TODO: dynamically add cameras? Currently needs manual script editing if new camera is added in scene editor.
+        /*CameraFollow = gameObject.transform.Find("CinemachineCameraFollow").GetComponent<CinemachineCamera>();
         if (!CameraFollow) { Debug.LogError(this.name + "/" + CameraFollow.name + ": NULL"); }
         CameraOverhead = gameObject.transform.Find("CinemachineCameraOverhead").GetComponent<CinemachineCamera>();
         if (!CameraOverhead) { Debug.LogError(this.name + "/" + CameraOverhead.name + ": NULL"); }
@@ -78,15 +88,18 @@ public class CamerasScriptable : MonoBehaviour
         if (!CameraFreefly) { Debug.LogError(this.name + "/" + CameraFreefly.name + ": NULL"); }
         CameraCockpit = gameObject.transform.Find("CinemachineCameraCockpit").GetComponent<CinemachineCamera>();
         if (!CameraCockpit) { Debug.LogError(this.name + "/" + CameraCockpit.name + ": NULL"); }
-        AllCameras.AddRange(new List<CinemachineCamera>{ CameraFollow, CameraOverhead, CameraFreefly, CameraCockpit} ); //TODO: dynamically add cameras? Currently needs manual script editing if new camera is added in scene editor.
+        */
         //END: Initialize cameras list
 
         //START: Store defaults
         DefaultSettings defaults = new DefaultSettings();
-        for (int i = 0; i < AllCameras.Count; i++) {
-            if (AllCameras[i].TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { defaults.DefaultDistanceCameraFollow = thirdPerson.CameraDistance; return; }
-            if (AllCameras[i].TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { defaults.DefaultDistanceCameraFollow = orbital.Radius; return; }
-            if (AllCameras[i].TryGetComponent<CinemachineFollow>(out standardFollow)) { defaults.DefaultDistanceCameraFollow = standardFollow.FollowOffset; return; } //TODO: dynamic struct or what?
+        for (int i = 0; i < AllCameras.Length; i++) {
+            if (AllCameras[i].TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { defaults.DefaultDistanceAllCameras[i] = thirdPerson.CameraDistance; return; }
+            if (AllCameras[i].TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { defaults.DefaultDistanceAllCameras[i] = orbital.Radius; return; }
+            if (AllCameras[i].TryGetComponent<CinemachineFollow>(out standardFollow)) {
+                defaults.DefaultDistanceAllCameras[i] = -1f;
+                defaults.custom[i] = standardFollow.FollowOffset;
+                return;
         }
         //END: Store defaults
 
@@ -166,10 +179,11 @@ public class CamerasScriptable : MonoBehaviour
 
             Debug.Log("zooming " + activeCamera.name + ": " + zoom);
             // --- METHOD 1: Distance-based Positioning Components ---
+            // Non-active cameras will be nulled by cache clearing when switching cameras
             // Check for Third Person Follow
             if (thirdPerson)
             {
-                distanceScalingFactor = thirdPerson.CameraDistance / defaults.CameraDistance;
+                distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceCameraFollow;
                 thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, Mathf.Clamp(thirdPerson.CameraDistance - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
