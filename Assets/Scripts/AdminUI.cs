@@ -20,8 +20,7 @@ public class AdminUIScript : MonoBehaviour
         //GET REF TO CAMERAS.obj
         GameObject camRef = GameObject.Find("Cameras");
         if (camRef == null) { Debug.LogError("FAILED INIT: camRef NULL"); }
-        camerasScriptable = camRef.GetComponent<CamerasScriptable>();
-        if (camerasScriptable == null) { Debug.LogError("FAILED INIT: camerasScriptable NULL"); }
+        if (!camRef.TryGetComponent<CamerasScriptable>(out camerasScriptable)) { Debug.LogError("FAILED INIT: camerasScriptable NULL"); }
 
         //GET REF TO UI-element
         UIDocument uiDocument = GetComponent<UIDocument>();
@@ -82,7 +81,7 @@ public class AdminUIScript : MonoBehaviour
     //TODO: React to UI change through methods and update which camera is active?
     void RBGToggleEvent(ChangeEvent<int> evt)
     {
-        Debug.Log("RBGToggleEvent: " + evt.target + " " + evt.previousValue + " " + evt.newValue + " " + evt.ToString() +" Listlngt: " + camerasScriptable.AllCameras.Count +" name: " + camerasScriptable.AllCameras[evt.newValue].name);
+        Debug.Log("RBGToggleEvent: " + evt.target + " " + evt.previousValue + " " + evt.newValue + " " + evt.ToString() +" Listlnght: " + camerasScriptable.AllCameras.Count() +" name: " + camerasScriptable.AllCameras[evt.newValue].name);
 
         camerasScriptable.AllCameras[evt.newValue].Priority = 1;
         camerasScriptable.AllCameras[evt.previousValue].Priority = 0;

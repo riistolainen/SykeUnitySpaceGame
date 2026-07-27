@@ -215,19 +215,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 600
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.000011920929
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.y
@@ -725,7 +725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8807429635762649618, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8807429635762649618, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: ShowCameraFrustum
@@ -797,6 +797,10 @@ PrefabInstance:
     - target: {fileID: 1804291341847875086, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraFollow
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804291341847875086, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Target.LookAtTarget
@@ -1015,19 +1019,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 600
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.000011920929
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1052,6 +1056,10 @@ PrefabInstance:
     - target: {fileID: 6258788479204932224, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraFreefly
+      objectReference: {fileID: 0}
+    - target: {fileID: 6258788479204932224, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

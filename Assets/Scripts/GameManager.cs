@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GameManagerScript : MonoBehaviour
 {
+    public bool debug = false;  //local script debug: enable/disable
+
     public GameObject Planet;
     public GameObject Player;
     public List<GameObject> list_gos; //list of gravity objects that are used for stellar physics calc
@@ -32,7 +34,7 @@ public class GameManagerScript : MonoBehaviour
         // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
 
         //list_gos.AddRange(GameObject.FindGameObjectsWithTag("GravityBody")); //prepopulate with scene
-        Debug.Log("Initial gravity objects: " + list_gos.Count);
+        if (debug) { Debug.Log("Initial gravity objects: " + list_gos.Count); }
     }
 
     public bool AddMe(GameObject goesToList)    //track gravity objects
@@ -40,7 +42,7 @@ public class GameManagerScript : MonoBehaviour
         if (!list_gos.Contains(goesToList))
         {
             list_gos.Add(goesToList);
-            Debug.Log("ListedGO: " + goesToList.name);
+            if (debug){ Debug.Log("ListedGO: " + goesToList.name); }
             return true;
         }
         return false;
@@ -82,8 +84,11 @@ public class GameManagerScript : MonoBehaviour
                         float effG = Time.fixedDeltaTime*(G+toGO.GetComponent<Rigidbody>().mass*fromGO.GetComponent<Rigidbody>().mass)/(1+(dist/degradingFactor)); //(500 away gravity is 1/2 G) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
                         fromGO.GetComponent<GravityScript>().GravityVectorSum(Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)));    //sum forcevectors before applying
 
-                        Debug.Log("#Gravity#    " + toGO.name + " -> " + fromGO.name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
-                        Debug.Log("NewForce: " +Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)) +" NormDir: " + dir.normalized + " AmountMult: " + new Vector3(effG, effG, effG));
+                        if (debug)
+                        {
+                            Debug.Log("#Gravity#    " + toGO.name + " -> " + fromGO.name + " Direction:  " + dir + ", Distance:    " + dist + ", effG:   " + effG);
+                            Debug.Log("NewForce: " + Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)) + " NormDir: " + dir.normalized + " AmountMult: " + new Vector3(effG, effG, effG));
+                        }
                     }
                 }
                 //one index done over jindex
