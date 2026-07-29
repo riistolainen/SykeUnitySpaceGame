@@ -223,11 +223,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.y
@@ -514,10 +514,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamerasScriptable
   AllCameras: []
-  CameraFollow: {fileID: 4978369345481681564}
-  CameraOverhead: {fileID: 4978369346131922447}
-  CameraFreefly: {fileID: 4978369346604665429}
   CameraCockpit: {fileID: 4978369345909215724}
+  CameraFollow: {fileID: 4978369345481681564}
+  CameraFreefly: {fileID: 4978369346604665429}
+  CameraOverhead: {fileID: 4978369346131922447}
   cameraZoom:
     m_Name: Camera Zoom
     m_Type: 0
@@ -536,11 +536,6 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  zoom: 0
-  activeCamera: {fileID: 0}
-  zoomSpeed: 10
-  minZoom: 2
-  maxZoom: 15
 --- !u!1001 &1649408367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -803,6 +798,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: Priority.Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Target.LookAtTarget
       value: 
       objectReference: {fileID: 930346588}
@@ -866,6 +865,14 @@ PrefabInstance:
     - target: {fileID: 5043653984174557499, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraOverhead
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794694371759580420, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
+      propertyPath: Priority.Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8794694371759580420, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
+      propertyPath: Priority.m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8794694371759580420, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: Target.LookAtTarget
@@ -1027,11 +1034,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.y

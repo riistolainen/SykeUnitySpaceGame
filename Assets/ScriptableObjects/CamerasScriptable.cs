@@ -1,11 +1,15 @@
+using JetBrains.Annotations;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.Cinemachine;
 using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
 
@@ -14,33 +18,32 @@ public class CamerasScriptable : MonoBehaviour
     //TODO: implement local script debugging level
     //public bool debug = false;  //local script debug: enable/disable
 
-    [CreateProperty] public CinemachineCamera[] AllCameras;
+    public CinemachineCamera[] AllCameras;
     private int cameraIndex = -1; //default -1: none added
-    [CreateProperty] public CinemachineCamera CameraFollow;
-    [CreateProperty] public CinemachineCamera CameraOverhead;
-    [CreateProperty] public CinemachineCamera CameraFreefly;
-    [CreateProperty] public CinemachineCamera CameraCockpit;
+    public CinemachineCamera CameraCockpit;
+    public CinemachineCamera CameraFollow;
+    public CinemachineCamera CameraFreefly;
+    public CinemachineCamera CameraOverhead;
 
     public InputAction cameraZoom;
+    private bool cameraZoomed = false;
     public InputAction cameraLock;
     private bool cameraToggle = false;
-    private bool cameraZoomed = false;
     private float distanceScalingFactor = 1f;
 
-    DefaultSettings defaults;
-
-    [SerializeField] private float zoom = 0;
-    [SerializeField] private CinemachineCamera activeCamera;
-    [SerializeField] private float zoomSpeed = 10f;
-    [SerializeField] private float minZoom = 1f;
-    [SerializeField] private float maxZoom = 100f;
+    private float zoom = 0;
+    private CinemachineCamera activeCamera;
+    private float zoomSpeed = 10f;
+    private float minZoom = 1f;
+    private float maxZoom = 100f;
 
     private CinemachineThirdPersonFollow thirdPerson;
     private CinemachineOrbitalFollow orbital;
     private CinemachineFollow standardFollow;
 
+    public DefaultSettings defaults;
 
-    public class DefaultDistanceCameraSettings
+    public struct DefaultDistanceCameraSettings
     {
         public float[] DefaultDistanceAllCamerasFloat;
         public Vector2[] DefaultDistanceAllCamerasVector2;  //needs separate arrays for different type of values
@@ -48,18 +51,34 @@ public class CamerasScriptable : MonoBehaviour
 
     public struct DefaultSettings
     {
-        public DefaultDistanceCameraSettings DefaultDistanceAllCameras { get; set; }    //TODO: Pull Vector2 apart before sending over to other objects - does not play well with IConvertible
+        public DefaultDistanceCameraSettings DefaultDistanceCameraSettings { get; set; }    //TODO: Pull Vector2 apart before sending over to other objects - does not play well with IConvertible
 
-        public DefaultSettings(params object[] parameters) : this()
+        public DefaultSettings(CinemachineCamera[] cameraList) : this()
         {
-            for (int i = 0; i < parameters.Length; i++)
+            for (int i = 0; i < cameraList.Length; i++)
             {
-                if (parameters[i] is IConvertible convertible)
+                if (cameraList[i].TryGetComponent<CinemachineThirdPersonFollow>(out CinemachineThirdPersonFollow thirdPerson)) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = thirdPerson.CameraDistance; }
+                else if (cameraList[i].TryGetComponent<CinemachineOrbitalFollow>(out CinemachineOrbitalFollow orbital)) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = orbital.Radius; }
+                else if (cameraList[i].TryGetComponent<CinemachineFollow>(out CinemachineFollow standardFollow))   //Vector2 so let's store the actual direction also; magnitude for simple scaling conversion
+                {
+                    this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = standardFollow.FollowOffset.magnitude;
+                    this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasVector2[i] = standardFollow.FollowOffset;
+                }
+                else
+                {
+                    LensSettings lens = cameraList[i].Lens;
+                    if (lens.Orthographic){this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.OrthographicSize;}
+                    else{this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.FieldOfView;}
+                }
+            }
+            /* OLD struct creator -->
+            for (int i = 0; i < cameraList.Length; i++)
+            {
+                if (cameraList[i] is IConvertible convertible)
                 {
                     if (convertible.GetTypeCode() == TypeCode.Single)
                     {
-                        this.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = Convert.ToSingle(convertible);
-                        return;
+                        this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = Convert.ToSingle(convertible);
                     }
                     else
                     {
@@ -70,9 +89,8 @@ public class CamerasScriptable : MonoBehaviour
                 {
                     if (obj is Vector2 vector2)
                     {
-                        this.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = vector2.magnitude;
-                        this.DefaultDistanceAllCameras.DefaultDistanceAllCamerasVector2[i] = vector2;
-                        return;
+                        this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = vector2.magnitude;
+                        this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasVector2[i] = vector2;
                     }
                     else
                     {
@@ -83,39 +101,48 @@ public class CamerasScriptable : MonoBehaviour
                 {
                     Debug.LogWarning("DefaultSettings INIT: parameters["+i+"] type ==" +parameters[i].GetType() + "; Needs to be IConvertible OR object!");
                 }
-            }
+            }*/
         }
     }
 
-    //TODO: FEATURE >> Freeflycamera ability - click/select tracking targets
-    //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
+        //TODO: FEATURE >> Freeflycamera ability - click/select tracking targets
+        //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
 
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
     {
-        AllCameras = FindObjectsByType<CinemachineCamera>();
-        Debug.Log("Added " +AllCameras.Length +" cameras.");
+        CameraOverhead.Priority = 1;
+        //TODO: Causes controls to bug out? WTFH?!
+        //AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
+        Debug.Log("Added " + AllCameras.Length + " cameras.");
+        defaults = new DefaultSettings(AllCameras);
 
-        defaults = new DefaultSettings();
-        for (int i = 0; i < AllCameras.Length; i++)
-        {
-            if (AllCameras[i].TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = thirdPerson.CameraDistance; return; }
-            if (AllCameras[i].TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = orbital.Radius; return; }
-            if (AllCameras[i].TryGetComponent<CinemachineFollow>(out standardFollow))
-            {
-                defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[i] = standardFollow.FollowOffset.magnitude;
-                defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasVector2[i] = standardFollow.FollowOffset;
-                return;
-            }
-        }
         //END: Store defaults
 
         //START: Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
         cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
         //END: Controls
+
+
+        /*
+        //DEBUG-CONTROLS
+        InputActionTrace trace = new InputActionTrace();
+        trace.SubscribeTo(cameraZoom);
+
+        // Record a single triggering of an action.
+        cameraZoom.performed += ctx =>
+        {
+            if (ctx.ReadValue<float>() > 0.5f)
+                trace.RecordAction(ctx);
+        };
+        // Output trace to console.
+        Debug.Log(string.Join(",\n", trace));
+
+        //END: DEBUG-CONTROLS
+        */
 
         //TODO: freefly-camera - on click to follow the object :: cinemachinecamera.trackingtarget + cinemachinepositioncontroller
     }
@@ -142,10 +169,10 @@ public class CamerasScriptable : MonoBehaviour
 
     private void Update()
     {
-        if (cameraZoom.triggered)
+        /*if (cameraZoom.triggered)
         {
             zoom = -cameraZoom.ReadValue<float>();
-        }
+        }*/
 
         if (cameraZoom.WasPressedThisFrame())
         {
@@ -156,6 +183,7 @@ public class CamerasScriptable : MonoBehaviour
         if (cameraLock.WasPressedThisFrame())
         {
             cameraToggle = true;
+            Debug.Log("cameraLock:true");
         }
     }
 
@@ -188,14 +216,14 @@ public class CamerasScriptable : MonoBehaviour
             // Check for Third Person Follow
             if (thirdPerson)
             {
-                distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, Mathf.Clamp(thirdPerson.CameraDistance - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
             // Check for Modern Orbital Follow (New FreeLook Rig mechanism)
             else if (orbital)
             {
-                distanceScalingFactor = orbital.Radius / defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = orbital.Radius / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 orbital.Radius = Mathf.Lerp(orbital.Radius, Mathf.Clamp(orbital.Radius - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
@@ -203,7 +231,7 @@ public class CamerasScriptable : MonoBehaviour
             else if (standardFollow)
             {
                 Vector3 offset = standardFollow.FollowOffset;
-                distanceScalingFactor = offset.magnitude / defaults.DefaultDistanceAllCameras.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = offset.magnitude / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 //TODO: equal magnitude adjustment of the vector instead of just using the z would maintain angle of camera to target
                 // Zoom by scaling the Z offset (or adjust magnitude evenly)
                 offset.z = Mathf.Lerp(offset.z, Mathf.Clamp(offset.z + (zoom * zoomSpeed * distanceScalingFactor), -maxZoom, -minZoom), Time.deltaTime * 5f);
