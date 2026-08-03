@@ -16,7 +16,11 @@ using UnityEngine.Windows;
 public class CamerasScriptable : MonoBehaviour
 {
     //TODO: implement local script debugging level
-    //public bool debug = false;  //local script debug: enable/disable
+
+    public Camera mainCamera;
+    public CinemachineBrain brain;
+    public ICinemachineCamera iCamera;
+    public CinemachineBrainEvents brainEvents;
 
     public CinemachineCamera[] AllCameras;
     private int cameraIndex = -1; //default -1: none added
@@ -47,14 +51,22 @@ public class CamerasScriptable : MonoBehaviour
     {
         public float[] DefaultDistanceAllCamerasFloat;
         public Vector2[] DefaultDistanceAllCamerasVector2;  //needs separate arrays for different type of values
+
+        public DefaultDistanceCameraSettings(int numberOfCameras) : this()
+        {
+            this.DefaultDistanceAllCamerasFloat = new float[numberOfCameras];
+            this.DefaultDistanceAllCamerasVector2 = new Vector2[numberOfCameras];
+        }
     }
 
     public struct DefaultSettings
     {
-        public DefaultDistanceCameraSettings DefaultDistanceCameraSettings { get; set; }    //TODO: Pull Vector2 apart before sending over to other objects - does not play well with IConvertible
+        public DefaultDistanceCameraSettings DefaultDistanceCameraSettings { get; set; }
 
         public DefaultSettings(CinemachineCamera[] cameraList) : this()
         {
+            DefaultDistanceCameraSettings = new DefaultDistanceCameraSettings(cameraList.Length);   //arrays need to be defined before use and lists are not performant
+
             for (int i = 0; i < cameraList.Length; i++)
             {
                 if (cameraList[i].TryGetComponent<CinemachineThirdPersonFollow>(out CinemachineThirdPersonFollow thirdPerson)) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = thirdPerson.CameraDistance; }
@@ -67,8 +79,8 @@ public class CamerasScriptable : MonoBehaviour
                 else
                 {
                     LensSettings lens = cameraList[i].Lens;
-                    if (lens.Orthographic){this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.OrthographicSize;}
-                    else{this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.FieldOfView;}
+                    if (lens.Orthographic) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.OrthographicSize; }
+                    else { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = lens.FieldOfView; }
                 }
             }
             /* OLD struct creator -->
@@ -105,17 +117,29 @@ public class CamerasScriptable : MonoBehaviour
         }
     }
 
-        //TODO: FEATURE >> Freeflycamera ability - click/select tracking targets
-        //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
+    //TODO: FEATURE >> Freeflycamera ability - click/select tracking targets
+    //TODO: Freeflycamera movement controls / dummy gameobject as default tracking target?
 
-
-
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+    /*
+    private void OnEnable()
     {
-        CameraOverhead.Priority = 1;
+        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
+    }
+    private void OnDisable()
+    {
+        CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraActivation);
+    }
+    */
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
+
+        activeCamera = CameraOverhead;
+        //CameraOverhead.Priority = 1;
         //TODO: Causes controls to bug out? WTFH?!
-        //AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
+        AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
         Debug.Log("Added " + AllCameras.Length + " cameras.");
         defaults = new DefaultSettings(AllCameras);
 
@@ -124,6 +148,7 @@ public class CamerasScriptable : MonoBehaviour
         //START: Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
         cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
+        //TODO: only allow manual camera control when cursor is locked, if unlocked - assumed that user wants to interact with UI
         //END: Controls
 
 
@@ -147,14 +172,14 @@ public class CamerasScriptable : MonoBehaviour
         //TODO: freefly-camera - on click to follow the object :: cinemachinecamera.trackingtarget + cinemachinepositioncontroller
     }
 
-    void OnCameraActivated(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
+    void OnCameraActivation(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
     {
-        ClearCameraCache(); //TODO: need to also clear activeCamera for edge cases? If there is no incoming camera?
-
+        Debug.Log("EVENT: OnCameraActivated: Brain.ActiveCamera.Name: " + evt.OutgoingCamera.Name + ", Camera: " + evt.IncomingCamera.Name);
+        ClearCameraCache();
         activeCamera = evt.IncomingCamera as CinemachineCamera;
 
         cameraIndex = Array.FindIndex(AllCameras, 0, x => x.name == activeCamera.name);
-        
+
         if (activeCamera.TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { return; }
         if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { return; }
         if (activeCamera.TryGetComponent<CinemachineFollow>(out standardFollow)) { return; }
@@ -169,13 +194,9 @@ public class CamerasScriptable : MonoBehaviour
 
     private void Update()
     {
-        /*if (cameraZoom.triggered)
-        {
-            zoom = -cameraZoom.ReadValue<float>();
-        }*/
-
         if (cameraZoom.WasPressedThisFrame())
         {
+            zoom = -cameraZoom.ReadValue<float>();
             cameraZoomed = true;
             Debug.Log("cameraZoomed:true");
         }
@@ -206,11 +227,10 @@ public class CamerasScriptable : MonoBehaviour
 
 
         //CameraZooming --->>
-        //TODO: move getcomponents to start so they are not ran everytime
         if (cameraZoomed)
         {
             cameraZoomed = false;
-            Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name +": " + zoom);
+            Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
             // --- METHOD 1: Distance-based Positioning Components ---
             // Non-active cameras will be nulled by cache clearing when switching cameras
             // Check for Third Person Follow

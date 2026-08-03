@@ -13,7 +13,7 @@ public class SpaceShipScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        thrust = InputSystem.actions.FindAction("MainThruster");    //TODO: move to spaceship
+        thrust = InputSystem.actions.FindAction("MainThruster");
 
         if (gravity)
         {
@@ -28,7 +28,7 @@ public class SpaceShipScript : MonoBehaviour
 
     private void Update()   //TODO: deltatime multiplier to thrust. Count time thrust is pressed from enable to disable on button raised after it isPressed
     {
-        if (thrust.IsPressed()) //TODO: move to spaceship
+        if (thrust.IsPressed())
         {
             thrustActive = true;
         }
@@ -36,7 +36,7 @@ public class SpaceShipScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (thrustActive)   //TODO: Move to spaceship
+        if (thrustActive)
         {
             gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * thrusterPower);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
