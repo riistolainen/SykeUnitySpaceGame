@@ -173,6 +173,8 @@ public class CamerasScriptable : MonoBehaviour
     void OnCameraActivation(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
     {
         Debug.Log("EVENT: OnCameraActivated: Brain.ActiveCamera.Name: " + evt.OutgoingCamera.Name + ", Camera: " + evt.IncomingCamera.Name);
+        
+        //TODO: more efficient to store the components when cameras are added so we do not have to continuously TryGetComponent, when switching camera
         ClearCameraCache();
         activeCamera = evt.IncomingCamera as CinemachineCamera;
 
@@ -182,7 +184,7 @@ public class CamerasScriptable : MonoBehaviour
         if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { return; }
         if (activeCamera.TryGetComponent<CinemachineFollow>(out standardFollow)) { return; }
     }
-    void ClearCameraCache()
+    void ClearCameraCache() //maybe not needed
     {
         thirdPerson = null;
         orbital = null;
@@ -193,8 +195,7 @@ public class CamerasScriptable : MonoBehaviour
     {
         for (int i = 0; i < AllCameras.Length; i++)
         {
-            CinemachineInputAxisController handle;
-            if (AllCameras[i].TryGetComponent<CinemachineInputAxisController>(out handle))
+            if (AllCameras[i].TryGetComponent<CinemachineInputAxisController>(out CinemachineInputAxisController handle))
             {
                 if (handle.enabled)//Manual camera: ON
                 {

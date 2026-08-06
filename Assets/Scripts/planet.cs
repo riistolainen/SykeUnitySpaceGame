@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlanetScript : MonoBehaviour
 {
+    public bool gravity = true;
+
     public bool rotation = false;
     public float rotation_spd = 5f;
     public float rotation_angle = 2.3f;
@@ -11,7 +13,10 @@ public class PlanetScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameObject.AddComponent<GravityScript>();   //could not add in editor
+        if (gravity)
+        {
+            gameObject.AddComponent<GravityScript>();   //could not add in editor
+        }
         if(initSpeed!=Vector3.zero)
         {
             gameObject.GetComponent<Rigidbody>().linearVelocity = initSpeed;
