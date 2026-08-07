@@ -191,7 +191,7 @@ public class CamerasScriptable : MonoBehaviour
         standardFollow = null;
     }
 
-    void ToggleCIAC()
+    void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor
     {
         for (int i = 0; i < AllCameras.Length; i++)
         {
