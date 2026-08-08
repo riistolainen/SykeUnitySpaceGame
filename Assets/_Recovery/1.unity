@@ -872,11 +872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3421831820963811198, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3421831820963811198, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
-      propertyPath: IgnoreTimeScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5043653984174557499, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_Name
@@ -1114,15 +1110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3738526021573380334, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3738526021573380334, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
-      propertyPath: IgnoreTimeScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3738526021573380334, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
-      propertyPath: SuppressInputWhileBlending
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6258788479204932224, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_Name
@@ -1197,18 +1185,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: GravityBody
       objectReference: {fileID: 0}
-    - target: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8381603197634147781, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8381603197634147781, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 92f845725428c954b878da352f657fe5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
