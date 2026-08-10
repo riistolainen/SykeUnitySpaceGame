@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class UtilityLineDraw : MonoBehaviour
 {
+    //TODO: get/set enable/disable to eventhandling?
+    public bool enableAccelerationVector = true;
+    public LineRenderer visualAccelerationVector;
+    
+    public bool enableGravityVector = true;
     public LineRenderer visualGravityVector;
+
     private Gradient gradient = new Gradient();
     private GradientColorKey[] lowGradient = new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.yellow, 1.0f) };
     private GradientColorKey[] medGradient = new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.yellow, 0.5f), new GradientColorKey(Color.orange, 1.0f) };
     private GradientColorKey[] highGradient = new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.yellow, 0.5f), new GradientColorKey(Color.orange, 0.75f), new GradientColorKey(Color.red, 1.0f) };
     private GradientAlphaKey[] alphaGradient = new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) };
+    
     public enum gravityScale {
         low = 10,
         med = 100,
@@ -46,16 +53,42 @@ public class UtilityLineDraw : MonoBehaviour
 
     public void DrawForceVector(Vector3 toDraw) //TODO: Common heritage to all gravitybodies?
     {
-        visualGravityVector.colorGradient = SetColorGradient(toDraw.magnitude);
-        visualGravityVector.SetPosition(0, Vector3.zero); //update start position to object
-        visualGravityVector.SetPosition(1, toDraw.normalized * Mathf.Clamp(toDraw.magnitude, 0, 25));   //TODO: trying to limit the size of drawn gravitylines, but unable to on the planet for some reason
+        if (enableGravityVector)
+        {
+            visualGravityVector.colorGradient = SetColorGradient(toDraw.magnitude);
+            visualGravityVector.SetPosition(0, Vector3.zero); //update start position to object
+            visualGravityVector.SetPosition(1, toDraw.normalized * Mathf.Clamp(toDraw.magnitude, 0, 25));   //TODO: trying to limit the size of drawn gravitylines, but unable to on the planet for some reason
+        }
+        if (enableAccelerationVector)
+        {
+            this.TryGetComponent<Rigidbody>(out Rigidbody myRB);
+            if (myRB != null)
+            {
+                float acc = toDraw.magnitude / myRB.mass;   //acceleration scale of force being applied
+
+                visualAccelerationVector.colorGradient = SetColorGradient(toDraw.magnitude);    //TODO: different gradients for acceleration vector?
+                visualAccelerationVector.SetPosition(0, Vector3.zero + (Vector3.Scale(toDraw.normalized, transform.localScale/2))); //update start position to object
+                visualAccelerationVector.SetPosition(1, toDraw.normalized * Mathf.Clamp(acc, 0, 25));
+            }
+            else { Debug.LogError("UtilityLineDraw.cs: Rigidbody not found!"); }
+        }
     }
 
     void Start()
     {
-        visualGravityVector = gameObject.GetOrAddComponent<LineRenderer>();
-        visualGravityVector.useWorldSpace = false;
-        visualGravityVector.SetPosition(0, transform.localPosition); //start to object
-        visualGravityVector.material = new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));
+        if (enableGravityVector)
+        {
+            visualGravityVector = gameObject.GetOrAddComponent<LineRenderer>();
+            visualGravityVector.useWorldSpace = false;
+            visualGravityVector.SetPosition(0, transform.localPosition); //start to object
+            visualGravityVector.material = new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));
+        }
+        else if (enableAccelerationVector)
+        {
+            visualAccelerationVector = gameObject.GetOrAddComponent<LineRenderer>();
+            visualAccelerationVector.useWorldSpace = false;
+            visualAccelerationVector.SetPosition(0, transform.localPosition); //start to object
+            visualAccelerationVector.material = new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));
+        }
     }
 }

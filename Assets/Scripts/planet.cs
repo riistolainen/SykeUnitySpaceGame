@@ -3,8 +3,10 @@ using UnityEngine;
 public class PlanetScript : MonoBehaviour
 {
     public bool gravity = true;
+    public bool gravityVisual = false;
+    public bool accelerationVisual = true;
 
-    public bool rotation = false;
+    public bool rotation = true;
     public float rotation_spd = 5f;
     public float rotation_angle = 2.3f;
 
@@ -15,7 +17,9 @@ public class PlanetScript : MonoBehaviour
     {
         if (gravity)
         {
-            gameObject.AddComponent<GravityScript>();   //could not add in editor
+            GravityScript handle = gameObject.AddComponent<GravityScript>();   //could not add in editor
+            handle.enableAccelerationVector = accelerationVisual;
+            handle.enableGravityVector = gravityVisual;
         }
         if(initSpeed!=Vector3.zero)
         {

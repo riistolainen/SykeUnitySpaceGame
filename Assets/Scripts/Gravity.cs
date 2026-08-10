@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+//TODO: currently sums and then draws the sum force projected by gravity from object. When visualizing acceleration this breaks down for user as expectation is to see the acceleration experienced by the object, not excerted by the object
+
 public class GravityScript : MonoBehaviour
 {
     public bool debug = false;  //local script debug: enable/disable
@@ -12,7 +14,9 @@ public class GravityScript : MonoBehaviour
     private GameManagerScript myGMScript;
     private Rigidbody rb;
 
-    UtilityLineDraw myLineDraw;
+    UtilityLineDraw myGravityVector;
+    public bool enableAccelerationVector = true;
+    public bool enableGravityVector = false;
 
     public void GravityVectorSum(Vector3 newForce)
     {
@@ -32,7 +36,10 @@ public class GravityScript : MonoBehaviour
         if (gravityVectorSum != Vector3.zero)
         {
             if (debug) { Debug.Log(gravityVectorSum.ToString()); } //TODO: not working? expand
-            GetComponent<Rigidbody>().AddForce(gravityVectorSum, ForceMode.Impulse);   //add gravity force
+            if (TryGetComponent<Rigidbody>(out Rigidbody handle))
+            {
+                handle.AddForce(gravityVectorSum, ForceMode.Impulse);   //add gravity force
+            }
             gravityVectorSum = Vector3.zero;    //reset force for next cycle
         }
         else
@@ -45,7 +52,9 @@ public class GravityScript : MonoBehaviour
     void Start()
     {
         gravityVectorSum = Vector3.zero;
-        myLineDraw = gameObject.AddComponent<UtilityLineDraw>();
+        myGravityVector = gameObject.GetOrAddComponent<UtilityLineDraw>();   //TODO: inheritance, pass constructor the bool values for enabling?
+        myGravityVector.enableAccelerationVector = enableAccelerationVector;
+        myGravityVector.enableGravityVector = enableGravityVector;
 
         rb = gameObject.GetComponent<Rigidbody>();
         if (rb == null)
@@ -85,7 +94,7 @@ public class GravityScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {   //TODO: option to enable/disable drawing of vectors
-        myLineDraw.DrawForceVector(gravityVectorSum);  //draw visualization
+        myGravityVector.DrawForceVector(gravityVectorSum);  //draw visualization
         ApplyGravity(); //each GO apply their own calculated gravityforce themselves; gamemanager calculates the forces
     }
 }
