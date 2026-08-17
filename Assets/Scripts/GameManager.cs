@@ -13,15 +13,15 @@ public class GameManagerScript : MonoBehaviour
     //effectiveGravity = G/(1+(distance/degradingFactor))
     public float G;
     public float degradingFactor;
-    //public float[,] gravityForces;
 
+    public float timescale = 0.5f;
     //public List<LineRenderer> linesList;
     //public LineRenderer addingLine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Time.timeScale = timescale;
         //effectiveGravity = G/(1+(distance/degradingFactor))
         G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
         degradingFactor = 1000;

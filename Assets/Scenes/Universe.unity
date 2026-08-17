@@ -227,27 +227,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.0070581
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.537169
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.72373086
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.005433256
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.69004154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0051803407
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -275,7 +275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: far clip plane
-      value: 5000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -949,7 +949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5444088732744808171, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: HorizontalAxis.Center
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5444088732744808171, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: RadialAxis.Recentering.Enabled

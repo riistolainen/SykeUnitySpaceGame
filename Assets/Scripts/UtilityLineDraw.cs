@@ -2,13 +2,22 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//TODO: Only one linerenderer per object -> Use the same linerenderer for all objects lines ()
+//OR
+//Create a separate object for linerendering that spawns new linerenderers
+//TODO: do not use lineRenderer
+//https://docs.unity3d.com/ScriptReference/GL.html
+//https://gamedev.stackexchange.com/questions/96964/how-to-correctly-draw-a-line-in-unity
+
+
 public class UtilityLineDraw : MonoBehaviour
 {
+    
     //TODO: get/set enable/disable to eventhandling?
     public bool enableAccelerationVector = true;
     public LineRenderer visualAccelerationVector;
     
-    public bool enableGravityVector = true;
+    public bool enableGravityVector = false;
     public LineRenderer visualGravityVector;
 
     private Gradient gradient = new Gradient();
@@ -59,9 +68,9 @@ public class UtilityLineDraw : MonoBehaviour
             visualGravityVector.SetPosition(0, Vector3.zero); //update start position to object
             visualGravityVector.SetPosition(1, toDraw.normalized * Mathf.Clamp(toDraw.magnitude, 0, 25));   //TODO: trying to limit the size of drawn gravitylines, but unable to on the planet for some reason
         }
-        if (enableAccelerationVector)
+        else if (enableAccelerationVector)  //TODO: If multiple lines, this needs to be separate if, NOT else if
         {
-            this.TryGetComponent<Rigidbody>(out Rigidbody myRB);
+            gameObject.TryGetComponent<Rigidbody>(out Rigidbody myRB);
             if (myRB != null)
             {
                 float acc = toDraw.magnitude / myRB.mass;   //acceleration scale of force being applied
@@ -76,6 +85,7 @@ public class UtilityLineDraw : MonoBehaviour
 
     void Start()
     {
+        //TODO: Currently the IF does nothing as only one linerenderer is present - if separate lines will be drawn needs functionality
         if (enableGravityVector)
         {
             visualGravityVector = gameObject.GetOrAddComponent<LineRenderer>();

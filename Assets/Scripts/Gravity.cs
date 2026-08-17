@@ -53,8 +53,6 @@ public class GravityScript : MonoBehaviour
     {
         gravityVectorSum = Vector3.zero;
         myGravityVector = gameObject.GetOrAddComponent<UtilityLineDraw>();   //TODO: inheritance, pass constructor the bool values for enabling?
-        myGravityVector.enableAccelerationVector = enableAccelerationVector;
-        myGravityVector.enableGravityVector = enableGravityVector;
 
         rb = gameObject.GetComponent<Rigidbody>();
         if (rb == null)
