@@ -17,10 +17,10 @@ public class CamerasScriptable : MonoBehaviour
 {
     //TODO: implement local script debugging level
 
-    public Camera mainCamera;
-    public CinemachineBrain brain;
-    public ICinemachineCamera iCamera;
-    public CinemachineBrainEvents brainEvents;
+    private Camera mainCamera;
+    private CinemachineBrain brain;
+    private ICinemachineCamera iCamera;
+    private CinemachineBrainEvents brainEvents;
 
     public CinemachineCamera[] AllCameras;
     private int cameraIndex = -1; //default -1: none added
@@ -29,16 +29,16 @@ public class CamerasScriptable : MonoBehaviour
     public CinemachineCamera CameraFreefly;
     public CinemachineCamera CameraOverhead;
 
-    public InputAction cameraZoom;
+    private InputAction cameraZoom;
     private bool cameraZoomed = false;
-    public InputAction cameraLock;
+    private InputAction cameraLock;
     private bool cameraToggle = false;
     private float distanceScalingFactor = 1f;
 
     private float zoom = 0;
     private CinemachineCamera activeCamera;
     private float zoomSpeed = 10f;
-    private float minZoom = 1f;
+    private float minZoom = -100f;
     private float maxZoom = 100f;
 
     private CinemachineThirdPersonFollow thirdPerson;
@@ -142,8 +142,6 @@ public class CamerasScriptable : MonoBehaviour
         ToggleCIAC();   //Start of game align camera modes to cursor mode
         defaults = new DefaultSettings(AllCameras); //store camera defaults
 
-        //END: Store defaults
-
         //START: Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
         cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
@@ -173,7 +171,7 @@ public class CamerasScriptable : MonoBehaviour
     void OnCameraActivation(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
     {
         Debug.Log("EVENT: OnCameraActivated: Brain.ActiveCamera.Name: " + evt.OutgoingCamera.Name + ", Camera: " + evt.IncomingCamera.Name);
-        
+
         //TODO: more efficient to store the components when cameras are added so we do not have to continuously TryGetComponent, when switching camera
         ClearCameraCache();
         activeCamera = evt.IncomingCamera as CinemachineCamera;
@@ -225,7 +223,7 @@ public class CamerasScriptable : MonoBehaviour
         {
             zoom = -cameraZoom.ReadValue<float>();
             cameraZoomed = true;
-            Debug.Log("cameraZoomed:true");
+            Debug.Log("cameraZoomed:true " + zoom);
         }
 
         if (cameraLock.WasPressedThisFrame())
@@ -235,10 +233,8 @@ public class CamerasScriptable : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void CursorLock()
     {
-        //Cursor locking --->>
-
         if (cameraToggle)
         {
             if (UnityEngine.Cursor.lockState != CursorLockMode.Locked)
@@ -255,56 +251,64 @@ public class CamerasScriptable : MonoBehaviour
             cameraToggle = false;
             ToggleCIAC();   //toggle camera rotation control from mouse based on cursor state
         }
-        //<<--- END:Cursor locking
+    }
 
-
-            //CameraZooming --->>
-            if (cameraZoomed)
+    private void ZoomCamera()
+    {
+        if (cameraZoomed)
+        {
+            cameraZoomed = false;
+            Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
+            // --- METHOD 1: Distance-based Positioning Components ---
+            // Non-active cameras will be nulled by cache clearing when switching cameras
+            // Check for Third Person Follow
+            if (thirdPerson)
             {
-                cameraZoomed = false;
-                Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
-                // --- METHOD 1: Distance-based Positioning Components ---
-                // Non-active cameras will be nulled by cache clearing when switching cameras
-                // Check for Third Person Follow
-                if (thirdPerson)
-                {
-                    distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
-                    thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, Mathf.Clamp(thirdPerson.CameraDistance - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
-                }
+                distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, thirdPerson.CameraDistance - Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
+            }
 
-                // Check for Modern Orbital Follow (New FreeLook Rig mechanism)
-                else if (orbital)
-                {
-                    distanceScalingFactor = orbital.Radius / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
-                    orbital.Radius = Mathf.Lerp(orbital.Radius, Mathf.Clamp(orbital.Radius - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
-                }
+            // Check for Modern Orbital Follow (New FreeLook Rig mechanism)
+            else if (orbital)
+            {
+                distanceScalingFactor = orbital.Radius / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                orbital.Radius = Mathf.Lerp(orbital.Radius, orbital.Radius - Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
+            }
 
-                // Check for Cinemachine Follow (Standard Transposer style position control)
-                else if (standardFollow)
-                {
-                    Vector3 offset = standardFollow.FollowOffset;
-                    distanceScalingFactor = offset.magnitude / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
-                    //TODO: equal magnitude adjustment of the vector instead of just using the z would maintain angle of camera to target
-                    // Zoom by scaling the Z offset (or adjust magnitude evenly)
-                    offset.z = Mathf.Lerp(offset.z, Mathf.Clamp(offset.z + (zoom * zoomSpeed * distanceScalingFactor), -maxZoom, -minZoom), Time.deltaTime * 5f);
-                    standardFollow.FollowOffset = offset;
-                }
+            // Check for Cinemachine Follow (Standard Transposer style position control)
+            else if (standardFollow)
+            {
+                Vector3 offset = standardFollow.FollowOffset;
+                distanceScalingFactor = offset.magnitude / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                //TODO: equal magnitude adjustment of the vector instead of just using the z would maintain angle of camera to target
+                // Zoom by scaling the Z offset (or adjust magnitude evenly)
+                offset.z = Mathf.Lerp(offset.z, offset.z + Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), -maxZoom, -minZoom), Time.deltaTime * 5f);
+                standardFollow.FollowOffset = offset;
+            }
 
-                // --- METHOD 2: Lens fallbacks (FOV / Orthographic Size) ---
-                // If no distance-based component is active, zoom the internal camera lens directly.
+            // --- METHOD 2: Lens fallbacks (FOV / Orthographic Size) ---
+            // If no distance-based component is active, zoom the internal camera lens directly.
+            else
+            {
+                LensSettings lens = activeCamera.Lens;
+                if (lens.Orthographic)
+                {
+                    lens.OrthographicSize = Mathf.Lerp(lens.OrthographicSize, Mathf.Clamp(lens.OrthographicSize - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
+                }
                 else
                 {
-                    LensSettings lens = activeCamera.Lens;
-                    if (lens.Orthographic)
-                    {
-                        lens.OrthographicSize = Mathf.Lerp(lens.OrthographicSize, Mathf.Clamp(lens.OrthographicSize - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
-                    }
-                    else
-                    {
-                        lens.FieldOfView = Mathf.Lerp(lens.FieldOfView, Mathf.Clamp(lens.FieldOfView - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
-                    }
-                    activeCamera.Lens = lens; // Reassign struct back to property
+                    lens.FieldOfView = Mathf.Lerp(lens.FieldOfView, Mathf.Clamp(lens.FieldOfView - (zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
                 }
+                activeCamera.Lens = lens; // Reassign struct back to property
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        CursorLock();   //Manage locking/hiding cursor to control camera
+
+        ZoomCamera();   //Zoom camera(s) in/out w/ scrollwheel
+
+    }
+}
