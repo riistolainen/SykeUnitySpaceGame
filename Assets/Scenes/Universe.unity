@@ -227,11 +227,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.0070581
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -9.537169
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -275,7 +275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: far clip plane
-      value: 1000
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -531,32 +531,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228eface9c318134e9756e421ed85e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CamerasScriptable
-  mainCamera: {fileID: 0}
-  brain: {fileID: 0}
-  brainEvents: {fileID: 0}
   AllCameras: []
   CameraCockpit: {fileID: 4978369345909215724}
   CameraFollow: {fileID: 4978369345481681564}
   CameraFreefly: {fileID: 4978369346604665429}
   CameraOverhead: {fileID: 4978369346131922447}
-  cameraZoom:
-    m_Name: Camera Zoom
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 8b65c507-b9ec-4130-8d4c-595377bc0afd
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  cameraLock:
-    m_Name: Camera Lock
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 63d907ef-bb99-409b-84cf-4aa03d572d71
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!1 &1502728423 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1804291341847875086, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
@@ -809,27 +788,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5035291
+      value: 3.0070581
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.7685847
+      value: -9.537169
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7237308
+      value: 0.98836154
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0054342696
+      value: 0.15212344
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6900416
+      value: 0.00000013536737
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.005181308
+      value: -0.000000020835037
       objectReference: {fileID: 0}
     - target: {fileID: 414225490170956533, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -851,6 +830,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3683188092418889948, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: m_Radius
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Lens.FieldOfView
       value: 60
@@ -860,9 +843,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: Lens.FarClipPlane
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Target.LookAtTarget
       value: 
-      objectReference: {fileID: 930346588}
+      objectReference: {fileID: 631759819}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -949,7 +936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5444088732744808171, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: HorizontalAxis.Center
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5444088732744808171, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: RadialAxis.Recentering.Enabled
@@ -1064,6 +1051,10 @@ PrefabInstance:
       value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4093214307320832773, guid: 9e6f9f6722b341d44a47e38dbfc5c417, type: 3}
+      propertyPath: Lens.FarClipPlane
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093214307320832773, guid: 9e6f9f6722b341d44a47e38dbfc5c417, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 631759819}
@@ -1110,7 +1101,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 0.1, y: 0.1}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -1131,12 +1122,12 @@ MonoBehaviour:
   TargetOffset: {x: 0, y: 0, z: 0}
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0.1, y: 0.1, z: 0.1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 5
+  Radius: 10
   Orbits:
     Top:
       Radius: 2
@@ -1162,7 +1153,7 @@ MonoBehaviour:
   VerticalAxis:
     Value: 17.5
     Center: 17.5
-    Range: {x: -10, y: 45}
+    Range: {x: -180, y: 180}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -1251,19 +1242,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.72373086
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.005433256
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.69004154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0051803407
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -40,11 +40,15 @@ public class GravityScript : MonoBehaviour
             {
                 handle.AddForce(gravityVectorSum, ForceMode.Impulse);   //add gravity force
             }
+            else
+            {
+                Debug.LogWarning("Apply gravity: No rigidbody!");
+            }
             gravityVectorSum = Vector3.zero;    //reset force for next cycle
         }
         else
         {
-            if (debug) { Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!"); }
+            Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!");
         }
     }
 

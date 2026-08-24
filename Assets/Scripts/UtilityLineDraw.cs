@@ -76,7 +76,7 @@ public class UtilityLineDraw : MonoBehaviour
                 float acc = toDraw.magnitude / myRB.mass;   //acceleration scale of force being applied
 
                 visualAccelerationVector.colorGradient = SetColorGradient(toDraw.magnitude);    //TODO: different gradients for acceleration vector?
-                visualAccelerationVector.SetPosition(0, Vector3.zero + (Vector3.Scale(toDraw.normalized, transform.localScale/2))); //update start position to object
+                visualAccelerationVector.SetPosition(0, Vector3.zero); //update start position to object   //TODO: start vector from surace of model, not inside:: + (Vector3.Scale(toDraw.normalized, transform.localScale/2))
                 visualAccelerationVector.SetPosition(1, toDraw.normalized * Mathf.Clamp(acc, 0, 25));
             }
             else { Debug.LogError("UtilityLineDraw.cs: Rigidbody not found!"); }

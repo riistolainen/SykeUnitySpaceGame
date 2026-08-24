@@ -145,7 +145,6 @@ public class CamerasScriptable : MonoBehaviour
         //START: Controls
         cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
         cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
-        //TODO: only allow manual camera control when cursor is locked, if unlocked - assumed that user wants to interact with UI
         //END: Controls
 
         /*
@@ -189,7 +188,7 @@ public class CamerasScriptable : MonoBehaviour
         standardFollow = null;
     }
 
-    void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor
+    void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor - Unity lighting bug. Check commit messages for link.
     {
         for (int i = 0; i < AllCameras.Length; i++)
         {
@@ -264,14 +263,14 @@ public class CamerasScriptable : MonoBehaviour
             // Check for Third Person Follow
             if (thirdPerson)
             {
-                distanceScalingFactor = thirdPerson.CameraDistance / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = thirdPerson.CameraDistance / 10f; // defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 thirdPerson.CameraDistance = Mathf.Lerp(thirdPerson.CameraDistance, thirdPerson.CameraDistance - Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
             // Check for Modern Orbital Follow (New FreeLook Rig mechanism)
             else if (orbital)
             {
-                distanceScalingFactor = orbital.Radius / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = orbital.Radius / 10f; // defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 orbital.Radius = Mathf.Lerp(orbital.Radius, orbital.Radius - Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), minZoom, maxZoom), Time.deltaTime * 5f);
             }
 
@@ -279,7 +278,7 @@ public class CamerasScriptable : MonoBehaviour
             else if (standardFollow)
             {
                 Vector3 offset = standardFollow.FollowOffset;
-                distanceScalingFactor = offset.magnitude / defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
+                distanceScalingFactor = offset.magnitude / 10f; // defaults.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[cameraIndex];
                 //TODO: equal magnitude adjustment of the vector instead of just using the z would maintain angle of camera to target
                 // Zoom by scaling the Z offset (or adjust magnitude evenly)
                 offset.z = Mathf.Lerp(offset.z, offset.z + Mathf.Clamp((zoom * zoomSpeed * distanceScalingFactor), -maxZoom, -minZoom), Time.deltaTime * 5f);
