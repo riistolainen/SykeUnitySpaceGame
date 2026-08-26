@@ -107,12 +107,12 @@
                 },
                 {
                     "name": "Roll",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "8891db31-8d97-473b-a4e2-0c19ebed24be",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Yaw",
@@ -131,6 +131,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "LookAround",
+                    "type": "Button",
+                    "id": "8f568c88-8633-46ec-91f4-41a68691222a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -542,26 +551,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "8203b29e-9240-4955-806e-5050ea680494",
+                    "name": "1D Axis",
+                    "id": "8b6f1c9f-5c83-40c6-b05f-9db59646ae8e",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "e0fed578-4063-44b6-996e-6c8fadfc4f76",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Roll",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "b204d511-0eaa-4c22-a7e6-350d67ed0d2c",
+                    "name": "positive",
+                    "id": "09816c96-cb86-41cf-aec9-841642e43833",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Roll",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -582,6 +602,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43c9e7eb-ef75-4053-b7a0-268511062c37",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "LookAround",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

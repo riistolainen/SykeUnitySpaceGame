@@ -265,6 +265,9 @@ MonoBehaviour:
   CameraFollow: {fileID: 216983158}
   CameraFreefly: {fileID: 978385831}
   CameraOverhead: {fileID: 388345996}
+  cameraZoomed: 0
+  cursorLockToggle: 0
+  lookAroundToggle: 0
 --- !u!4 &147984166
 Transform:
   m_ObjectHideFlags: 0
@@ -293,6 +296,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 147984166}
     m_Modifications:
+    - target: {fileID: 348616191016694587, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 348616191016694587, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_ControllerManager.Controllers.Array.size
       value: 3
@@ -360,6 +367,10 @@ PrefabInstance:
     - target: {fileID: 3683188092418889948, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_Radius
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: StandbyUpdate
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Lens.FieldOfView
@@ -946,11 +957,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.0070581
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -9.537169
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w

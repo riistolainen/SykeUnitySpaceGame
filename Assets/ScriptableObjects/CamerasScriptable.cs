@@ -16,11 +16,12 @@ using UnityEngine.Windows;
 public class CamerasScriptable : MonoBehaviour
 {
     //TODO: implement local script debugging level
-
+/*
     private Camera mainCamera;
     private CinemachineBrain brain;
     private ICinemachineCamera iCamera;
     private CinemachineBrainEvents brainEvents;
+*/
 
     public CinemachineCamera[] AllCameras;
     private int cameraIndex = -1; //default -1: none added
@@ -30,10 +31,12 @@ public class CamerasScriptable : MonoBehaviour
     public CinemachineCamera CameraOverhead;
 
     private InputAction cameraZoom;
-    private bool cameraZoomed = false;
+    public bool cameraZoomed = false;
     private InputAction cameraLock;
-    private bool cameraToggle = false;
+    public bool cursorLockToggle = false;
     private float distanceScalingFactor = 1f;
+    private InputAction lookAround;
+    public bool lookAroundToggle = false;
 
     private float zoom = 0;
     private CinemachineCamera activeCamera;
@@ -44,6 +47,8 @@ public class CamerasScriptable : MonoBehaviour
     private CinemachineThirdPersonFollow thirdPerson;
     private CinemachineOrbitalFollow orbital;
     private CinemachineFollow standardFollow;
+
+    //public enum { }
 
     public DefaultSettings defaults;
 
@@ -131,42 +136,6 @@ public class CamerasScriptable : MonoBehaviour
     }
     */
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
-
-        AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
-        Debug.Log("Added " + AllCameras.Length + " cameras.");
-        AllCameras[3].Prioritize(); //Should be overheadcamera
-        ToggleCIAC();   //Start of game align camera modes to cursor mode
-        defaults = new DefaultSettings(AllCameras); //store camera defaults
-
-        //START: Controls
-        cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
-        cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
-        //END: Controls
-
-        /*
-        //DEBUG-CONTROLS
-        InputActionTrace trace = new InputActionTrace();
-        trace.SubscribeTo(cameraZoom);
-
-        // Record a single triggering of an action.
-        cameraZoom.performed += ctx =>
-        {
-            if (ctx.ReadValue<float>() > 0.5f)
-                trace.RecordAction(ctx);
-        };
-        // Output trace to console.
-        Debug.Log(string.Join(",\n", trace));
-
-        //END: DEBUG-CONTROLS
-        */
-
-        //TODO: freefly-camera - on click to follow the object :: cinemachinecamera.trackingtarget + cinemachinepositioncontroller
-    }
-
     void OnCameraActivation(ICinemachineCamera.ActivationEventParams evt)    //to only "GetComponent" once when camera changes - and not each zoomevent
     {
         Debug.Log("EVENT: OnCameraActivated: Brain.ActiveCamera.Name: " + evt.OutgoingCamera.Name + ", Camera: " + evt.IncomingCamera.Name);
@@ -181,6 +150,7 @@ public class CamerasScriptable : MonoBehaviour
         if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { return; }
         if (activeCamera.TryGetComponent<CinemachineFollow>(out standardFollow)) { return; }
     }
+
     void ClearCameraCache() //maybe not needed
     {
         thirdPerson = null;
@@ -194,7 +164,7 @@ public class CamerasScriptable : MonoBehaviour
         {
             if (AllCameras[i].TryGetComponent<CinemachineInputAxisController>(out CinemachineInputAxisController handle))
             {
-                if (handle.enabled)//Manual camera: ON
+                if (handle.enabled && lookAroundToggle == false)//Manual camera: ON, but we do not want it to be on
                 {
                     if (UnityEngine.Cursor.lockState != CursorLockMode.Locked)   //Cursor NOT locked
                     {
@@ -204,7 +174,7 @@ public class CamerasScriptable : MonoBehaviour
                 }
                 else //Manual camera: OFF
                 {
-                    if (UnityEngine.Cursor.lockState == CursorLockMode.Locked) //Cursor IS locked
+                    if (UnityEngine.Cursor.lockState == CursorLockMode.Locked && lookAroundToggle == true) //Cursor IS locked AND we want to lookAround
                     {
                         handle.enabled = true;  //Enable manual control
                         Debug.Log(AllCameras[i].name + " CIAC-enabled.");
@@ -215,40 +185,22 @@ public class CamerasScriptable : MonoBehaviour
         }
     }
 
-
-    private void Update()
+    private void CursorLock(bool yesno)
     {
-        if (cameraZoom.WasPressedThisFrame())
+        if (cursorLockToggle)
         {
-            zoom = -cameraZoom.ReadValue<float>();
-            cameraZoomed = true;
-            Debug.Log("cameraZoomed:true " + zoom);
-        }
-
-        if (cameraLock.WasPressedThisFrame())
-        {
-            cameraToggle = true;
-            Debug.Log("cameraLock:true");
-        }
-    }
-
-    private void CursorLock()
-    {
-        if (cameraToggle)
-        {
-            if (UnityEngine.Cursor.lockState != CursorLockMode.Locked)
+            if (yesno == true && UnityEngine.Cursor.lockState != CursorLockMode.Locked)
             {
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 Debug.Log("Cursor: LOCKED");
             }
-            else if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
+            else if (yesno == false && UnityEngine.Cursor.lockState == CursorLockMode.Locked)
             {
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
                 Debug.Log("Cursor: FREE");
             }
 
-            cameraToggle = false;
-            ToggleCIAC();   //toggle camera rotation control from mouse based on cursor state
+            cursorLockToggle = false;
         }
     }
 
@@ -303,10 +255,87 @@ public class CamerasScriptable : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        CursorLock();   //Manage locking/hiding cursor to control camera
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
+
+        AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
+        Debug.Log("Added " + AllCameras.Length + " cameras.");
+        AllCameras[3].Prioritize(); //Should be overheadcamera
+        ToggleCIAC();   //Start of game align camera modes to cursor mode
+        defaults = new DefaultSettings(AllCameras); //store camera defaults
+
+        //START: Controls
+        cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
+        cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
+        lookAround = InputSystem.actions.FindAction("LookAround");  //Left-CTRL
+        //END: Controls
+
+        /*
+        //DEBUG-CONTROLS
+        InputActionTrace trace = new InputActionTrace();
+        trace.SubscribeTo(cameraZoom);
+
+        // Record a single triggering of an action.
+        cameraZoom.performed += ctx =>
+        {
+            if (ctx.ReadValue<float>() > 0.5f)
+                trace.RecordAction(ctx);
+        };
+        // Output trace to console.
+        Debug.Log(string.Join(",\n", trace));
+
+        //END: DEBUG-CONTROLS
+        */
+
+        //TODO: FEATURE --- freefly-camera - on click to follow the object :: cinemachinecamera.trackingtarget + cinemachinepositioncontroller
+    }
+
+    private void Update()   //UI design... TAB to change control mode? or hold button to execute? ...ESC to exit mode to default mode? Default mode UI or PILOTING? 1) UI (no camera/ship controls), 2) PILOT (no UI, camera controls), 3) CAMERA (no UI, ship controls) 
+    {
+        if (lookAround.IsPressed() && lookAroundToggle == false) // lookAround is held down and mode is not active
+        {
+            lookAroundToggle = true;
+            cursorLockToggle = true;    //check cursor lock status
+        }
+        else if (!lookAround.IsPressed() && lookAroundToggle == true)   // lookAround is not pushed down, but is active so disable looking around
+        {
+            lookAroundToggle = false;
+            cursorLockToggle = true;    //check cursor lock status
+        }
+        //else { Debug.LogError("Cursor/Freelook; toggle-error: lookAroundToggle: " + lookAroundToggle + ", cursorLockToggle: " + cursorLockToggle); }
+        if (lookAroundToggle == true)
+        {
+            if (cameraZoom.WasPressedThisFrame())
+            {
+                zoom = -cameraZoom.ReadValue<float>();
+                cameraZoomed = true;
+                Debug.Log("cameraZoomed:true " + zoom);
+            }
+        }
+
+        if (cameraLock.WasPressedThisFrame())
+        {
+            cursorLockToggle = true;
+            Debug.Log("cursorLock:true");
+        }
+    }
+
+    private void FixedUpdate()  
+    {
+        //3 modes: Enabled from shortcut AND/OR from UI
+        // #1 UI (default)
+        //      - cursor unlocked, no ship control OFF, camera control OFF
+        // #2 piloting
+        //      - cursor locked, ship control ON, camera control OFF)
+        // #3 Lookaround
+        //      - cursor locked, ship control OFF, camera control ON)
+        
+
+        CursorLock(!lookAroundToggle);   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
+        ToggleCIAC();   //Enable camera rotation control from mouse based on cursor state
         ZoomCamera();   //Zoom camera(s) in/out w/ scrollwheel
 
     }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//TODO: controls to player so they don't have to be on each separate ss?
+
 public class SpaceShipScript : MonoBehaviour
 {
     public bool gravity = true;
@@ -81,7 +83,7 @@ public class SpaceShipScript : MonoBehaviour
         if (pitchActive)
         {
             float inputValue = pitch.ReadValue<float>();
-            myRB.AddRelativeTorque(Vector3.up * pitch.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.right * pitch.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
             pitchActive = false;
             Debug.Log("Pitch: " + inputValue);
         }
@@ -89,7 +91,7 @@ public class SpaceShipScript : MonoBehaviour
         if (yawActive)
         {
             float inputValue = yaw.ReadValue<float>();
-            myRB.AddRelativeTorque(Vector3.left * yaw.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.up * yaw.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
             yawActive = false;
             Debug.Log("Yaw: " + inputValue);
         }
