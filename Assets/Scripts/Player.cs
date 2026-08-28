@@ -3,14 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
-    public enum stateControl
-    {
-        UI = 1,
-        Pilot = 2,
-        FreeCam = 3
-    };
-
-    public stateControl currentState = stateControl.UI;
+    
 
     /*TODO: NOT NEEDED?
     //GameManager stuff

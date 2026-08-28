@@ -1,17 +1,8 @@
-using JetBrains.Annotations;
-using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Unity.Cinemachine;
-using Unity.Properties;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
 
 public class CamerasScriptable : MonoBehaviour
 {
@@ -30,19 +21,18 @@ public class CamerasScriptable : MonoBehaviour
     public CinemachineCamera CameraFreefly;
     public CinemachineCamera CameraOverhead;
 
-    private InputAction cameraZoom;
-    public bool cameraZoomed = false;
-    private InputAction cameraLock;
-    public bool cursorLockToggle = false;
-    private float distanceScalingFactor = 1f;
-    private InputAction lookAround;
-    public bool lookAroundToggle = false;
-
     private float zoom = 0;
     private CinemachineCamera activeCamera;
     private float zoomSpeed = 10f;
     private float minZoom = -100f;
     private float maxZoom = 100f;
+    private float distanceScalingFactor = 1f;
+
+    //CONTROLS
+    public bool cameraZoomed = false;
+    public bool lookAroundToggle = false;
+    public bool pilotToggle = false;
+    //END: CONTROLS
 
     private CinemachineThirdPersonFollow thirdPerson;
     private CinemachineOrbitalFollow orbital;
@@ -187,20 +177,15 @@ public class CamerasScriptable : MonoBehaviour
 
     private void CursorLock(bool yesno)
     {
-        if (cursorLockToggle)
+        if (yesno == true && UnityEngine.Cursor.lockState != CursorLockMode.Locked)
         {
-            if (yesno == true && UnityEngine.Cursor.lockState != CursorLockMode.Locked)
-            {
-                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                Debug.Log("Cursor: LOCKED");
-            }
-            else if (yesno == false && UnityEngine.Cursor.lockState == CursorLockMode.Locked)
-            {
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
-                Debug.Log("Cursor: FREE");
-            }
-
-            cursorLockToggle = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            //Debug.Log("Cursor: LOCKED");
+        }
+        else if (yesno == false && UnityEngine.Cursor.lockState == CursorLockMode.Locked)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+            //Debug.Log("Cursor: CONFINED");
         }
     }
 
@@ -209,7 +194,8 @@ public class CamerasScriptable : MonoBehaviour
         if (cameraZoomed)
         {
             cameraZoomed = false;
-            Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
+
+            //Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
             // --- METHOD 1: Distance-based Positioning Components ---
             // Non-active cameras will be nulled by cache clearing when switching cameras
             // Check for Third Person Follow
@@ -264,14 +250,11 @@ public class CamerasScriptable : MonoBehaviour
         AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
         Debug.Log("Added " + AllCameras.Length + " cameras.");
         AllCameras[3].Prioritize(); //Should be overheadcamera
-        ToggleCIAC();   //Start of game align camera modes to cursor mode
+
         defaults = new DefaultSettings(AllCameras); //store camera defaults
 
-        //START: Controls
-        cameraZoom = InputSystem.actions.FindAction("CameraZoom");  //mouse scrollwheel
-        cameraLock = InputSystem.actions.FindAction("CameraLock");  //TAB
-        lookAround = InputSystem.actions.FindAction("LookAround");  //Left-CTRL
-        //END: Controls
+        CursorLock(false);
+        ToggleCIAC();   //Start of game align camera modes to cursor mode
 
         /*
         //DEBUG-CONTROLS
@@ -294,47 +277,25 @@ public class CamerasScriptable : MonoBehaviour
     }
 
     private void Update()   //UI design... TAB to change control mode? or hold button to execute? ...ESC to exit mode to default mode? Default mode UI or PILOTING? 1) UI (no camera/ship controls), 2) PILOT (no UI, camera controls), 3) CAMERA (no UI, ship controls) 
-    {
-        if (lookAround.IsPressed() && lookAroundToggle == false) // lookAround is held down and mode is not active
-        {
-            lookAroundToggle = true;
-            cursorLockToggle = true;    //check cursor lock status
-        }
-        else if (!lookAround.IsPressed() && lookAroundToggle == true)   // lookAround is not pushed down, but is active so disable looking around
-        {
-            lookAroundToggle = false;
-            cursorLockToggle = true;    //check cursor lock status
-        }
-        //else { Debug.LogError("Cursor/Freelook; toggle-error: lookAroundToggle: " + lookAroundToggle + ", cursorLockToggle: " + cursorLockToggle); }
-        if (lookAroundToggle == true)
-        {
-            if (cameraZoom.WasPressedThisFrame())
-            {
-                zoom = -cameraZoom.ReadValue<float>();
-                cameraZoomed = true;
-                Debug.Log("cameraZoomed:true " + zoom);
-            }
-        }
+    {   //TODO: Priority? If both lookaround and pilot are pressed?
 
-        if (cameraLock.WasPressedThisFrame())
-        {
-            cursorLockToggle = true;
-            Debug.Log("cursorLock:true");
-        }
+        //TODO: Disable camera movement when piloting or in UI
+
+
+        //Debug.LogError("Cursor/Freelook; toggle-error: lookAroundToggle: " + lookAroundToggle + ", cursorLockToggle: " + cursorLockToggle);
     }
 
     private void FixedUpdate()  
     {
         //3 modes: Enabled from shortcut AND/OR from UI
         // #1 UI (default)
-        //      - cursor unlocked, no ship control OFF, camera control OFF
-        // #2 piloting
+        //      - cursor unlocked, ship control: OFF, camera control: OFF
+        // #2 pilot
         //      - cursor locked, ship control ON, camera control OFF)
         // #3 Lookaround
         //      - cursor locked, ship control OFF, camera control ON)
         
-
-        CursorLock(!lookAroundToggle);   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
+        CursorLock( lookAroundToggle || pilotToggle );   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
         ToggleCIAC();   //Enable camera rotation control from mouse based on cursor state
         ZoomCamera();   //Zoom camera(s) in/out w/ scrollwheel
 
