@@ -266,8 +266,8 @@ MonoBehaviour:
   CameraFreefly: {fileID: 978385831}
   CameraOverhead: {fileID: 388345996}
   cameraZoomed: 0
-  cursorLockToggle: 0
   lookAroundToggle: 0
+  pilotToggle: 0
 --- !u!4 &147984166
 Transform:
   m_ObjectHideFlags: 0
@@ -965,19 +965,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.98836154
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.15212344
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.00000013536737
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.000000020835037
       objectReference: {fileID: 0}
     - target: {fileID: 4156747001894146510, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1123,6 +1123,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
   m_PrefabInstance: {fileID: 978385830}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1310181363
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7008932196977061919, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_Name
+      value: InputManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 160.92464
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -207.06355
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8125602005186365050, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 960f45d4f0c339d4ebecc23d909bb3c8, type: 3}
 --- !u!1 &1760983445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,3 +1536,4 @@ SceneRoots:
   - {fileID: 1951947291}
   - {fileID: 525746632}
   - {fileID: 13110309}
+  - {fileID: 1310181363}

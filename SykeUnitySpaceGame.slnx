@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="MyScripts.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+</Solution>

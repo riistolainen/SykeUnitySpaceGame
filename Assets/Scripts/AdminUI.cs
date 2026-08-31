@@ -11,8 +11,7 @@ using UnityEngine.UIElements;
 
 public class AdminUIScript : MonoBehaviour
 {
-
-    CamerasScriptable camerasScriptable;    //ref to our scriptableobject
+    CamerasScript camerasScript;    //ref to our scriptableobject
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,7 +19,7 @@ public class AdminUIScript : MonoBehaviour
         //GET REF TO CAMERAS.obj
         GameObject camRef = GameObject.Find("Cameras");
         if (camRef == null) { Debug.LogError("FAILED INIT: camRef NULL"); }
-        if (!camRef.TryGetComponent<CamerasScriptable>(out camerasScriptable)) { Debug.LogError("FAILED INIT: camerasScriptable NULL"); }
+        if (!camRef.TryGetComponent<CamerasScript>(out camerasScript)) { Debug.LogError("FAILED INIT: camerasScript NULL"); }
 
         //GET REF TO UI-element
         UIDocument uiDocument = GetComponent<UIDocument>();
@@ -37,9 +36,9 @@ public class AdminUIScript : MonoBehaviour
 
         /*
         //Add binding between UI and scriptableObject
-        rbg.ElementAt(0).dataSource = camerasScriptable.CameraFollow;
-        rbg.ElementAt(1).dataSource = camerasScriptable.CameraOverhead;
-        rbg.ElementAt(2).dataSource = camerasScriptable.CameraFreefly;
+        rbg.ElementAt(0).dataSource = camerasScript.CameraFollow;
+        rbg.ElementAt(1).dataSource = camerasScript.CameraOverhead;
+        rbg.ElementAt(2).dataSource = camerasScript.CameraFreefly;
         */
         /*
         var binding0 = new DataBinding
@@ -81,10 +80,10 @@ public class AdminUIScript : MonoBehaviour
     //TODO: React to UI change through methods and update which camera is active?
     void RBGToggleEvent(ChangeEvent<int> evt)
     {
-        Debug.Log("RBGToggleEvent: " + evt.target + " " + evt.previousValue + " " + evt.newValue + " " + evt.ToString() +" Listlnght: " + camerasScriptable.AllCameras.Count() +" name: " + camerasScriptable.AllCameras[evt.newValue].name);
+        Debug.Log("RBGToggleEvent: " + evt.target + " " + evt.previousValue + " " + evt.newValue + " " + evt.ToString() +" Listlnght: " + camerasScript.AllCameras.Count() +" name: " + camerasScript.AllCameras[evt.newValue].name);
 
-        camerasScriptable.AllCameras[evt.newValue].Priority = 1;
-        camerasScriptable.AllCameras[evt.previousValue].Priority = 0;
+        camerasScript.AllCameras[evt.newValue].Priority = 1;
+        camerasScript.AllCameras[evt.previousValue].Priority = 0;
     }
 
     /*

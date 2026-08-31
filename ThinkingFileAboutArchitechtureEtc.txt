@@ -1,0 +1,12 @@
+Input manager: 
+	- Catch inputs: listener, etc.
+	- Forward to proper functions
+
+Is there a difference? Call function directly or pass forward the input?
+	-> Timing/race conditions?
+
+Object that is controlled: listen?
+	- "Event broadcast" by InputManager -> functionality to listen in objects? (isn't this already what the normal code for inputs does?)
+OR
+InputManager calls public function of controlled object?
+	

@@ -13,6 +13,8 @@ public class CamerasScriptableScript : ScriptableObject
 
     [SerializeField] private CinemachineCamera[] _cameraArray;
 
+    public bool thisIsScriptableObject = true;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

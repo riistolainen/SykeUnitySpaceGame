@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CamerasScriptable : MonoBehaviour
+public class CamerasScript : MonoBehaviour
 {
     //TODO: implement local script debugging level
 /*
@@ -21,7 +21,6 @@ public class CamerasScriptable : MonoBehaviour
     public CinemachineCamera CameraFreefly;
     public CinemachineCamera CameraOverhead;
 
-    private float zoom = 0;
     private CinemachineCamera activeCamera;
     private float zoomSpeed = 10f;
     private float minZoom = -100f;
@@ -56,14 +55,23 @@ public class CamerasScriptable : MonoBehaviour
 
     public struct DefaultSettings
     {
+        public CinemachineInputAxisController[] InputAxisControllers;
+
         public DefaultDistanceCameraSettings DefaultDistanceCameraSettings { get; set; }
 
         public DefaultSettings(CinemachineCamera[] cameraList) : this()
         {
+            InputAxisControllers = new CinemachineInputAxisController[cameraList.Length];
+
             DefaultDistanceCameraSettings = new DefaultDistanceCameraSettings(cameraList.Length);   //arrays need to be defined before use and lists are not performant
 
             for (int i = 0; i < cameraList.Length; i++)
             {
+                if (cameraList[i].TryGetComponent<CinemachineInputAxisController>(out CinemachineInputAxisController handle))
+                {
+                    this.InputAxisControllers[i] = handle;
+                }
+
                 if (cameraList[i].TryGetComponent<CinemachineThirdPersonFollow>(out CinemachineThirdPersonFollow thirdPerson)) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = thirdPerson.CameraDistance; }
                 else if (cameraList[i].TryGetComponent<CinemachineOrbitalFollow>(out CinemachineOrbitalFollow orbital)) { this.DefaultDistanceCameraSettings.DefaultDistanceAllCamerasFloat[i] = orbital.Radius; }
                 else if (cameraList[i].TryGetComponent<CinemachineFollow>(out CinemachineFollow standardFollow))   //Vector2 so let's store the actual direction also; magnitude for simple scaling conversion
@@ -149,29 +157,19 @@ public class CamerasScriptable : MonoBehaviour
     }
 
     void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor - Unity lighting bug. Check commit messages for link.
-    {
+    {   //TODO: PRIORITY in-between refactoring --> what I was doing? only have active camera change the status of its inputaxiscontroller no need to change all cameras when controllerstatemachine updates
         for (int i = 0; i < AllCameras.Length; i++)
         {
-            if (AllCameras[i].TryGetComponent<CinemachineInputAxisController>(out CinemachineInputAxisController handle))
+            if (defaults.InputAxisControllers[i].enabled && lookAroundToggle == false)//Manual camera: ON, but we do not want it to be on
             {
-                if (handle.enabled && lookAroundToggle == false)//Manual camera: ON, but we do not want it to be on
-                {
-                    if (UnityEngine.Cursor.lockState != CursorLockMode.Locked)   //Cursor NOT locked
-                    {
-                        handle.enabled = false; //Disable manual control
-                        Debug.Log(AllCameras[i].name + " CIAC-disabled.");
-                    }
-                }
-                else //Manual camera: OFF
-                {
-                    if (UnityEngine.Cursor.lockState == CursorLockMode.Locked && lookAroundToggle == true) //Cursor IS locked AND we want to lookAround
-                    {
-                        handle.enabled = true;  //Enable manual control
-                        Debug.Log(AllCameras[i].name + " CIAC-enabled.");
-                    }
-                }
+                defaults.InputAxisControllers[i].enabled = false; //Disable manual control
+                    //Debug.Log(AllCameras[i].name + " CIAC-disabled.");
             }
-            else { Debug.Log(AllCameras[i].name + " CIAC not found."); }
+            else //Manual camera: OFF
+            {
+                defaults.InputAxisControllers[i].enabled = true;  //Enable manual control
+                    //Debug.Log(AllCameras[i].name + " CIAC-enabled.");
+            }
         }
     }
 
@@ -189,12 +187,10 @@ public class CamerasScriptable : MonoBehaviour
         }
     }
 
-    private void ZoomCamera()
+    public void ZoomCamera(float zoom)
     {
-        if (cameraZoomed)
+        if (zoom != 0f)
         {
-            cameraZoomed = false;
-
             //Debug.Log("Zooming: Camera[" + cameraIndex + "], " + activeCamera.name + ": " + zoom);
             // --- METHOD 1: Distance-based Positioning Components ---
             // Non-active cameras will be nulled by cache clearing when switching cameras
@@ -296,8 +292,6 @@ public class CamerasScriptable : MonoBehaviour
         //      - cursor locked, ship control OFF, camera control ON)
         
         CursorLock( lookAroundToggle || pilotToggle );   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
-        ToggleCIAC();   //Enable camera rotation control from mouse based on cursor state
-        ZoomCamera();   //Zoom camera(s) in/out w/ scrollwheel
-
+        //ToggleCIAC();   //Enable camera rotation control from mouse based on cursor state
     }
 }

@@ -17,12 +17,15 @@ public class SpaceShipScript : MonoBehaviour
 
     private Rigidbody myRB;
 
-    public void pilot()
+    public void Pilot(float thrust, float roll, float yaw, float pitch)
     {
+        //Adjust mass for piloting only (multithread issues?)
+
+        myRB.mass = myRB.mass * 1000;
         //TODO: Cap forces to ship propulsion values
-        if (thrustActive)
+        if (thrust != 0f)
         {
-            myRB.AddForce(transform.forward * mainThrustPower);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
+            myRB.AddForce(transform.forward * thrust * mainThrustPower);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
             Debug.Log("#Thrust#    " + gameObject.name + "/" + "   -> " + " Direction:  " + transform.forward + ", Power: " + mainThrustPower);
         }
@@ -30,30 +33,28 @@ public class SpaceShipScript : MonoBehaviour
         //TODO: Activate methods for roll, yaw, pitch - currently always ON
         //TODO: Fix axis for each
 
-        if (pitchActive)
+        if (pitch != 0f)
         {
-            float inputValue = pitch.ReadValue<float>();
-            myRB.AddRelativeTorque(Vector3.right * pitch.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.right * pitch * utilityThrustPower, ForceMode.Impulse);
             pitchActive = false;
-            Debug.Log("Pitch: " + inputValue);
+            Debug.Log("Pitch: " + pitch);
         }
 
-        if (yawActive)
+        if (yaw != 0f)
         {
-            float inputValue = yaw.ReadValue<float>();
-            myRB.AddRelativeTorque(Vector3.up * yaw.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.up * yaw * utilityThrustPower, ForceMode.Impulse);
             yawActive = false;
-            Debug.Log("Yaw: " + inputValue);
+            Debug.Log("Yaw: " + yaw);
         }
 
-        if (rollActive)
+        if (roll != 0f)
         {
-            float inputValue = roll.ReadValue<float>();
-            myRB.AddRelativeTorque(Vector3.forward * roll.ReadValue<float>() * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.forward * roll * utilityThrustPower, ForceMode.Impulse);
             rollActive = false;
-            Debug.Log("Roll: " + inputValue);
+            Debug.Log("Roll: " + roll);
         }
 
+        myRB.mass = myRB.mass / 1000;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,7 +76,7 @@ public class SpaceShipScript : MonoBehaviour
 
     private void Update()   //TODO: deltatime multiplier to thrust. Count time thrust is pressed from enable to disable on button raised after it isPressed
     {
-        
+
     }
 
     private void FixedUpdate()

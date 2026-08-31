@@ -45,11 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9174008ce813b8741b1cb13879cc720c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManagerScript
+  debug: 0
   Planet: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
   Player: {fileID: 7831377459529041768, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
   list_gos: []
   G: 100
   degradingFactor: 500
+  timescale: 0.5
 --- !u!120 &3847339926684733508
 LineRenderer:
   serializedVersion: 3
