@@ -48,7 +48,7 @@ public class GravityScript : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!");
+            if (debug) { Debug.LogWarning(gameObject.name + " # ApplyGravity: Zero gravityVectorSUM!"); }
         }
     }
 

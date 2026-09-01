@@ -3,19 +3,18 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static InputManagerScript;
 
 public class CamerasScript : MonoBehaviour
 {
     //TODO: implement local script debugging level
-/*
-    private Camera mainCamera;
-    private CinemachineBrain brain;
-    private ICinemachineCamera iCamera;
-    private CinemachineBrainEvents brainEvents;
-*/
+    private readonly bool debug = false;
+
+    GameObject myInputManager;
+    InputManagerScript myInputManagerScript;
 
     public CinemachineCamera[] AllCameras;
-    private int cameraIndex = -1; //default -1: none added
+    public int cameraIndex = -1; //default -1: none added
     public CinemachineCamera CameraCockpit;
     public CinemachineCamera CameraFollow;
     public CinemachineCamera CameraFreefly;
@@ -41,6 +40,7 @@ public class CamerasScript : MonoBehaviour
 
     public DefaultSettings defaults;
 
+    [Serializable]
     public struct DefaultDistanceCameraSettings
     {
         public float[] DefaultDistanceAllCamerasFloat;
@@ -53,6 +53,7 @@ public class CamerasScript : MonoBehaviour
         }
     }
 
+    [Serializable]
     public struct DefaultSettings
     {
         public CinemachineInputAxisController[] InputAxisControllers;
@@ -143,6 +144,7 @@ public class CamerasScript : MonoBehaviour
         activeCamera = evt.IncomingCamera as CinemachineCamera;
 
         cameraIndex = Array.FindIndex(AllCameras, 0, x => x.name == activeCamera.name);
+        ToggleCIAC();
 
         if (activeCamera.TryGetComponent<CinemachineThirdPersonFollow>(out thirdPerson)) { return; }
         if (activeCamera.TryGetComponent<CinemachineOrbitalFollow>(out orbital)) { return; }
@@ -158,18 +160,16 @@ public class CamerasScript : MonoBehaviour
 
     void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor - Unity lighting bug. Check commit messages for link.
     {   //TODO: PRIORITY in-between refactoring --> what I was doing? only have active camera change the status of its inputaxiscontroller no need to change all cameras when controllerstatemachine updates
-        for (int i = 0; i < AllCameras.Length; i++)
+        if (!defaults.InputAxisControllers[cameraIndex].enabled && lookAroundToggle)//Manual camera: ON, but we do not want it to be on
         {
-            if (defaults.InputAxisControllers[i].enabled && lookAroundToggle == false)//Manual camera: ON, but we do not want it to be on
-            {
-                defaults.InputAxisControllers[i].enabled = false; //Disable manual control
-                    //Debug.Log(AllCameras[i].name + " CIAC-disabled.");
-            }
-            else //Manual camera: OFF
-            {
-                defaults.InputAxisControllers[i].enabled = true;  //Enable manual control
-                    //Debug.Log(AllCameras[i].name + " CIAC-enabled.");
-            }
+            //If scripting to controllers: https://discussions.unity.com/t/how-can-i-change-the-legacy-gain-value-in-a-script-in-cinemachine-input-axis-controller/950807/2
+            defaults.InputAxisControllers[cameraIndex].enabled = true; //Disable manual control
+                                                                       //Debug.Log(AllCameras[i].name + " CIAC-disabled.");
+        }
+        else //Default: Lookaround is OFF; UI mode default state
+        {
+            defaults.InputAxisControllers[cameraIndex].enabled = false;  //Enable manual control
+                                                                         //Debug.Log(AllCameras[i].name + " CIAC-enabled.");
         }
     }
 
@@ -237,14 +237,42 @@ public class CamerasScript : MonoBehaviour
         }
     }
 
+    private void ControlStateChangeHandler(stateControl newState)
+    {
+        //UI
+        if ((int)newState == 1) { lookAroundToggle = false; pilotToggle = false; }
+        //Pilot
+        if ((int)newState == 2) { lookAroundToggle = false; pilotToggle = true; }
+        //Camera
+        if ((int)newState == 3) { lookAroundToggle = true; pilotToggle = false; }
+        Debug.Log("Cameras: ControlStateChanged --> " + newState);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        myInputManager = GameObject.Find("InputManager");
+        if (myInputManager == null)
+        {
+            if (debug) { Debug.LogWarning("Cameras: InputManager object not found."); }
+        }
+        else
+        {
+            myInputManagerScript = myInputManager.GetComponent<InputManagerScript>();
+            if (myInputManagerScript == null)
+            {
+                if (debug) { Debug.LogWarning("Cameras: InputManagerScript not found."); }
+            }
+
+        }
+
+        myInputManagerScript.OnControlStateChange += ControlStateChangeHandler;
+
         CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
 
         AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
         Debug.Log("Added " + AllCameras.Length + " cameras.");
+        AllCameras[0].Prioritize(); //Swap to trigger OnCameraActivationEvent
         AllCameras[3].Prioritize(); //Should be overheadcamera
 
         defaults = new DefaultSettings(AllCameras); //store camera defaults
@@ -252,6 +280,8 @@ public class CamerasScript : MonoBehaviour
         CursorLock(false);
         ToggleCIAC();   //Start of game align camera modes to cursor mode
 
+
+        
         /*
         //DEBUG-CONTROLS
         InputActionTrace trace = new InputActionTrace();
