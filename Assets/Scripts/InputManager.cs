@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,44 +16,53 @@ public class InputManagerScript : MonoBehaviour
     InputActionMap pilotActionMap;
     InputActionMap cameraActionMap;
 
-    private InputAction lookAroundState;
-    private InputAction pilotState;
-
     private InputAction thrust, roll, yaw, pitch;
     private float thrustValue, rollValue, yawValue, pitchValue;
 
     private InputAction cameraZoom;
     private float zoomValue;
 
-    public enum stateControl
+    private InputAction lookAroundState;
+    private InputAction pilotState;
+
+    public enum StateControl
     {
         UI = 1,
         Pilot = 2,
         Camera = 3
     };
 
-    private stateControl currentState = 0;
-    public stateControl CurrentState
+    private StateControl _currentState = 0; //private value only for internal use
+    public StateControl CurrentState    //Class
     {
-        get { return CurrentState; }
+        get { return _currentState; }
         set
         {
-            if (CurrentState == value) return;
-            CurrentState = value;    //else
-            if (OnControlStateChange != null)
-                OnControlStateChange(CurrentState);
+            if (_currentState == value) { return; }
+            else
+            {
+                Debug.Log("InputManager: ControlStateChange before listener: " + value + " -> " + _currentState);
+                _currentState = value;
+
+                if (OnControlStateChange != null)   //Someone listening on Event
+                {
+                    Debug.Log("InputManager: Invoke OnControlStateChange " + _currentState);
+                    OnControlStateChange(_currentState);
+                }
+                else { Debug.Log("InputManager: No Listeners"); }
+            }
         }
     }
-    public delegate void OnControlStateChangeDelegate(stateControl newVal);
-    public event OnControlStateChangeDelegate OnControlStateChange;
 
-    public void OnStateChange() { }
+    //public delegate void OnControlStateChange(stateControl newState);
+    public event Action<StateControl> OnControlStateChange;
+    
 
     private void UpdateState()  //Only control what is requested
     {
-        if (lookAroundState.IsPressed() && (int)currentState != 3) // lookAround is held down and mode is not active
+        if (lookAroundState.IsPressed() && (int)_currentState != 3) // lookAround is held down and mode is not active
         {
-            currentState = stateControl.Camera;
+            CurrentState = StateControl.Camera;
             //myCamerasScript.lookAroundToggle = true;
             
 
@@ -61,17 +71,17 @@ public class InputManagerScript : MonoBehaviour
             Debug.Log("State: Looking");
         }
 
-        if (pilotState.IsPressed() && (int)currentState != 2) // pilot is held down and mode is not active
+        if (pilotState.IsPressed() && (int)_currentState != 2) // pilot is held down and mode is not active
         {
-            currentState = stateControl.Pilot;
+            CurrentState = StateControl.Pilot;
             //myCamerasScript.pilotToggle = true;
             //uiActionMap.Disable(); pilotActionMap.Enable(); cameraActionMap.Disable();
             Debug.Log("State: Piloting");
         }
 
-        if (!lookAroundState.IsPressed() && !pilotState.IsPressed() && (int)currentState != 1)  //No active control modifiers
+        if (!lookAroundState.IsPressed() && !pilotState.IsPressed() && (int)_currentState != 1)  //No active control modifiers
         {
-            currentState = stateControl.UI; //Default
+            CurrentState = StateControl.UI; //Default
             //myCamerasScript.lookAroundToggle = false;
             //myCamerasScript.pilotToggle = false;
             //uiActionMap.Enable(); pilotActionMap.Disable(); cameraActionMap.Disable();
@@ -79,10 +89,11 @@ public class InputManagerScript : MonoBehaviour
         }
     }
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentState = stateControl.UI;
+        CurrentState = StateControl.UI;
         
         //TODO: defineActionMaps
         pilotState = InputSystem.actions.FindAction("PilotState");              //Left-SHIFT
@@ -140,7 +151,7 @@ public class InputManagerScript : MonoBehaviour
     {
         UpdateState();  //Based on input update state that modifies how to the inputs are interpreted
 
-        if (currentState == stateControl.Camera)
+        if (_currentState == StateControl.Camera)
         {
             if (cameraZoom.WasPressedThisFrame())
             {
@@ -150,7 +161,7 @@ public class InputManagerScript : MonoBehaviour
             }
         }
 
-        if (currentState == stateControl.Pilot)  //Only control ship when cursor is locked - when unlocked user is engaged with UI
+        if (_currentState == StateControl.Pilot)  //Only control ship when cursor is locked - when unlocked user is engaged with UI
         {//TODO: Fix camera when piloting; separate button to enable certain thrusters? CTRL/SHIFT/etc. or something else?
             if (thrust.IsPressed())
             {

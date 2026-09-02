@@ -237,15 +237,25 @@ public class CamerasScript : MonoBehaviour
         }
     }
 
-    private void ControlStateChangeHandler(stateControl newState)
+    public void ControlStateChangeHandler(StateControl newState)
     {
-        //UI
-        if ((int)newState == 1) { lookAroundToggle = false; pilotToggle = false; }
-        //Pilot
-        if ((int)newState == 2) { lookAroundToggle = false; pilotToggle = true; }
-        //Camera
-        if ((int)newState == 3) { lookAroundToggle = true; pilotToggle = false; }
         Debug.Log("Cameras: ControlStateChanged --> " + newState);
+        //UI
+        if (newState == StateControl.UI) { lookAroundToggle = false; pilotToggle = false; }
+        //Pilot
+        if (newState == StateControl.Pilot) { lookAroundToggle = false; pilotToggle = true; }
+        //Camera
+        if (newState == StateControl.Camera) { lookAroundToggle = true; pilotToggle = false; }
+    }
+
+    private void OnEnable()
+    {
+        myInputManagerScript.OnControlStateChange += ControlStateChangeHandler; //TODO: PRIO does this properly assign the listener?
+    }
+
+    private void OnDisable()
+    {
+        myInputManagerScript.OnControlStateChange -= ControlStateChangeHandler;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -265,8 +275,6 @@ public class CamerasScript : MonoBehaviour
             }
 
         }
-
-        myInputManagerScript.OnControlStateChange += ControlStateChangeHandler;
 
         CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
 
