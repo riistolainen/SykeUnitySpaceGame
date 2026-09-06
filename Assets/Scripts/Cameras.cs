@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 using static InputManagerScript;
 
@@ -160,16 +161,35 @@ public class CamerasScript : MonoBehaviour
 
     void ToggleCIAC()   //TODO: BUG: crashes Unity when locking cursor - Unity lighting bug. Check commit messages for link.
     {   //TODO: PRIORITY in-between refactoring --> what I was doing? only have active camera change the status of its inputaxiscontroller no need to change all cameras when controllerstatemachine updates
-        if (!defaults.InputAxisControllers[cameraIndex].enabled && lookAroundToggle)//Manual camera: ON, but we do not want it to be on
+        if (defaults.InputAxisControllers[cameraIndex] == null)
         {
-            //If scripting to controllers: https://discussions.unity.com/t/how-can-i-change-the-legacy-gain-value-in-a-script-in-cinemachine-input-axis-controller/950807/2
-            defaults.InputAxisControllers[cameraIndex].enabled = true; //Disable manual control
-                                                                       //Debug.Log(AllCameras[i].name + " CIAC-disabled.");
+            Debug.Log("ToggleCIAC: No InputAxisController @ " + cameraIndex);
         }
-        else //Default: Lookaround is OFF; UI mode default state
+        else
         {
-            defaults.InputAxisControllers[cameraIndex].enabled = false;  //Enable manual control
-                                                                         //Debug.Log(AllCameras[i].name + " CIAC-enabled.");
+            if (defaults.InputAxisControllers[cameraIndex].Controllers == null) { Debug.Log("ToggleCIAC: No InputAxisController.Controllers @ " + cameraIndex); }
+            else
+            {
+                foreach (var controller in defaults.InputAxisControllers[cameraIndex].Controllers)
+                {
+                    if (controller.Input.Gain == 0f && lookAroundToggle == true) { controller.Input.Gain = 1f; }
+                    if (controller.Input.Gain != 0f && lookAroundToggle == false) { controller.Input.Gain = 0f; }
+
+                    /* Check the name of the axis/controller and disable it
+                    if (controller.Name == "Look Orbit X")
+                    {
+                        controller.Enabled = false;
+                    }
+
+                    if (controller.Name == "Look Orbit Y")
+                    {
+                        controller.Enabled = false;
+                    }
+                    */
+
+                    //If scripting to controllers: https://discussions.unity.com/t/how-can-i-change-the-legacy-gain-value-in-a-script-in-cinemachine-input-axis-controller/950807/2
+                }
+            }
         }
     }
 
@@ -246,20 +266,12 @@ public class CamerasScript : MonoBehaviour
         if (newState == StateControl.Pilot) { lookAroundToggle = false; pilotToggle = true; }
         //Camera
         if (newState == StateControl.Camera) { lookAroundToggle = true; pilotToggle = false; }
+        
+        CursorLock(lookAroundToggle || pilotToggle);   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
+        ToggleCIAC();
     }
 
     private void OnEnable()
-    {
-        myInputManagerScript.OnControlStateChange += ControlStateChangeHandler; //TODO: PRIO does this properly assign the listener?
-    }
-
-    private void OnDisable()
-    {
-        myInputManagerScript.OnControlStateChange -= ControlStateChangeHandler;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
     {
         myInputManager = GameObject.Find("InputManager");
         if (myInputManager == null)
@@ -276,8 +288,21 @@ public class CamerasScript : MonoBehaviour
 
         }
 
-        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
+        myInputManagerScript.OnControlStateChange += ControlStateChangeHandler; //TODO: PRIO does this properly assign the listener?
 
+        CinemachineCore.CameraActivatedEvent.AddListener(OnCameraActivation);
+    }
+
+    private void OnDisable()
+    {
+        myInputManagerScript.OnControlStateChange -= ControlStateChangeHandler;
+
+        CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraActivation);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
         AllCameras = FindObjectsByType<CinemachineCamera>().OrderBy(x => x.name).ToArray();
         Debug.Log("Added " + AllCameras.Length + " cameras.");
         AllCameras[0].Prioritize(); //Swap to trigger OnCameraActivationEvent
@@ -329,7 +354,6 @@ public class CamerasScript : MonoBehaviour
         // #3 Lookaround
         //      - cursor locked, ship control OFF, camera control ON)
         
-        CursorLock( lookAroundToggle || pilotToggle );   //Manage locking/hiding cursor to control camera -- lock cursor when wanting to lookAround, free otherwise
         //ToggleCIAC();   //Enable camera rotation control from mouse based on cursor state
     }
 }

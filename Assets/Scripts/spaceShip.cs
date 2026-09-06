@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //TODO: controls to player so they don't have to be on each separate ss?
+//TODO: PRIO Gyro UI that shows current acceleration of SS-object related to "reset" point
 
 public class SpaceShipScript : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class SpaceShipScript : MonoBehaviour
     {
         //Adjust mass for piloting only (multithread issues?)
 
-        myRB.mass = myRB.mass * 1000;
+        
         //TODO: Cap forces to ship propulsion values
         if (thrust != 0f)
         {
@@ -32,6 +33,8 @@ public class SpaceShipScript : MonoBehaviour
 
         //TODO: Activate methods for roll, yaw, pitch - currently always ON
         //TODO: Fix axis for each
+
+        myRB.mass = myRB.mass * 1000;
 
         if (pitch != 0f)
         {
@@ -72,6 +75,10 @@ public class SpaceShipScript : MonoBehaviour
         {
             gameObject.GetComponent<Rigidbody>().linearVelocity = initSpeed;
         }
+
+        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        propertyBlock.SetColor("_Color", Random.ColorHSV());
+        gameObject.GetComponentInChildren<MeshRenderer>().SetPropertyBlock(propertyBlock);
     }
 
     private void Update()   //TODO: deltatime multiplier to thrust. Count time thrust is pressed from enable to disable on button raised after it isPressed

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8370269973856177947}
   - component: {fileID: 8807429635762649618}
   - component: {fileID: 7677939840939461912}
+  - component: {fileID: 7495960689149235909}
+  - component: {fileID: 2853434446767933080}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -28,13 +30,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3888619923661995036}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03456727, y: 0.044036612, z: -0.0015246185, w: 0.99843055}
+  m_LocalRotation: {x: 0.034569353, y: 0.044037595, z: -0.0015247443, w: 0.99843043}
   m_LocalPosition: {x: 99.56085, y: 0.34580156, z: -4.9686584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.966, y: 5.051, z: 0}
 --- !u!20 &8777619870466972734
 Camera:
   m_ObjectHideFlags: 0
@@ -114,7 +116,7 @@ MonoBehaviour:
   UpdateMethod: 2
   BlendUpdateMethod: 1
   LensModeOverride:
-    Enabled: 0
+    Enabled: 1
     DefaultMode: 2
   DefaultBlend:
     Style: 1
@@ -142,7 +144,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -170,3 +173,21 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!45 &7495960689149235909
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888619923661995036}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: ceee24eb3c5c505498721b4244c58050, type: 2}
+--- !u!45 &2853434446767933080
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3888619923661995036}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}

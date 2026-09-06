@@ -11,11 +11,11 @@ public class InputManagerScript : MonoBehaviour
 
     GameObject camerasRef;
     CamerasScript myCamerasScript;
-
+/* Option for disabling some actions by disabling input components. Currently working the components themselves by just reacting to input. Thus - InputManager monitors and parses input from user to the system. Systems choose how they react to it.
     InputActionMap uiActionMap;
     InputActionMap pilotActionMap;
     InputActionMap cameraActionMap;
-
+*/
     private InputAction thrust, roll, yaw, pitch;
     private float thrustValue, rollValue, yawValue, pitchValue;
 
@@ -32,7 +32,7 @@ public class InputManagerScript : MonoBehaviour
         Camera = 3
     };
 
-    private StateControl _currentState = 0; //private value only for internal use
+    private StateControl _currentState = StateControl.UI; //private value only for internal use
     public StateControl CurrentState    //Class
     {
         get { return _currentState; }
@@ -60,18 +60,16 @@ public class InputManagerScript : MonoBehaviour
 
     private void UpdateState()  //Only control what is requested
     {
-        if (lookAroundState.IsPressed() && (int)_currentState != 3) // lookAround is held down and mode is not active
+        if (lookAroundState.IsPressed() && _currentState != StateControl.Camera) // lookAround is held down and mode is not active
         {
             CurrentState = StateControl.Camera;
             //myCamerasScript.lookAroundToggle = true;
             
-
-
             //uiActionMap.Disable(); pilotActionMap.Disable(); cameraActionMap.Enable();
             Debug.Log("State: Looking");
         }
 
-        if (pilotState.IsPressed() && (int)_currentState != 2) // pilot is held down and mode is not active
+        if (pilotState.IsPressed() && _currentState != StateControl.Pilot) // pilot is held down and mode is not active
         {
             CurrentState = StateControl.Pilot;
             //myCamerasScript.pilotToggle = true;
@@ -79,7 +77,7 @@ public class InputManagerScript : MonoBehaviour
             Debug.Log("State: Piloting");
         }
 
-        if (!lookAroundState.IsPressed() && !pilotState.IsPressed() && (int)_currentState != 1)  //No active control modifiers
+        if (!lookAroundState.IsPressed() && !pilotState.IsPressed() && _currentState != StateControl.UI)  //No active control modifiers
         {
             CurrentState = StateControl.UI; //Default
             //myCamerasScript.lookAroundToggle = false;

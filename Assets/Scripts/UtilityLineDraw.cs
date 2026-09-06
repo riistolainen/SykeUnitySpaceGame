@@ -92,6 +92,7 @@ public class UtilityLineDraw : MonoBehaviour
             visualGravityVector.useWorldSpace = false;
             visualGravityVector.SetPosition(0, transform.localPosition); //start to object
             visualGravityVector.material = new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));
+            visualAccelerationVector.widthMultiplier = 0.1f;
         }
         else if (enableAccelerationVector)
         {
@@ -99,6 +100,7 @@ public class UtilityLineDraw : MonoBehaviour
             visualAccelerationVector.useWorldSpace = false;
             visualAccelerationVector.SetPosition(0, transform.localPosition); //start to object
             visualAccelerationVector.material = new Material(Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default"));
+            visualAccelerationVector.widthMultiplier = 0.1f;
         }
     }
 }

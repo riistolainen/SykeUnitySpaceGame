@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="UnityEditor.UIElements.ProjectSettings" elementFormDefault="qualified" targetNamespace="UnityEditor.UIElements.ProjectSettings" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
-  <xs:complexType name="ProjectSettingsTitleBarType">
+  <xs:complexType name="TabButtonType">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="UnityEngine.UIElements" base="q1:VisualElementType">
         <xs:choice />
-        <xs:attribute name="label" type="xs:string" />
+        <xs:attribute name="target" type="xs:string" />
+        <xs:attribute name="text" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="ProjectSettingsTitleBar" xmlns:q2="UnityEngine.UIElements" substitutionGroup="q2:VisualElement" type="tns:ProjectSettingsTitleBarType" />
+  <xs:element name="TabButton" xmlns:q2="UnityEngine.UIElements" substitutionGroup="q2:VisualElement" type="tns:TabButtonType" />
   <xs:complexType name="TabbedViewType">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q3="UnityEngine.UIElements" base="q3:VisualElementType">
@@ -18,16 +19,15 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TabbedView" xmlns:q4="UnityEngine.UIElements" substitutionGroup="q4:VisualElement" type="tns:TabbedViewType" />
-  <xs:complexType name="TabButtonType">
+  <xs:complexType name="ProjectSettingsTitleBarType">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q5="UnityEngine.UIElements" base="q5:VisualElementType">
         <xs:choice />
-        <xs:attribute name="text" type="xs:string" />
-        <xs:attribute name="target" type="xs:string" />
+        <xs:attribute name="label" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="TabButton" xmlns:q6="UnityEngine.UIElements" substitutionGroup="q6:VisualElement" type="tns:TabButtonType" />
+  <xs:element name="ProjectSettingsTitleBar" xmlns:q6="UnityEngine.UIElements" substitutionGroup="q6:VisualElement" type="tns:ProjectSettingsTitleBarType" />
   <xs:complexType name="ProjectSettingsSectionType">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q7="UnityEngine.UIElements" base="q7:VisualElementType">

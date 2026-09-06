@@ -3,11 +3,10 @@
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
   <xs:complexType name="VisualSplitterType">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q1="UnityEngine.UIElements" base="q1:ImmediateModeElementType">
+      <xs:extension xmlns:q1="UnityEngine.UIElements" base="q1:VisualElementType">
         <xs:choice />
-        <xs:attribute name="binding-path" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="VisualSplitter" xmlns:q2="UnityEngine.UIElements" substitutionGroup="q2:ImmediateModeElement" type="tns:VisualSplitterType" />
+  <xs:element name="VisualSplitter" xmlns:q2="UnityEngine.UIElements" substitutionGroup="q2:VisualElement" type="tns:VisualSplitterType" />
 </xs:schema>
