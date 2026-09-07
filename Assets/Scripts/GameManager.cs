@@ -14,26 +14,11 @@ public class GameManagerScript : MonoBehaviour
     public float G;
     public float degradingFactor;
 
-    public float timescale = 0.5f;
+    public float timeScale = 0.5f;
     //public List<LineRenderer> linesList;
     //public LineRenderer addingLine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        Time.timeScale = timescale;
-        //effectiveGravity = G/(1+(distance/degradingFactor))
-        G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
-        degradingFactor = 1000;
-
-        //addingLine = gameObject.GetOrAddComponent<LineRenderer>();
-
-        // TODO: instantiate level in sceneManager instead of manually placing objects?
-        // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
-
-        //list_gos.AddRange(GameObject.FindGameObjectsWithTag("GravityBody")); //prepopulate with scene
-        if (debug) { Debug.Log("Initial gravity objects: " + list_gos.Count); }
-    }
 
     public bool AddMe(GameObject goesToList)    //track gravity objects
     {
@@ -46,8 +31,7 @@ public class GameManagerScript : MonoBehaviour
         return false;
     }
 
-
-    /*UNUSED
+        /*UNUSED
     public void DrawLine(Vector3 from, Vector3 to)
     { //TODO: add return values for debugging?
         addingLine.useWorldSpace = false;
@@ -57,9 +41,8 @@ public class GameManagerScript : MonoBehaviour
     }
     */
 
-    private void FixedUpdate()
+    private void CalculateGravity()    //TODO: architechture - does this belong to GravityScript? If so, only the list of objects and call to do this would come from this GameManager - pass the list as an arg? ...currently this is a centralized calculation. Moving this to Gravity would make each GO do this separately.
     {
-
         /*  START:  ### GRAVITY ### */
         if (list_gos.Count > 1) //only when two or more gravity objects
         {   //Apply gravity from each to each
@@ -79,7 +62,7 @@ public class GameManagerScript : MonoBehaviour
                         float dist = Vector3.Distance(toGO.transform.position, fromGO.transform.position);
 
                         Vector3 dir = toGO.transform.position - fromGO.transform.position; //(to, from)
-                        float effG = Time.fixedDeltaTime*(G+toGO.GetComponent<Rigidbody>().mass*fromGO.GetComponent<Rigidbody>().mass)/(1+(dist/degradingFactor)); //(500 away gravity is 1/2 G) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
+                        float effG = Time.fixedDeltaTime * (G + toGO.GetComponent<Rigidbody>().mass * fromGO.GetComponent<Rigidbody>().mass) / (1 + (dist / degradingFactor)); //(500 away gravity is 1/2 G) //Too small?// Time.fixedDeltaTime * G * ((oneRB.mass * otherRB.mass) / (1f + (dist * dist))); //Time.fixedDeltaTime default is 0.02, so limit force application by time interval
                         fromGO.GetComponent<GravityScript>().GravityVectorSum(Vector3.Scale(dir.normalized, new Vector3(effG, effG, effG)));    //sum forcevectors before applying
 
                         if (debug)
@@ -94,8 +77,30 @@ public class GameManagerScript : MonoBehaviour
             //TODO: Clean list_gos? ie. each object to remove itself from list on OnDestroy()?
         }
         /*  EOF:    ### GRAVITY ### */
+    }
 
+    void Start()
+    {
+        //Time.timeScale = timeScale;
+        //Time.fixedDeltaTime = Time.timeScale;
 
+        //effectiveGravity = G/(1+(distance/degradingFactor))
+        G = 6.674f * 10E-11f; // * 10e22f; //scaling factor of 10e22 to get usable celestial mass numbers;
+        degradingFactor = 1000;
+
+        //addingLine = gameObject.GetOrAddComponent<LineRenderer>();
+
+        // TODO: instantiate level in sceneManager instead of manually placing objects?
+        // newGO = Instantiate(planet2, new Vector3(0, 0, 0), Quaternion.identity);
+
+        //list_gos.AddRange(GameObject.FindGameObjectsWithTag("GravityBody")); //prepopulate with scene
+        if (debug) { Debug.Log("Initial gravity objects: " + list_gos.Count); }
+    }
+
+    private void FixedUpdate()
+    {
+        CalculateGravity();
+        
         /*  START:  ### LINES FADE   ### */
         /*
         for (int i = 0; linesList.Count < i; i++)

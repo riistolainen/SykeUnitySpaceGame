@@ -13,6 +13,8 @@ public class CamerasScriptableScript : ScriptableObject
 
     [SerializeField] private CinemachineCamera[] _cameraArray;
 
+    [SerializeField] private float timeScale;
+
     public bool thisIsScriptableObject = true;
 
 

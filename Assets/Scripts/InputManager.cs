@@ -149,11 +149,15 @@ public class InputManagerScript : MonoBehaviour
     {
         UpdateState();  //Based on input update state that modifies how to the inputs are interpreted
 
+
+        //TODO: Adjust for delta-T?
+        //TODO: Move function call to FixedUpdate for more efficient, but less reactive control?
+
         if (_currentState == StateControl.Camera)
         {
             if (cameraZoom.WasPressedThisFrame())
             {
-                zoomValue = cameraZoom.ReadValue<float>();
+                zoomValue = cameraZoom.ReadValue<float>() * Time.unscaledDeltaTime;
                 myCamerasScript.ZoomCamera(zoomValue);
                 zoomValue = 0f;
             }
@@ -165,28 +169,28 @@ public class InputManagerScript : MonoBehaviour
             {
                 mySpaceshipScript.thrustActive = true;
 
-                thrustValue += thrust.ReadValue<float>();
+                thrustValue += thrust.ReadValue<float>() * Time.deltaTime;
             }
 
             if (roll.IsPressed())
             {
                 mySpaceshipScript.rollActive = true;
 
-                rollValue -= roll.ReadValue<float>();
+                rollValue -= roll.ReadValue<float>() * Time.deltaTime;
             }
 
             if (yaw.IsPressed())
             {
                 mySpaceshipScript.yawActive = true;
 
-                yawValue += yaw.ReadValue<float>();
+                yawValue += yaw.ReadValue<float>() * Time.deltaTime;
             }
 
             if (pitch.IsPressed())
             {
                 mySpaceshipScript.pitchActive = true;
 
-                pitchValue += pitch.ReadValue<float>();
+                pitchValue += pitch.ReadValue<float>() * Time.deltaTime;
             }
             mySpaceshipScript.Pilot(thrustValue, rollValue, yawValue, pitchValue);
             thrustValue = 0; rollValue = 0; yawValue = 0; pitchValue = 0;   //reset applied values

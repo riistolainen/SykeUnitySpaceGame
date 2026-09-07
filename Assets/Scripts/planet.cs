@@ -31,7 +31,7 @@ public class PlanetScript : MonoBehaviour
     {
         if (rotation)
         {  //Planet rotation
-            transform.Rotate(0, rotation_spd * Time.deltaTime, 0);
+            transform.Rotate(0, rotation_spd * Time.fixedDeltaTime, 0);
         }
     }
 }
