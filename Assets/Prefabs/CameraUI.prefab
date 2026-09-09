@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3888619923661995036
+--- !u!1 &2613247788707371229
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4156747001894146510}
-  - component: {fileID: 8777619870466972734}
-  - component: {fileID: 8370269973856177947}
-  - component: {fileID: 8807429635762649618}
-  - component: {fileID: 7677939840939461912}
-  - component: {fileID: 7495960689149235909}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: MainCamera
+  - component: {fileID: 5280707536033170602}
+  - component: {fileID: 848038399708322683}
+  - component: {fileID: 9041616485823186011}
+  - component: {fileID: 4437267784253475264}
+  - component: {fileID: 7661149815012160103}
+  m_Layer: 5
+  m_Name: CameraUI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4156747001894146510
+--- !u!4 &5280707536033170602
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
+  m_GameObject: {fileID: 2613247788707371229}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.034569353, y: 0.044037595, z: -0.0015247443, w: 0.99843043}
-  m_LocalPosition: {x: 99.56085, y: 0.34580156, z: -4.9686584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.74915, y: 562.1634, z: 32.67775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 3.966, y: 5.051, z: 0}
---- !u!20 &8777619870466972734
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &848038399708322683
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
+  m_GameObject: {fileID: 2613247788707371229}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -69,13 +68,13 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 5000
-  field of view: 60
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -87,28 +86,28 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &8370269973856177947
+--- !u!81 &9041616485823186011
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
-  m_Enabled: 1
---- !u!114 &8807429635762649618
+  m_GameObject: {fileID: 2613247788707371229}
+  m_Enabled: 0
+--- !u!114 &4437267784253475264
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
-  m_Enabled: 1
+  m_GameObject: {fileID: 2613247788707371229}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBrain
   ShowDebugText: 0
-  ShowCameraFrustum: 1
+  ShowCameraFrustum: 0
   IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
@@ -127,13 +126,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!114 &7677939840939461912
+--- !u!114 &7661149815012160103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
+  m_GameObject: {fileID: 2613247788707371229}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
@@ -142,7 +141,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -171,12 +170,3 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!45 &7495960689149235909
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3888619923661995036}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: ceee24eb3c5c505498721b4244c58050, type: 2}
