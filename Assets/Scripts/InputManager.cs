@@ -145,13 +145,11 @@ public class InputManagerScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         UpdateState();  //Based on input update state that modifies how to the inputs are interpreted
 
-
-        //TODO: Adjust for delta-T?
-        //TODO: Move function call to FixedUpdate for more efficient, but less reactive control?
+        //TODO: Update() or FixedUpdate()? more performant, but less reactive control?
 
         if (_currentState == StateControl.Camera)
         {
@@ -164,7 +162,7 @@ public class InputManagerScript : MonoBehaviour
         }
 
         if (_currentState == StateControl.Pilot)  //Only control ship when cursor is locked - when unlocked user is engaged with UI
-        {//TODO: Fix camera when piloting; separate button to enable certain thrusters? CTRL/SHIFT/etc. or something else?
+        {
             if (thrust.IsPressed())
             {
                 mySpaceshipScript.thrustActive = true;

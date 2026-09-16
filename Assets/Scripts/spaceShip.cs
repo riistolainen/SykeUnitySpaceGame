@@ -8,13 +8,24 @@ public class SpaceShipScript : MonoBehaviour
 {
     public bool gravity = true;
 
+    //START:: SCENE INIT
+    public Vector3 currentSpeed = Vector3.zero;
+    public Vector3 currentAngularVelocity = Vector3.zero;
+    public Vector3 initSpeed = Vector3.zero;
+    //END:: SCENE INIT
+
+    //START:: CONTROL
     public bool thrustActive = false;
     public bool rollActive = false;
     public bool yawActive = false;
     public bool pitchActive = false;
+    //END:: CONTROL
+
+
+    //START:: SPACESHIP STATS
     public float mainThrustPower = 5; //power of thruster
     public float utilityThrustPower = 1;
-    public Vector3 initSpeed = new(0f,0f,0f);
+    //END:: SPACESHIP STATS
 
     private Rigidbody myRB;
 
@@ -65,6 +76,12 @@ public class SpaceShipScript : MonoBehaviour
     {
         gameObject.TryGetComponent<Rigidbody>(out myRB);
         if (myRB == null) { Debug.LogError("Spaceship: No Rigidbody found!"); }
+        else
+        {
+            myRB.angularDamping = 0f;   //Default 0.5 - space has no air
+            myRB.maxAngularVelocity =   100000000f; //up max speeds
+            myRB.maxLinearVelocity =    100000000f;
+        }
 
         if (gravity)
         {
@@ -76,6 +93,8 @@ public class SpaceShipScript : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().linearVelocity = initSpeed;
         }
 
+
+        //Random color to spaceship block?
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
         propertyBlock.SetColor("_Color", Random.ColorHSV());
         gameObject.GetComponentInChildren<MeshRenderer>().SetPropertyBlock(propertyBlock);
@@ -88,6 +107,8 @@ public class SpaceShipScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currentAngularVelocity = myRB.angularVelocity;
+        currentSpeed = myRB.linearVelocity;
         
     }
 }
