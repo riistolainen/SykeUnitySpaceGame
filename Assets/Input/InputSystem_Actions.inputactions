@@ -31,7 +31,7 @@
                 {
                     "name": "",
                     "id": "bd66919e-6923-4b94-81f6-e3922eddbfdc",
-                    "path": "<Keyboard>/leftAlt",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -42,7 +42,7 @@
                 {
                     "name": "",
                     "id": "43c9e7eb-ef75-4053-b7a0-268511062c37",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
@@ -587,7 +587,7 @@
                     "type": "Button",
                     "id": "123ee329-5560-4e8f-8483-f2c43b387f43",
                     "expectedControlType": "",
-                    "processors": "",
+                    "processors": "Clamp(max=10)",
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
@@ -607,7 +607,7 @@
                     "type": "Value",
                     "id": "55931395-12b8-4df2-aa43-e9db199a8edf",
                     "expectedControlType": "Axis",
-                    "processors": "",
+                    "processors": "Clamp(min=-1,max=1)",
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
@@ -627,7 +627,7 @@
                     "type": "Value",
                     "id": "f20495f3-dc68-42c1-95bc-04ca15b42d30",
                     "expectedControlType": "Axis",
-                    "processors": "",
+                    "processors": "Clamp(min=-1,max=1)",
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
@@ -647,7 +647,7 @@
                     "type": "Value",
                     "id": "fc88182e-eb46-49c6-946c-e3678468491b",
                     "expectedControlType": "Axis",
-                    "processors": "",
+                    "processors": "Clamp(min=-1,max=1)",
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
@@ -712,7 +712,7 @@
                 {
                     "name": "",
                     "id": "a10ab92a-3bcc-4e09-a335-1fa4852faabd",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -930,6 +930,39 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "1D Axis",
+                    "id": "b8f9d268-89d9-4e96-8686-22ff71227460",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Yaw",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "30e6bb12-48e2-4b84-8421-d1b89eea890f",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "8efa0348-7c7a-45d6-ba7d-f231a3cc9840",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "a2e4a3ec-1534-4ee8-9d76-cb34b0f5e66f",
                     "path": "<Keyboard>/e",
@@ -961,6 +994,39 @@
                     "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "9faa9f76-6acc-480b-a8ff-7cd2d2b9cacd",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "a0bcb13e-6918-4890-826a-14c20bcf6761",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e107ce1e-a572-447c-848e-9b41bc00cd76",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

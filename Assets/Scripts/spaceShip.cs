@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//TODO: controls to player so they don't have to be on each separate ss?
+//TODO1: controls to player so they don't have to be on each separate ss?
 //TODO: PRIO Gyro UI that shows current acceleration of SS-object related to "reset" point
 
 public class SpaceShipScript : MonoBehaviour
@@ -21,54 +21,54 @@ public class SpaceShipScript : MonoBehaviour
     public bool pitchActive = false;
     //END:: CONTROL
 
+    //TODO: Currently there is a clamp on input settings for all relevant axis. 1) change this based on the spaceship OR 2) remove clamp from inputs and add it here?
+    // Currently moving mouse faster may allow moving ship faster... so mouse movement must be clamped. Using analog control requires more work than digital direction control.
+    // Do the ships thrusters work with part power or are they ON/OFF with specific burn times?
+    // Allows ship design variation through limitations. Spool-up-time for thrusters - minimum thrust acquired etc. before getting to analog control (always available precise vectoring)
 
     //START:: SPACESHIP STATS
-    public float mainThrustPower = 5; //power of thruster
-    public float utilityThrustPower = 1;
+    public float thrustMain = 10; //power of thruster
+    public float thrustUtility = 1;
+    public float thrustRoll = 1;
+    public float thrustYaw = 1;
+    public float thrustPitch = 1;
+
     //END:: SPACESHIP STATS
 
     private Rigidbody myRB;
 
     public void Pilot(float thrust, float roll, float yaw, float pitch)
     {
-        //Adjust mass for piloting only (multithread issues?)
+        //TODO: Adjust mass for piloting only (multithread issues?)
 
-        
         //TODO: Cap forces to ship propulsion values
         if (thrust != 0f)
         {
-            myRB.AddForce(transform.forward * thrust * mainThrustPower);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
+            myRB.AddForce(transform.forward * thrust * thrustMain);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
-            Debug.Log("#Thrust#    " + gameObject.name + "/" + "   -> " + " Direction:  " + transform.forward + ", Power: " + mainThrustPower);
-        }
-
-        //TODO: Activate methods for roll, yaw, pitch - currently always ON
-        //TODO: Fix axis for each
-
-        myRB.mass = myRB.mass * 1000;
-
-        if (pitch != 0f)
-        {
-            myRB.AddRelativeTorque(Vector3.right * pitch * utilityThrustPower, ForceMode.Impulse);
-            pitchActive = false;
-            Debug.Log("Pitch: " + pitch);
-        }
-
-        if (yaw != 0f)
-        {
-            myRB.AddRelativeTorque(Vector3.up * yaw * utilityThrustPower, ForceMode.Impulse);
-            yawActive = false;
-            Debug.Log("Yaw: " + yaw);
+            Debug.Log("#Thrust#    " + gameObject.name + "/" + "   -> " + " Direction:  " + transform.forward + ", Power: " + thrustMain);
         }
 
         if (roll != 0f)
         {
-            myRB.AddRelativeTorque(Vector3.forward * roll * utilityThrustPower, ForceMode.Impulse);
+            myRB.AddRelativeTorque(Vector3.forward * roll * thrustRoll, ForceMode.Impulse);
             rollActive = false;
             Debug.Log("Roll: " + roll);
         }
 
-        myRB.mass = myRB.mass / 1000;
+        if (yaw != 0f)
+        {
+            myRB.AddRelativeTorque(Vector3.up * yaw * thrustYaw, ForceMode.Impulse);
+            yawActive = false;
+            Debug.Log("Yaw: " + yaw);
+        }
+
+        if (pitch != 0f)
+        {
+            myRB.AddRelativeTorque(Vector3.right * pitch * thrustPitch, ForceMode.Impulse);
+            pitchActive = false;
+            Debug.Log("Pitch: " + pitch);
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

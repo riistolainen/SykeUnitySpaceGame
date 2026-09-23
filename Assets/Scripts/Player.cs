@@ -5,7 +5,7 @@ public class PlayerScript : MonoBehaviour
 {
     
 
-    /*TODO: NOT NEEDED?
+    /*TODO2: NOT NEEDED?
     //GameManager stuff
     public GameObject gMref;
     private GameManagerScript myGMScript;
@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        /* TODO: NOT NEEDED?
+        /* TODO2: NOT NEEDED?
         gMref = GameObject.Find("GameManager");
         myGMScript = gMref.GetComponent<GameManagerScript>();
 
