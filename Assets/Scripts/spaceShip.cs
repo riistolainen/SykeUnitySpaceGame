@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,9 +34,22 @@ public class SpaceShipScript : MonoBehaviour
     public float thrustYaw = 1;
     public float thrustPitch = 1;
 
+    public Vector3 centerOfMass;
+
     //END:: SPACESHIP STATS
 
+    //START:: SPACESHIP PARTS
+    public ParticleSystem[] thrusters;
+    ParticleSystem.MainModule mm;
+
     private Rigidbody myRB;
+
+    public void ThrustersEngage(int i)
+    {
+        mm = thrusters[i].main;
+        mm.duration = 0.1f;
+        thrusters[i].Play();
+    }
 
     public void Pilot(float thrust, float roll, float yaw, float pitch)
     {
@@ -46,13 +60,56 @@ public class SpaceShipScript : MonoBehaviour
         {
             myRB.AddForce(transform.forward * thrust * thrustMain);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
+
+            for (int i = 0; i < thrusters.Length; i++)
+            {
+                if (thrusters[i].name == "Particle System - Main Thruster")
+                {
+                    ThrustersEngage(i);
+                }
+            }
+
             Debug.Log("#Thrust#    " + gameObject.name + "/" + "   -> " + " Direction:  " + transform.forward + ", Power: " + thrustMain);
+            
         }
 
         if (roll != 0f)
         {
             myRB.AddRelativeTorque(Vector3.forward * roll * thrustRoll, ForceMode.Impulse);
             rollActive = false;
+
+            if (roll < 0)
+            {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Bottom Left Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+
+                    if (thrusters[i].name == "Particle System - Top Right Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+
+            if (roll > 0)
+            {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Bottom Right Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+
+                    if (thrusters[i].name == "Particle System - Top Left Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+
             Debug.Log("Roll: " + roll);
         }
 
@@ -60,6 +117,35 @@ public class SpaceShipScript : MonoBehaviour
         {
             myRB.AddRelativeTorque(Vector3.up * yaw * thrustYaw, ForceMode.Impulse);
             yawActive = false;
+
+            if (yaw > 0)
+            {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Left Front Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                    if (thrusters[i].name == "Particle System - Right Back Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+            if (yaw < 0) {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Right Front Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                    if (thrusters[i].name == "Particle System - Left Back Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+
             Debug.Log("Yaw: " + yaw);
         }
 
@@ -67,6 +153,36 @@ public class SpaceShipScript : MonoBehaviour
         {
             myRB.AddRelativeTorque(Vector3.right * pitch * thrustPitch, ForceMode.Impulse);
             pitchActive = false;
+
+            if (pitch < 0)
+            {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Bottom Left Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                    if (thrusters[i].name == "Particle System - Bottom Right Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+            if (pitch > 0)
+            {
+                for (int i = 0; i < thrusters.Length; i++)
+                {
+                    if (thrusters[i].name == "Particle System - Top Left Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                    if (thrusters[i].name == "Particle System - Top Right Thruster")
+                    {
+                        ThrustersEngage(i);
+                    }
+                }
+            }
+
             Debug.Log("Pitch: " + pitch);
         }
     }
@@ -93,10 +209,11 @@ public class SpaceShipScript : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().linearVelocity = initSpeed;
         }
 
+        thrusters = FindObjectsByType<ParticleSystem>();
 
         //Random color to spaceship block?
         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetColor("_Color", Random.ColorHSV());
+        propertyBlock.SetColor("_Color", UnityEngine.Random.ColorHSV());
         gameObject.GetComponentInChildren<MeshRenderer>().SetPropertyBlock(propertyBlock);
     }
 
