@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 899668496515591566}
   - component: {fileID: 387432317115098396}
   - component: {fileID: 3738526021573380334}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CinemachineCameraFreefly
   m_TagString: Untagged
   m_Icon: {fileID: 0}

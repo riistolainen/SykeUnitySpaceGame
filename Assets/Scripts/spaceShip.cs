@@ -58,7 +58,7 @@ public class SpaceShipScript : MonoBehaviour
         //TODO: Cap forces to ship propulsion values
         if (thrust != 0f)
         {
-            myRB.AddForce(transform.forward * thrust * thrustMain);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
+            myRB.AddForce(thrust * thrustMain * transform.forward);   //"forward" z-axis... I think. Thruster power in kN... scaling has been done on stellar masses
             thrustActive = false;
 
             for (int i = 0; i < thrusters.Length; i++)
@@ -75,7 +75,7 @@ public class SpaceShipScript : MonoBehaviour
 
         if (roll != 0f)
         {
-            myRB.AddRelativeTorque(Vector3.forward * roll * thrustRoll, ForceMode.Impulse);
+            myRB.AddRelativeTorque(roll * thrustRoll * Vector3.forward, ForceMode.Impulse);
             rollActive = false;
 
             if (roll < 0)
@@ -115,7 +115,7 @@ public class SpaceShipScript : MonoBehaviour
 
         if (yaw != 0f)
         {
-            myRB.AddRelativeTorque(Vector3.up * yaw * thrustYaw, ForceMode.Impulse);
+            myRB.AddRelativeTorque(yaw * thrustYaw * Vector3.up, ForceMode.Impulse);
             yawActive = false;
 
             if (yaw > 0)
@@ -151,7 +151,7 @@ public class SpaceShipScript : MonoBehaviour
 
         if (pitch != 0f)
         {
-            myRB.AddRelativeTorque(Vector3.right * pitch * thrustPitch, ForceMode.Impulse);
+            myRB.AddRelativeTorque(pitch * thrustPitch * Vector3.right, ForceMode.Impulse);
             pitchActive = false;
 
             if (pitch < 0)

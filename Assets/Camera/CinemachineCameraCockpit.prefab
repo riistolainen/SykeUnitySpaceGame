@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4093214307320832773}
   - component: {fileID: 6602569794111462444}
   - component: {fileID: 4483901506297395168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CinemachineCameraCockpit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ MonoBehaviour:
   Target:
     TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 1
+    CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60.06674
     OrthographicSize: 5

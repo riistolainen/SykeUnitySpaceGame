@@ -26,7 +26,7 @@ public class UtilityLineDraw : MonoBehaviour
     private GradientColorKey[] highGradient = new GradientColorKey[] { new GradientColorKey(Color.green, 0.0f), new GradientColorKey(Color.yellow, 0.5f), new GradientColorKey(Color.orange, 0.75f), new GradientColorKey(Color.red, 1.0f) };
     private GradientAlphaKey[] alphaGradient = new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) };
     
-    public enum gravityScale {
+    public enum GravityScale {
         low = 10,
         med = 100,
         high = 1000
@@ -35,21 +35,21 @@ public class UtilityLineDraw : MonoBehaviour
     //TODO: Scale line length as square of distance above the thresholds to stop the lines from growing too large. Instead have the color notate the strength (gradients are good for this about)
     public Gradient SetColorGradient(float scale)
     {
-        if (scale < (float)gravityScale.low)
+        if (scale < (float)GravityScale.low)
         {
             gradient.SetKeys(
                 lowGradient,
                 alphaGradient
             );
         }
-        else if (scale > (float)gravityScale.low && scale < (float)gravityScale.med)
+        else if (scale > (float)GravityScale.low && scale < (float)GravityScale.med)
         {
             gradient.SetKeys(
                 medGradient,
                 alphaGradient
             );
         }
-        else if (scale > (float)gravityScale.med)
+        else if (scale > (float)GravityScale.med)
         {
             gradient.SetKeys(
                 highGradient,
