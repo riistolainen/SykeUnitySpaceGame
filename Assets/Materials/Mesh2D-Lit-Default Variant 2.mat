@@ -23,14 +23,14 @@ Material:
   m_Name: Mesh2D-Lit-Default Variant 2
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 761d8e1f988ed2345a28312145c79c6e, type: 2}
-  m_ModifiedSerializedProperties: 2
+  m_ModifiedSerializedProperties: 18
   m_ValidKeywords:
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
   disabledShaderPasses:
@@ -49,12 +49,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _Metallic: 0
     - _Smoothness: 0.223
     - _SmoothnessTextureChannel: 0
+    - _Surface: 0
     - _WorkflowMode: 0
+    - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

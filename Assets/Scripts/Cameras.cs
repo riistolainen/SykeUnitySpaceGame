@@ -174,7 +174,7 @@ public class CamerasScript : MonoBehaviour
                 {
                     if (controller.Input.Gain == 0f && lookAroundToggle == true) { controller.Input.Gain = 1f; }
                     if (controller.Input.Gain != 0f && lookAroundToggle == false) { controller.Input.Gain = 0f; }
-
+                    
                     /* Check the name of the axis/controller and disable it
                     if (controller.Name == "Look Orbit X")
                     {

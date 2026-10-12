@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 574025473}
+  m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &574025471
+--- !u!1 &470547420
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,23 +127,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 574025474}
-  - component: {fileID: 574025473}
-  - component: {fileID: 574025472}
+  - component: {fileID: 470547423}
+  - component: {fileID: 470547422}
+  - component: {fileID: 470547421}
   m_Layer: 0
-  m_Name: Sun
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
-  m_IsActive: 0
---- !u!114 &574025472
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &470547421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574025471}
+  m_GameObject: {fileID: 470547420}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
@@ -166,19 +166,19 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!108 &574025473
+--- !u!108 &470547422
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574025471}
+  m_GameObject: {fileID: 470547420}
   m_Enabled: 1
   serializedVersion: 13
-  m_Type: 0
+  m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
+  m_Intensity: 150000000
+  m_Range: 500000
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -231,17 +231,17 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &574025474
+--- !u!4 &470547423
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574025471}
+  m_GameObject: {fileID: 470547420}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalPosition: {x: 0.9823, y: 0, z: -5}
+  m_LocalScale: {x: 0.0001, y: 0.0001, z: 0.0001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2100026735}
@@ -395,6 +395,10 @@ PrefabInstance:
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: far clip plane
       value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 8807429635762649618, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: UpdateMethod
@@ -1029,7 +1033,7 @@ PrefabInstance:
     - target: {fileID: 8381603197634147781, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e4c449a8cc5977b46bfc8fd43f90719a, type: 2}
+      objectReference: {fileID: 2100000, guid: df8b62b7d4ebd7448b9079a13acd7937, type: 2}
     - target: {fileID: 8758098763094327310, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: gravity
       value: 1
@@ -1043,7 +1047,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2948343232338729156, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 574025474}
+      addedObject: {fileID: 470547423}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
 --- !u!4 &2100026735 stripped
@@ -1119,6 +1123,10 @@ PrefabInstance:
     - target: {fileID: 1804291341847875086, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: m_Name
       value: CinemachineCameraFollow
+      objectReference: {fileID: 0}
+    - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 3946337720310946391, guid: ce13749af78bf5e4fb4e4413b3c07765, type: 3}
       propertyPath: Target.LookAtTarget
@@ -1431,6 +1439,10 @@ PrefabInstance:
       value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 4093214307320832773, guid: 9e6f9f6722b341d44a47e38dbfc5c417, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093214307320832773, guid: 9e6f9f6722b341d44a47e38dbfc5c417, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 631759819}
@@ -1523,6 +1535,10 @@ PrefabInstance:
     - target: {fileID: 899668496515591566, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: Lens.FarClipPlane
       value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 899668496515591566, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 3035673506883559848, guid: 57f3e07442590e9429114a6029c1d10a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1680,7 +1696,7 @@ PrefabInstance:
     - target: {fileID: 8381603197634147781, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 2a85179fa0c09ce4987aaff577933db5, type: 2}
+      objectReference: {fileID: 2100000, guid: 78a370fda75e7a942878df9627b8dac7, type: 2}
     - target: {fileID: 8758098763094327310, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: rotation
       value: 1
