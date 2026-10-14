@@ -29,10 +29,10 @@ public class SpaceShipScript : MonoBehaviour
 
     //START:: SPACESHIP STATS
     public float thrustMain = 10; //power of thruster
-    public float thrustUtility = 1;
-    public float thrustRoll = 1;
-    public float thrustYaw = 1;
-    public float thrustPitch = 1;
+    public float thrustUtility = 0.01f;
+    public float thrustRoll = 0.01f;
+    public float thrustYaw = 0.01f;
+    public float thrustPitch = 0.01f;
 
     public Vector3 centerOfMass;
 
