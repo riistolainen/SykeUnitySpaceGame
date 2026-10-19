@@ -13,7 +13,7 @@
 *.log
 
 # Raw texture assets are large
-/[Aa]ssets/[Rr]aw/
+#/[Aa]ssets/[Rr]aw/
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
