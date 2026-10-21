@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 470547423}
   - component: {fileID: 470547422}
   - component: {fileID: 470547421}
+  - component: {fileID: 470547424}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -176,7 +177,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 13
   m_Type: 2
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9622642, g: 0.9036733, b: 0.33134568, a: 1}
   m_Intensity: 5e+9
   m_Range: 500000
   m_SpotAngle: 30
@@ -246,6 +247,133 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2100026735}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &470547424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470547420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc4d76f733087744991913c9d19d5274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.LensFlareComponentSRP
+  m_LensFlareData: {fileID: 11400000, guid: 8356d4c7531c9ac4ab93d64ab1cb4324, type: 2}
+  version: 0
+  intensity: 0.5
+  maxAttenuationDistance: 1e+35
+  maxAttenuationScale: 1e+25
+  distanceAttenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  scaleByDistanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attenuationByLightShape: 1
+  radialScreenAttenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useOcclusion: 1
+  environmentOcclusion: 0
+  occlusionRadius: 20000
+  sampleCount: 32
+  occlusionOffset: 10000
+  scale: 1.5
+  allowOffScreen: 1
+  occlusionRemapCurve:
+    <length>k__BackingField: 2
+    m_Loop: 0
+    m_ZeroValue: 1
+    m_Range: 1
+    m_Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  lightOverride: {fileID: 0}
 --- !u!4 &631759819 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 381378631268404945, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
@@ -388,9 +516,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
-      propertyPath: field of view
-      value: 60
+    - target: {fileID: 7677939840939461912, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
+      propertyPath: m_Antialiasing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
       propertyPath: far clip plane
@@ -400,9 +528,9 @@ PrefabInstance:
       propertyPath: near clip plane
       value: 0.01
       objectReference: {fileID: 0}
-    - target: {fileID: 8807429635762649618, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
-      propertyPath: UpdateMethod
-      value: 2
+    - target: {fileID: 8777619870466972734, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1019,6 +1147,10 @@ PrefabInstance:
       value: Sun
       objectReference: {fileID: 0}
     - target: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573400223475304551, guid: d054e47a15931b14d8b22e49d0090b1b, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
@@ -1185,19 +1317,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9072593
+      value: 0.9072592
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.42054364
+      value: 0.4205437
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0044233
+      value: 0.0044233007
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0020503404
+      value: -0.0020503416
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
