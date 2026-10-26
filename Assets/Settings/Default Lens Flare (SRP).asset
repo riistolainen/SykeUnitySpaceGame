@@ -24,8 +24,8 @@ MonoBehaviour:
     noiseAmplitude: 1
     noiseFrequency: 1
     noiseSpeed: 0
-    shapeCutOffSpeed: 1.02
-    shapeCutOffRadius: 0.6
+    shapeCutOffSpeed: 1
+    shapeCutOffRadius: 0.1
     m_LocalIntensity: 10
     lensFlareTexture: {fileID: 0}
     uniformScale: 15
@@ -74,7 +74,7 @@ MonoBehaviour:
     autoRotate: 1
     flareType: 1
     modulateByLightColor: 1
-    isFoldOpened: 1
+    isFoldOpened: 0
     distribution: 0
     lengthSpread: 1
     positionCurve:
@@ -228,8 +228,8 @@ MonoBehaviour:
     noiseAmplitude: 1
     noiseFrequency: 1
     noiseSpeed: 0
-    shapeCutOffSpeed: 1
-    shapeCutOffRadius: 10
+    shapeCutOffSpeed: 0
+    shapeCutOffRadius: 1
     m_LocalIntensity: 0.05
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
     uniformScale: 0.3
@@ -278,7 +278,7 @@ MonoBehaviour:
     autoRotate: 1
     flareType: 1
     modulateByLightColor: 0
-    isFoldOpened: 1
+    isFoldOpened: 0
     distribution: 1
     lengthSpread: 1
     positionCurve:
@@ -451,7 +451,7 @@ MonoBehaviour:
     noiseFrequency: 1
     noiseSpeed: 0
     shapeCutOffSpeed: 0
-    shapeCutOffRadius: 10
+    shapeCutOffRadius: 1
     m_LocalIntensity: 0.1
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
     uniformScale: 0.35
@@ -681,7 +681,7 @@ MonoBehaviour:
     noiseAmplitude: 1
     noiseFrequency: 1
     noiseSpeed: 0
-    shapeCutOffSpeed: 0
+    shapeCutOffSpeed: 1
     shapeCutOffRadius: 10
     m_LocalIntensity: 0.1
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
@@ -886,7 +886,7 @@ MonoBehaviour:
     noiseFrequency: 1
     noiseSpeed: 0
     shapeCutOffSpeed: 0
-    shapeCutOffRadius: 10
+    shapeCutOffRadius: 1
     m_LocalIntensity: 0.03
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
     uniformScale: 1.5
@@ -1294,7 +1294,7 @@ MonoBehaviour:
     noiseFrequency: 1
     noiseSpeed: 0
     shapeCutOffSpeed: 0
-    shapeCutOffRadius: 10
+    shapeCutOffRadius: 1
     m_LocalIntensity: 0.008
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
     uniformScale: 2
