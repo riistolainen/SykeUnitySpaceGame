@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 877e1507ae8d81c40bf1b94c1a86036f, type: 3}
-  m_Name: Default Lens Flare (SRP) Halo
+  m_Name: Default Lens Flare (SRP) - Sun
   m_EditorClassIdentifier: 
   elements:
   - lensFlareDataSRP: {fileID: 0}
@@ -28,13 +28,13 @@ MonoBehaviour:
     shapeCutOffRadius: 1
     m_LocalIntensity: 0.1
     lensFlareTexture: {fileID: 0}
-    uniformScale: 15
+    uniformScale: 1
     sizeXY: {x: 1, y: 1}
     allowMultipleElement: 0
     m_Count: 5
     preserveAspectRatio: 0
     rotation: 0
-    tintColorType: 1
+    tintColorType: 0
     tint: {r: 1, g: 1, b: 1, a: 1}
     tintGradient:
       <textureSize>k__BackingField: 4
@@ -70,7 +70,7 @@ MonoBehaviour:
         m_NumAlphaKeys: 2
       mode: 2
       colorSpace: -1
-    blendMode: 0
+    blendMode: 3
     autoRotate: 1
     flareType: 1
     modulateByLightColor: 1

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 877e1507ae8d81c40bf1b94c1a86036f, type: 3}
-  m_Name: Default Lens Flare (SRP)
+  m_Name: Default Lens Flare (SRP) - Halo
   m_EditorClassIdentifier: 
   elements:
   - lensFlareDataSRP: {fileID: 0}
@@ -25,10 +25,10 @@ MonoBehaviour:
     noiseFrequency: 1
     noiseSpeed: 0
     shapeCutOffSpeed: 1
-    shapeCutOffRadius: 0.1
-    m_LocalIntensity: 10
+    shapeCutOffRadius: 1
+    m_LocalIntensity: 1
     lensFlareTexture: {fileID: 0}
-    uniformScale: 15
+    uniformScale: 1
     sizeXY: {x: 1, y: 1}
     allowMultipleElement: 0
     m_Count: 5
@@ -40,7 +40,7 @@ MonoBehaviour:
       <textureSize>k__BackingField: 4
       m_Gradient:
         serializedVersion: 2
-        key0: {r: 0.98394233, g: 1, b: 0.4764151, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -70,11 +70,11 @@ MonoBehaviour:
         m_NumAlphaKeys: 2
       mode: 2
       colorSpace: -1
-    blendMode: 1
+    blendMode: 3
     autoRotate: 1
     flareType: 1
     modulateByLightColor: 1
-    isFoldOpened: 0
+    isFoldOpened: 1
     distribution: 0
     lengthSpread: 1
     positionCurve:
@@ -228,7 +228,7 @@ MonoBehaviour:
     noiseAmplitude: 1
     noiseFrequency: 1
     noiseSpeed: 0
-    shapeCutOffSpeed: 0
+    shapeCutOffSpeed: 1
     shapeCutOffRadius: 1
     m_LocalIntensity: 0.05
     lensFlareTexture: {fileID: 2800000, guid: da47326d6c6190a4e8793de9a26bf176, type: 3}
