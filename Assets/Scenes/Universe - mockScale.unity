@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: cd426dd8cb4355845a7505339d1583b6, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: bacf34446ff4c1646be7e4711c018ede, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: aa4ce2afabdd2634c968aed76efb36bc, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1348,7 +1348,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 241.82
+  m_BounceIntensity: 1
   m_ColorTemperature: 3000
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -1671,7 +1671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0020503416
+      value: -0.0020503418
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
