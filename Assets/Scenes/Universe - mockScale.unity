@@ -255,14 +255,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470547420}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc4d76f733087744991913c9d19d5274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.LensFlareComponentSRP
   m_LensFlareData: {fileID: 11400000, guid: 8356d4c7531c9ac4ab93d64ab1cb4324, type: 2}
   version: 0
-  intensity: 1
+  intensity: 10
   maxAttenuationDistance: 1e+35
   maxAttenuationScale: 1e+25
   distanceAttenuationCurve:
@@ -340,9 +340,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   useOcclusion: 1
   environmentOcclusion: 0
-  occlusionRadius: 10000
+  occlusionRadius: 15000
   sampleCount: 32
-  occlusionOffset: 10000
+  occlusionOffset: 50000
   scale: 1
   allowOffScreen: 1
   occlusionRemapCurve:
@@ -1528,14 +1528,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962638776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc4d76f733087744991913c9d19d5274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.LensFlareComponentSRP
   m_LensFlareData: {fileID: 11400000, guid: 914fe000a4709ca43bcc38ab00145db5, type: 2}
   version: 0
-  intensity: 1
+  intensity: 5
   maxAttenuationDistance: 1e+35
   maxAttenuationScale: 1e+25
   distanceAttenuationCurve:
@@ -1613,9 +1613,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   useOcclusion: 1
   environmentOcclusion: 0
-  occlusionRadius: 15000
+  occlusionRadius: 20000
   sampleCount: 32
-  occlusionOffset: 10000
+  occlusionOffset: 50000
   scale: 1
   allowOffScreen: 1
   occlusionRemapCurve:
@@ -2190,15 +2190,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.42054373
+      value: 0.4205437
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0044233017
+      value: 0.0044233007
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0020503423
+      value: -0.0020503418
       objectReference: {fileID: 0}
     - target: {fileID: 2174181475199976476, guid: d084dc8ef1d0c5e4994c2d26ecedb382, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
