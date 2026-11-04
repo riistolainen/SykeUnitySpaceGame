@@ -213,8 +213,8 @@ MonoBehaviour:
     supportShadowMask: 1
     supportSSR: 1
     supportSSRTransparent: 1
-    supportSSAO: 1
-    supportSSGI: 1
+    supportSSAO: 0
+    supportSSGI: 0
     supportSubsurfaceScattering: 1
     subsurfaceScatteringAttenuation: 1
     sssSampleBudget:
@@ -225,9 +225,9 @@ MonoBehaviour:
       m_Values: 000000000000000000000000i
       m_SchemaId:
         m_Id: With3Levels
-    supportVolumetrics: 1
+    supportVolumetrics: 0
     supportVolumetricClouds: 0
-    supportLightLayers: 1
+    supportLightLayers: 0
     renderingLayerMaskBuffer: 0
     supportWater: 0
     waterSimulationResolution: 128
@@ -319,15 +319,15 @@ MonoBehaviour:
     hdShadowInitParams:
       maxShadowRequests: 128
       directionalShadowsDepthBits: 32
-      punctualShadowFilteringQuality: 1
-      directionalShadowFilteringQuality: 1
-      areaShadowFilteringQuality: 0
+      punctualShadowFilteringQuality: 2
+      directionalShadowFilteringQuality: 2
+      areaShadowFilteringQuality: 1
       punctualLightShadowAtlas:
-        shadowAtlasResolution: 4096
+        shadowAtlasResolution: 8192
         shadowAtlasDepthBits: 32
         useDynamicViewportRescale: 1
       areaLightShadowAtlas:
-        shadowAtlasResolution: 4096
+        shadowAtlasResolution: 8192
         shadowAtlasDepthBits: 32
         useDynamicViewportRescale: 1
       cachedPunctualLightShadowAtlas: 2048
