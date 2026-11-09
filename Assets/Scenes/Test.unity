@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.6271875, g: 0.627451, b: 0.41960785, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -1428,7 +1428,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  - {fileID: -876546973899608171, guid: f61c316e45c8e374590cbd9fa668cb8d, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1469,7 +1469,7 @@ Transform:
   m_GameObject: {fileID: 1696466564}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 109.07, y: -1.19702, z: -3.31561}
+  m_LocalPosition: {x: 148.5, y: -1.19702, z: -3.31561}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1571,7 +1571,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1881323622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1883,6 +1883,7 @@ GameObject:
   - component: {fileID: 2083494379}
   - component: {fileID: 2083494378}
   - component: {fileID: 2083494377}
+  - component: {fileID: 2083494381}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -1984,6 +1985,22 @@ Transform:
   - {fileID: 862943857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083494381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083494376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75ef7e783f6c0941a60c38e0dad512c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MyScripts::CustomShadowDriver
+  groundMaterial: {fileID: 2100000, guid: 78a370fda75e7a942878df9627b8dac7, type: 2}
+  virtualLightSource: {fileID: 1881323624}
+  shadowRadius: 0.5
+  shadowSoftness: 0.3
 --- !u!4 &4156747000450929573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5280707536033170602, guid: 82c8a101bc571cd40914a9cbc486540b, type: 3}
