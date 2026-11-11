@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1624627447784206773}
   - component: {fileID: 4959151864121716394}
   - component: {fileID: 3847339926684733508}
+  - component: {fileID: 2303911026957120651}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MonoBehaviour:
   list_gos: []
   G: 100
   degradingFactor: 500
-  timescale: 0.5
+  timeScale: 0.5
 --- !u!120 &3847339926684733508
 LineRenderer:
   serializedVersion: 3
@@ -162,3 +163,19 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &2303911026957120651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883656595681604170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75ef7e783f6c0941a60c38e0dad512c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MyScripts::CustomShadowDriver
+  groundMaterial: {fileID: 0}
+  virtualLightSource: {fileID: 0}
+  shadowRadius: 0.5
+  shadowSoftness: 0.3
