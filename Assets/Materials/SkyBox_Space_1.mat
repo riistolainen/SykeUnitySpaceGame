@@ -31,7 +31,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f2804c9b7e4fcf44d8562475ef5a01f6, type: 3}
+        m_Texture: {fileID: 2800000, guid: ce2c80b5213ccba48b82585e3b2c37ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -46,7 +46,7 @@ Material:
     m_Floats:
     - _AtmosphereThickness: 1
     - _EnableExternalAlpha: 0
-    - _Exposure: 0.41
+    - _Exposure: 0.5
     - _ImageType: 0
     - _Layout: 0
     - _Mapping: 1

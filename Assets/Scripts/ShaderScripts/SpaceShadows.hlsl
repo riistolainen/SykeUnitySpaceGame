@@ -1,6 +1,9 @@
 #ifndef CUSTOM_SPACE_SHADOWS_INCLUDED
 #define CUSTOM_SPACE_SHADOWS_INCLUDED
 
+uniform float _OccluderCount;
+uniform float _LightCount;
+
 // --- Global Memory Buffers (Passed via C# script) ---
 // Support for up to 16 shadow-casting occluders
 uniform float4 _OccluderPositions[16];

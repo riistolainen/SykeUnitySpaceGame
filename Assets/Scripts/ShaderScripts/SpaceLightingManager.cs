@@ -12,14 +12,30 @@ public class SpaceLightingManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindAnyObjectByType<SpaceLightingManager>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("SpaceLightingManager");
-                    _instance = go.AddComponent<SpaceLightingManager>();
-                }
             }
             return _instance;
         }
+    }
+
+    private void OnEnable()
+    {
+        if (_instance != null && _instance != this)
+        {
+            if (Application.isPlaying) Destroy(gameObject);
+            else DestroyImmediate(gameObject);
+            return;
+        }
+        _instance = this;
+        RefreshSceneLists();
+    }
+
+    private void RefreshSceneLists()
+    {
+        _occluders.Clear();
+        _occluders.AddRange(FindObjectsByType<SpaceOccluder>());
+
+        _starLights.Clear();
+        _starLights.AddRange(FindObjectsByType<SpaceStarLight>());
     }
 
     [Header("Tracking Collections")]
@@ -47,17 +63,7 @@ public class SpaceLightingManager : MonoBehaviour
     private static readonly int StarColorsID = Shader.PropertyToID("_StarColors");
     private static readonly int LightCountID = Shader.PropertyToID("_LightCount");
 
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            DestroyImmediate(gameObject);
-            return;
-        }
-        _instance = this;
-    }
-
-    private void Update()
+    private void LateUpdate()
     {
         UpdateShaderBuffers();
     }

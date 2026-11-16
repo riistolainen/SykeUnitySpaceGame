@@ -6,8 +6,8 @@ public class SpaceOccluder : MonoBehaviour
     public float radius = 1.0f;
     public float softness = 0.5f;
 
-    private void OnEnable() => SpaceLightingManager.Instance.RegisterOccluder(this);
-    private void OnDisable() => SpaceLightingManager.Instance.UnregisterOccluder(this);
+    private void OnEnable() => SpaceLightingManager.Instance?.RegisterOccluder(this);
+    private void OnDisable() => SpaceLightingManager.Instance?.UnregisterOccluder(this);
 
     private void OnDrawGizmosSelected()
     {
