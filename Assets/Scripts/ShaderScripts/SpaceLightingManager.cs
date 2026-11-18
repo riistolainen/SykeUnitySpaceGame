@@ -4,6 +4,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class SpaceLightingManager : MonoBehaviour
 {
+    public bool debugger = false;
     private static SpaceLightingManager _instance;
     public static SpaceLightingManager Instance
     {
@@ -33,14 +34,16 @@ public class SpaceLightingManager : MonoBehaviour
     {
         _occluders.Clear();
         _occluders.AddRange(FindObjectsByType<SpaceOccluder>());
+        if (debugger) Debug.Log("_occluders: " +_occluders.Count);
 
         _starLights.Clear();
         _starLights.AddRange(FindObjectsByType<SpaceStarLight>());
+        if (debugger) Debug.Log("_starLights: " + _starLights.Count);
     }
 
     [Header("Tracking Collections")]
-    private readonly List<SpaceOccluder> _occluders = new List<SpaceOccluder>();
-    private readonly List<SpaceStarLight> _starLights = new List<SpaceStarLight>();
+    public List<SpaceOccluder> _occluders = new List<SpaceOccluder>();
+    public List<SpaceStarLight> _starLights = new List<SpaceStarLight>();
 
     // Constants matching the maximum array boundaries defined in the HLSL file
     private const int MAX_ELEMENTS = 16;

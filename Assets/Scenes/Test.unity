@@ -577,6 +577,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75ef7e783f6c0941a60c38e0dad512c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MyScripts::SpaceLightingManager
+  debugger: 1
+  _occluders:
+  - {fileID: 1696466570}
+  - {fileID: 2083494381}
+  _starLights:
+  - {fileID: 1933923421}
 --- !u!4 &614521197
 Transform:
   m_ObjectHideFlags: 0
@@ -656,7 +662,8 @@ PrefabInstance:
       propertyPath: far clip plane
       value: 100000
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7368028798306842424, guid: d9b038d67dd6a9d43b8e2cb9969b99b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -867,7 +874,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ea97a8441355074996be4e4ad06b3a9, type: 2}
+  - {fileID: 2100000, guid: b8f1321f82d8ca34cb014a6e7497f041, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -926,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdef5c7fdfeaabb41acfdfb43915da4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MyScripts::SpaceOccluder
-  radius: 5
+  radius: 1
   softness: 0.5
 --- !u!1 &1760983445
 GameObject:
@@ -1040,7 +1047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: MyScripts::SpaceStarLight
   starColor: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 1
+  intensity: 1000
   lightRange: 1000
 --- !u!135 &1933923422
 SphereCollider:
@@ -1129,7 +1136,7 @@ Transform:
   m_GameObject: {fileID: 1933923420}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500, y: 0, z: 0}
+  m_LocalPosition: {x: 969, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1211,7 +1218,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2041241001473949794, guid: 77d6f8c259d702c469c8ea4b54bec5d2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1287,7 +1295,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ea97a8441355074996be4e4ad06b3a9, type: 2}
+  - {fileID: 2100000, guid: b8f1321f82d8ca34cb014a6e7497f041, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1346,7 +1354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdef5c7fdfeaabb41acfdfb43915da4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MyScripts::SpaceOccluder
-  radius: 25
+  radius: 1
   softness: 0.5
 --- !u!4 &4156747000450929573 stripped
 Transform:
