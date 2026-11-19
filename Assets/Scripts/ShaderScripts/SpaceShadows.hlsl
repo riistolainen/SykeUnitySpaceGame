@@ -11,15 +11,13 @@ float _OccluderCount;
 // Support for up to 16 separate light/star sources
 float4 _StarPositions[16]; // xyz = Position, w = Range/Radius of influence
 float4 _StarColors[16]; // rgb = Color, a = Base Intensity
-float _LightCount = 1;
+float _LightCount;
 
 void CalculateMultiLightSpaceShading_float(
     float3 Position_World,
     float3 Normal_World,
     out float3 FinalLightContribution)
 {
-    FinalLightContribution = float3(1.0, 0.0, 0.0);
-    return;
     // Start with zero accumulated light
     float3 accumulatedLight = float3(0.0, 0.0, 0.0);
     float3 normal = normalize(Normal_World);

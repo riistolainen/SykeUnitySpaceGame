@@ -32,10 +32,10 @@ Material:
   - _DISABLE_DECALS
   - _DISABLE_SSR
   - _DISABLE_SSR_TRANSPARENT
-  m_LightmapFlags: 0
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -70,14 +70,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Intensity: 2.5
+    - _Intensity: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Transition_Boil: 0
     - _Transition_Color: 0
     m_Colors:
-    - _Emission_Color_A: {r: 2.9960787, g: 2.9960787, b: 2.9960787, a: 1}
-    - _Emission_Color_B: {r: 5.9921575, g: 1.2719203, b: 1.2719203, a: 1}
+    - _Emission_Color_A: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission_Color_B: {r: 1, g: 0.9103774, b: 0.9103774, a: 1}
     - _Offset_Speed: {r: 0.01, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
